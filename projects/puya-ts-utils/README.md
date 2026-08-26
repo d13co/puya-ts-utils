@@ -1,107 +1,160 @@
-# puya-ts-utils
+# @d13co/puya-ts-utils
 
-This project has been generated using AlgoKit. See below for default getting started instructions.
+Algorand TypeScript subroutines that mint **keyless accounts** — ordinary Algorand
+addresses whose private key was never generated, and which answer only to your
+contract.
 
-# Setup
+```ts
+import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils'
+// or
+import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
+```
 
-### Pre-requisites
+## Install
 
-- [Nodejs 22](https://nodejs.org/en/download) or later
-- [AlgoKit CLI 2.5](https://github.com/algorandfoundation/algokit-cli?tab=readme-ov-file#install) or later
-- [Docker](https://www.docker.com/) (only required for LocalNet)
-- [Puya Compiler 4.4.4](https://pypi.org/project/puyapy/) or later
+```bash
+npm install @d13co/puya-ts-utils
+```
 
-> For interactive tour over the codebase, download [vsls-contrib.codetour](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.codetour) extension for VS Code, then open the [`.codetour.json`](./.tours/getting-started-with-your-algokit-project.tour) file in code tour extension.
+`@algorandfoundation/algorand-typescript` `>=1.3.0 <2` is a peer dependency, and
+you need `@algorandfoundation/puya-ts` `1.3.0` or later to compile.
 
-### Initial Setup
+This package ships **TypeScript source only**. There is no JavaScript build: the
+Puya compiler consumes the source and turns it into TEAL along with your own
+contract, so `require()`-ing it from Node will not work and is not meant to.
 
-#### 1. Clone the Repository
-Start by cloning this repository to your local machine.
+### Unit testing
 
-#### 2. Install Pre-requisites
-Ensure the following pre-requisites are installed and properly configured:
+`@algorandfoundation/algorand-typescript-testing` runs contracts as JavaScript,
+and it recognises a contract class only if it extends the same `Contract` your
+own contracts do. Version 1.2.0 pins `@algorandfoundation/algorand-typescript`
+to 1.2.0, which lands a second copy in the tree and quietly breaks that check
+with `Cannot create a contract for class as it does not extend Contract`. Pin
+the version down to one copy:
 
-- **Docker**: Required for running a local Algorand network.
-- **AlgoKit CLI**: Essential for project setup and operations. Verify installation with `algokit --version`, expecting `2.6.0` or later.
+```json
+{
+  "pnpm": {
+    "overrides": {
+      "@algorandfoundation/algorand-typescript": "1.3.0"
+    }
+  }
+}
+```
 
-#### 3. Bootstrap Your Local Environment
-Run the following commands within the project folder:
+Nothing else is needed — the stock AlgoKit `vitest.config.mts` transforms this
+package's source along with your own.
 
-- **Setup Project**: Execute `algokit project bootstrap all` to install dependencies and setup npm dependencies.
-- **Configure environment**: Execute `algokit generate env-file -a target_network localnet` to create a `.env.localnet` file with default configuration for `localnet`.
-- **Start LocalNet**: Use `algokit localnet start` to initiate a local Algorand network.
+## What it does
 
-### Development Workflow
+Calling either subroutine creates an application and deletes it again inside a
+single inner application call. While that application briefly exists it rekeys
+its own escrow to your contract. When the call returns, the application is gone
+but its address survives as a plain account — one nobody holds a key for —
+signed over to you.
 
-#### Terminal
-Directly manage and interact with your project using AlgoKit commands:
+## Usage
 
-1. **Build Contracts**: `algokit project run build` compiles all smart contracts. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
-For example: `algokit project run build -- hello_world` will only build the `hello_world` contract.
-2. **Deploy**: Use `algokit project deploy localnet` to deploy contracts to the local network. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
-For example: `algokit project deploy localnet -- hello_world` will only deploy the `hello_world` contract.
+Both subroutines are called like any other, from anywhere inside a contract:
 
-#### VS Code 
-For a seamless experience with breakpoint debugging and other features:
+```ts
+import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils'
+import { Account, Contract, Global, GlobalState, itxn, uint64 } from '@algorandfoundation/algorand-typescript'
 
-1. **Open Project**: In VS Code, open the repository root.
-2. **Install Extensions**: Follow prompts to install recommended extensions.
-3. **Debugging**:
-   - Use `F5` to start debugging.
+export class Vault extends Contract {
+  escrow = GlobalState<Account>({ key: 'escrow' })
 
-#### JetBrains IDEs
-While primarily optimized for VS Code, JetBrains IDEs are supported:
+  /** Mint an account and settle its minimum balance yourself. */
+  public open(): Account {
+    const account = createUnfundedAccount()
 
-1. **Open Project**: In your JetBrains IDE, open the repository root.
-2. **Automatic Setup**: The IDE should configure the Node.js environment.
-3. **Debugging**: Use `Shift+F10` or `Ctrl+R` to start debugging. Note: Windows users may encounter issues with pre-launch tasks due to a known bug. See [JetBrains forums](https://youtrack.jetbrains.com/issue/IDEA-277486/Shell-script-configuration-cannot-run-as-before-launch-task) for workarounds.
+    itxn.payment({ receiver: account, amount: Global.minBalance, fee: 0 }).submit()
 
-## AlgoKit Workspaces and Project Management
-This project supports both standalone and monorepo setups through AlgoKit workspaces. Leverage [`algokit project run`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/run.md) commands for efficient monorepo project orchestration and management across multiple projects within a workspace.
+    this.escrow.value = account
+    return account
+  }
 
-## AlgoKit Generators
+  /** Or let the subroutine settle it, out of an account you can send from. */
+  public openFrom(fundingAccount: Account): Account {
+    this.escrow.value = createFundedAccount(fundingAccount)
+    return this.escrow.value
+  }
 
-This template provides a set of [algokit generators](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/generate.md) that allow you to further modify the project instantiated from the template to fit your needs, as well as giving you a base to build your own extensions to invoke via the `algokit generate` command.
+  /** Either way, the minted account is yours to spend from. */
+  public spend(receiver: Account, amount: uint64): void {
+    itxn.payment({ sender: this.escrow.value, receiver, amount, fee: 0 }).submit()
+  }
+}
+```
 
-### Generate Smart Contract 
+## API
 
-By default the template creates a single `HelloWorld` contract under contracts folder in the `smart_contracts` directory. To add a new contract:
+### `createUnfundedAccount(): Account`
 
-1. From the root of the project (`../`) execute `algokit generate smart-contract`. This will create a new starter smart contract and deployment configuration file under `{your_contract_name}` subfolder in the `smart_contracts` directory.
-2. Each contract potentially has different creation parameters and deployment steps. Hence, you need to define your deployment logic in `deploy-config.ts` file.
-3. Technically, you need to reference your contract deployment logic in the `index.ts` file. However, by default, `index.ts` will auto import all TypeScript deployment files under `smart_contracts` directory. If you want to manually import specific contracts, modify the default code provided by the template in `index.ts` file.
+Mints the account and hands it back empty.
 
-> Please note, above is just a suggested convention tailored for the base configuration and structure of this template. The default code supplied by the template in the `index.ts` file is tailored for the suggested convention. You are free to modify the structure and naming conventions as you see fit.
+An account carrying an auth address owes the 0.1 ALGO minimum balance, and this
+one has nothing yet, so **you have to fund it before your call returns**. There
+is no rush within the call itself: minimum balances are checked once, when the
+top-level application call ends, rather than after each inner transaction, so
+the account is free to sit below its minimum in between.
 
-### Generate '.env' files
+Costs **2 inner transactions** — the application call and the rekey — both
+submitted with `fee: 0`, so cover them out of the fee pool.
 
-By default the template instance does not contain any env files to deploy to different networks. Using [`algokit project deploy`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/deploy.md) against `localnet` | `testnet` | `mainnet` will use default values for `algod` and `indexer` unless overwritten via `.env` or `.env.{target_network}`. 
+### `createFundedAccount(fundingAccount: Account): Account`
 
-To generate a new `.env` or `.env.{target_network}` file, run `algokit generate env-file`
+The same, plus a payment of `Global.minBalance` from `fundingAccount`, so the
+account comes back ready to use.
 
-### Debugging Smart Contracts
+`fundingAccount` has to be one your contract can send from: either its own
+escrow (`Global.currentApplicationAddress`) or an account rekeyed to it.
+Anything else is rejected by the AVM when the payment is submitted.
 
-This project is optimized to work with AlgoKit AVM Debugger extension. To activate it:
+Costs **3 inner transactions**.
 
-Refer to the commented header in the `index.ts` file in the `smart_contracts` folder.Since you have opted in to include VSCode launch configurations in your project, you can also use the `Debug TEAL via AlgoKit AVM Debugger` launch configuration to interactively select an available trace file and launch the debug session for your smart contract.
+### `CreateAccount`
 
+The contract behind both subroutines, exported for tests and tooling. You never
+deploy it — the subroutines create and delete it on demand — but you may want it
+on hand to stub the inner call in unit tests:
 
-For information on using and setting up the `AlgoKit AVM Debugger` VSCode extension refer [here](https://github.com/algorandfoundation/algokit-avm-vscode-debugger). To install the extension from the VSCode Marketplace, use the following link: [AlgoKit AVM Debugger extension](https://marketplace.visualstudio.com/items?itemName=algorandfoundation.algokit-avm-vscode-debugger).
+```ts
+import { CreateAccount } from '@d13co/puya-ts-utils'
 
-# Tools
+const spy = new ApplicationSpy(CreateAccount)
+spy.on.createAccount((itxnContext) => itxnContext.setReturnValue(someAccount))
+ctx.addApplicationSpy(spy)
+```
 
-This project makes use of Algorand TypeScript to build Algorand smart contracts. The following tools are in use:
+## Fees
 
-- [Algorand](https://www.algorand.com/) - Layer 1 Blockchain; [Developer portal](https://dev.algorand.co/), [Why Algorand?](https://dev.algorand.co/getting-started/why-algorand/)
-- [AlgoKit](https://github.com/algorandfoundation/algokit-cli) - One-stop shop tool for developers building on the Algorand network; [docs](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md), [intro tutorial](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/tutorials/intro.md)
-- [Algorand TypeScript](https://github.com/algorandfoundation/puya-ts/) - A semantically and syntactically compatible, typed TypeScript language that works with standard TypeScript tooling and allows you to express smart contracts (apps) and smart signatures (logic signatures) for deployment on the Algorand Virtual Machine (AVM); [docs](https://github.com/algorandfoundation/puya-ts/), [examples](https://github.com/algorandfoundation/puya-ts/tree/main/examples)
-- [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-ts) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
-- [NPM](https://www.npmjs.com/): TypeScript packaging and dependency management.
-- [TypeScript](https://www.typescriptlang.org/): Strongly typed programming language that builds on JavaScript
-- [ts-node-dev](https://github.com/wclr/ts-node-dev): TypeScript development execution environment
+Neither subroutine pays for itself. Budget the inner transactions above into the
+fee your caller sends — from an off-chain client that is `extraFee`:
 
+```ts
+await appClient.send.open({ args: [], extraFee: AlgoAmount.MicroAlgo(2000) })
+```
 
-It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
+## Development
 
+This repository is an AlgoKit workspace. The package lives in
+`projects/puya-ts-utils`; everything it publishes is in `src/`, and the rest of
+the project is the test bench around it.
 
+```bash
+algokit project bootstrap all   # install dependencies
+pnpm run build                  # compile contracts to TEAL and generate clients
+pnpm run test:unit              # algorand-typescript-testing suite
+pnpm run test:e2e               # LocalNet suite (needs `algokit localnet start`)
+pnpm run check-types
+```
 
+`src/createAccount.algo.ts` is the whole library.
+`smart_contracts/create_account/consumer.algo.ts` is a worked example that both
+suites drive. See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md)
+for the rest of the AlgoKit workflow.
+
+## License
+
+MIT
