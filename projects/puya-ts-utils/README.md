@@ -1,14 +1,16 @@
 # @d13co/puya-ts-utils
 
-Algorand TypeScript subroutines that mint **keyless accounts** — ordinary Algorand
-addresses whose private key was never generated, and which answer only to your
-contract.
+Algorand TypeScript subroutines for things the AVM will not hand your contract
+directly: **keyless accounts**, and the **network transaction counter**.
 
 ```ts
-import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils'
-// or
 import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
+import { getTxnCounter } from '@d13co/puya-ts-utils/getTxnCounter'
 ```
+
+Each utility is imported from its own subpath. There is no root import: the Puya
+compiler rejects re-export barrels, so a single entry point cannot serve more
+than one of them.
 
 ## Install
 
@@ -45,6 +47,13 @@ the version down to one copy:
 Nothing else is needed — the stock AlgoKit `vitest.config.mts` transforms this
 package's source along with your own.
 
+---
+
+# createAccount
+
+Mints **keyless accounts** — ordinary Algorand addresses whose private key was
+never generated, and which answer only to your contract.
+
 ## What it does
 
 Calling either subroutine creates an application and deletes it again inside a
@@ -58,7 +67,7 @@ signed over to you.
 Both subroutines are called like any other, from anywhere inside a contract:
 
 ```ts
-import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils'
+import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
 import { Account, Contract, Global, GlobalState, itxn, uint64 } from '@algorandfoundation/algorand-typescript'
 
 export class Vault extends Contract {
@@ -120,20 +129,110 @@ deploy it — the subroutines create and delete it on demand — but you may wan
 on hand to stub the inner call in unit tests:
 
 ```ts
-import { CreateAccount } from '@d13co/puya-ts-utils'
+import { CreateAccount } from '@d13co/puya-ts-utils/createAccount'
 
 const spy = new ApplicationSpy(CreateAccount)
 spy.on.createAccount((itxnContext) => itxnContext.setReturnValue(someAccount))
 ctx.addApplicationSpy(spy)
 ```
 
-## Fees
+---
 
-Neither subroutine pays for itself. Budget the inner transactions above into the
-fee your caller sends — from an off-chain client that is `extraFee`:
+# getTxnCounter
+
+Reads the **network transaction counter** — the number the next transaction on
+the network will be given. Side-effect: increments the transaction counter by 1.
+
+## What it does
+
+Every application on Algorand is numbered out of one ledger-wide counter that
+advances by one for each transaction, inner transactions included. So an
+application created right now is handed the counter's current value.
+
+`getTxnCounter` creates a throwaway application and deletes it in the same
+inner transaction, purely to see which id it was given, and returns the value
+one past it. Nothing is left behind on the ledger.
+
+The application it creates is just a three-byte always-approve program `0x0a8101`
+(`#pragma version 10`, `pushint 1`.) It never runs anything; it only needs to exist
+ long enough to be numbered.
+
+## Usage
 
 ```ts
-await appClient.send.open({ args: [], extraFee: AlgoAmount.MicroAlgo(2000) })
+import { getTxnCounter } from '@d13co/puya-ts-utils/getTxnCounter'
+import { Account, Contract, Global, GlobalState, uint64 } from '@algorandfoundation/algorand-typescript'
+
+export class Ticket extends Contract {
+  issued = GlobalState<uint64>({ key: 'issued' })
+
+  /** Read the counter, and let the caller pay for it out of the fee pool. */
+  public issue(): uint64 {
+    this.issued.value = getTxnCounter(Global.zeroAddress)
+    return this.issued.value
+  }
+
+  /** Or charge it to an account this contract can send from. */
+  public issuePaidBy(feePayer: Account): uint64 {
+    // feePayer must be rekeyed to this contract's escrow address
+    this.issued.value = getTxnCounter(feePayer)
+    return this.issued.value
+  }
+}
+```
+
+## API
+
+### `getTxnCounter(feePayer: Account): uint64`
+
+Returns the id one past the application it created, which is what the next
+transaction on the network will be numbered.
+
+`feePayer` decides who covers the one inner transaction this costs:
+
+- **`Global.zeroAddress`** submits it with `fee: 0`, sent from your application's
+  own escrow. Nothing is spent, and the caller covers it out of the fee pool.
+- **any other account** submits it with `fee: Global.minTxnFee`, sent from that
+  account, which pays the fee out of its own balance.
+
+A `feePayer` other than the zero address has to be an account your contract can
+send from: either its own escrow (`Global.currentApplicationAddress`) or an
+account rekeyed to it. Anything else is rejected by the AVM when the inner
+transaction is submitted.
+
+Costs **1 inner transaction** either way.
+
+There is no contract class behind this one, so there is nothing to stub with a
+typed `ApplicationSpy`. To fix the counter in a unit test, catch the bare create
+and fill in the application it would have been given:
+
+```ts
+const spy = new ApplicationSpy()
+spy.onBareCall([OnCompleteAction.DeleteApplication], (itxnContext) => {
+  Object.assign(itxnContext, { createdApp: someApplication })
+})
+ctx.addApplicationSpy(spy)
+```
+
+`ApplicationSpy.onBareCall` is overloaded, and the Puya test transformer rejects
+any function type with more than one call signature, so this has to live in a
+plain `.ts` file rather than in your `.algo.spec.ts`. See
+`smart_contracts/txn_counter/stub-probe.ts` for the worked version.
+
+---
+
+## Fees
+
+None of these subroutines pays for itself, with one exception: `getTxnCounter`
+given a real `feePayer` charges that account directly, and needs nothing extra
+from the caller.
+
+Everywhere else, budget the inner transactions into the fee your caller sends —
+from an off-chain client that is `extraFee`:
+
+```ts
+await appClient.send.open({ args: [], extraFee: AlgoAmount.MicroAlgo(2000) })   // createUnfundedAccount
+await appClient.send.issue({ args: [], extraFee: AlgoAmount.MicroAlgo(1000) })  // getTxnCounter
 ```
 
 ## Development
@@ -150,10 +249,11 @@ pnpm run test:e2e               # LocalNet suite (needs `algokit localnet start`
 pnpm run check-types
 ```
 
-`src/createAccount.algo.ts` is the whole library.
-`smart_contracts/create_account/consumer.algo.ts` is a worked example that both
-suites drive. See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md)
-for the rest of the AlgoKit workflow.
+`src/` is the whole library: one file per utility, one utility per import
+subpath. Each has a worked example under `smart_contracts/` that both suites
+drive — `create_account/consumer.algo.ts` and `txn_counter/consumer.algo.ts`.
+See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md) for the
+rest of the AlgoKit workflow.
 
 ## License
 

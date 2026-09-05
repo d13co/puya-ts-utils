@@ -1,0 +1,679 @@
+{
+  "version": 3,
+  "sources": [
+    "../../txn_counter/consumer.algo.ts",
+    "../../../src/getTxnCounter.algo.ts"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;AASA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;AAAA;;;AAAA;;;;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;ACgCA;;;AACqB;;AAAa;;AAAb;AAAA;AAEL;AAML;;;AAAa;;AAAA;AADV;;;AAAa;;;;AADP;;;;AADK;;;AADF;;;AAFP;;;;;;AAAA;;;AAUe;;AAAtB;AAAP;;;;;;AAJ0B;;AAAA;;;;ADhCM;;AAAd;;;AAPR;AASR;;AAAA;AAHF;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAWA;;;AAAA;AAAA;AAAA;;AAAA;AAAA;AACkB;;;AAlBR;AAoBR;;AAAA;AAHF;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "@algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram",
+      "params": {},
+      "block": "main",
+      "stack_in": [],
+      "op": "bytecblock 0x0a8101 \"counter\" 0x151f7c75"
+    },
+    "20": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "22": {
+      "op": "bz main___algots__.defaultCreate@9",
+      "stack_out": []
+    },
+    "25": {
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "27": {
+      "op": "!",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "28": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "29": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "31": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "32": {
+      "op": "pushbytess 0x490e374f 0xacc3e1b4 // method \"read()uint64\", method \"readPaidBy(address)uint64\"",
+      "defined_out": [
+        "Method(read()uint64)",
+        "Method(readPaidBy(address)uint64)"
+      ],
+      "stack_out": [
+        "Method(read()uint64)",
+        "Method(readPaidBy(address)uint64)"
+      ]
+    },
+    "44": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(read()uint64)",
+        "Method(readPaidBy(address)uint64)",
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "Method(read()uint64)",
+        "Method(readPaidBy(address)uint64)",
+        "tmp%6#0"
+      ]
+    },
+    "47": {
+      "op": "match read readPaidBy",
+      "stack_out": []
+    },
+    "53": {
+      "op": "err"
+    },
+    "54": {
+      "block": "main___algots__.defaultCreate@9",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "56": {
+      "op": "!",
+      "defined_out": [
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0"
+      ]
+    },
+    "57": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ]
+    },
+    "59": {
+      "op": "!",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%10#0"
+      ]
+    },
+    "60": {
+      "op": "&&",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "61": {
+      "op": "return",
+      "defined_out": [],
+      "stack_out": []
+    },
+    "62": {
+      "subroutine": "src/getTxnCounter.algo.ts::getTxnCounter",
+      "params": {
+        "feePayer#0": "bytes"
+      },
+      "block": "getTxnCounter",
+      "stack_in": [],
+      "op": "proto 1 1"
+    },
+    "65": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "feePayer#0 (copy)"
+      ],
+      "stack_out": [
+        "feePayer#0 (copy)"
+      ]
+    },
+    "67": {
+      "op": "global ZeroAddress",
+      "defined_out": [
+        "feePayer#0 (copy)",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "feePayer#0 (copy)",
+        "tmp%0#0"
+      ]
+    },
+    "69": {
+      "op": "==",
+      "defined_out": [
+        "selfFunded#0"
+      ],
+      "stack_out": [
+        "selfFunded#0"
+      ]
+    },
+    "70": {
+      "op": "dup",
+      "defined_out": [
+        "selfFunded#0"
+      ],
+      "stack_out": [
+        "selfFunded#0",
+        "selfFunded#0"
+      ]
+    },
+    "71": {
+      "op": "itxn_begin"
+    },
+    "72": {
+      "op": "bz getTxnCounter_ternary_false@2",
+      "stack_out": [
+        "selfFunded#0"
+      ]
+    },
+    "75": {
+      "op": "pushint 0",
+      "defined_out": [
+        "selfFunded#0",
+        "ternary_result%0#0"
+      ],
+      "stack_out": [
+        "selfFunded#0",
+        "ternary_result%0#0"
+      ]
+    },
+    "77": {
+      "op": "swap",
+      "defined_out": [
+        "selfFunded#0",
+        "ternary_result%0#0"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "selfFunded#0"
+      ]
+    },
+    "78": {
+      "block": "getTxnCounter_ternary_merge@3",
+      "stack_in": [
+        "ternary_result%0#0",
+        "selfFunded#0"
+      ],
+      "op": "bz getTxnCounter_ternary_false@5",
+      "defined_out": [],
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "81": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "ternary_result%1#0"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "ternary_result%1#0"
+      ]
+    },
+    "83": {
+      "block": "getTxnCounter_ternary_merge@6",
+      "stack_in": [
+        "ternary_result%0#0",
+        "ternary_result%1#0"
+      ],
+      "op": "itxn_field Sender",
+      "defined_out": [],
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "85": {
+      "op": "pushint 5",
+      "defined_out": [
+        "5"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "5"
+      ]
+    },
+    "87": {
+      "op": "itxn_field OnCompletion",
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "89": {
+      "op": "bytec_0 // 0x0a8101",
+      "defined_out": [
+        "0x0a8101"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "0x0a8101"
+      ]
+    },
+    "90": {
+      "op": "itxn_field ClearStateProgramPages",
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "92": {
+      "op": "bytec_0 // 0x0a8101",
+      "stack_out": [
+        "ternary_result%0#0",
+        "0x0a8101"
+      ]
+    },
+    "93": {
+      "op": "itxn_field ApprovalProgramPages",
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "95": {
+      "op": "pushint 6",
+      "defined_out": [
+        "6"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "6"
+      ]
+    },
+    "97": {
+      "op": "itxn_field TypeEnum",
+      "defined_out": [
+        "ternary_result%0#0"
+      ],
+      "stack_out": [
+        "ternary_result%0#0"
+      ]
+    },
+    "99": {
+      "op": "itxn_field Fee",
+      "stack_out": []
+    },
+    "101": {
+      "op": "itxn_submit"
+    },
+    "102": {
+      "op": "itxn CreatedApplicationID",
+      "defined_out": [
+        "probe.CreatedApplicationID#0"
+      ],
+      "stack_out": [
+        "probe.CreatedApplicationID#0"
+      ]
+    },
+    "104": {
+      "op": "pushint 1",
+      "defined_out": [
+        "1",
+        "probe.CreatedApplicationID#0"
+      ],
+      "stack_out": [
+        "probe.CreatedApplicationID#0",
+        "1"
+      ]
+    },
+    "106": {
+      "op": "+",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "107": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "108": {
+      "block": "getTxnCounter_ternary_false@5",
+      "stack_in": [
+        "ternary_result%0#0"
+      ],
+      "op": "frame_dig -1",
+      "defined_out": [
+        "ternary_result%1#0"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "ternary_result%1#0"
+      ]
+    },
+    "110": {
+      "op": "b getTxnCounter_ternary_merge@6"
+    },
+    "113": {
+      "block": "getTxnCounter_ternary_false@2",
+      "stack_in": [
+        "selfFunded#0"
+      ],
+      "op": "global MinTxnFee",
+      "defined_out": [
+        "ternary_result%0#0"
+      ],
+      "stack_out": [
+        "selfFunded#0",
+        "ternary_result%0#0"
+      ]
+    },
+    "115": {
+      "op": "swap",
+      "defined_out": [
+        "ternary_result%0#0"
+      ],
+      "stack_out": [
+        "ternary_result%0#0",
+        "selfFunded#0"
+      ]
+    },
+    "116": {
+      "op": "b getTxnCounter_ternary_merge@3"
+    },
+    "119": {
+      "subroutine": "smart_contracts/txn_counter/consumer.algo.ts::TxnCounterConsumer.read[routing]",
+      "params": {},
+      "block": "read",
+      "stack_in": [],
+      "op": "global ZeroAddress",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "121": {
+      "callsub": "src/getTxnCounter.algo.ts::getTxnCounter",
+      "op": "callsub getTxnCounter",
+      "defined_out": [
+        "counter#0"
+      ],
+      "stack_out": [
+        "counter#0"
+      ]
+    },
+    "124": {
+      "op": "bytec_1 // \"counter\"",
+      "defined_out": [
+        "\"counter\"",
+        "counter#0"
+      ],
+      "stack_out": [
+        "counter#0",
+        "\"counter\""
+      ]
+    },
+    "125": {
+      "op": "dig 1",
+      "defined_out": [
+        "\"counter\"",
+        "counter#0",
+        "counter#0 (copy)"
+      ],
+      "stack_out": [
+        "counter#0",
+        "\"counter\"",
+        "counter#0 (copy)"
+      ]
+    },
+    "127": {
+      "op": "app_global_put",
+      "stack_out": [
+        "counter#0"
+      ]
+    },
+    "128": {
+      "op": "itob",
+      "defined_out": [
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "129": {
+      "op": "bytec_2 // 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0",
+        "0x151f7c75"
+      ]
+    },
+    "130": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "131": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "132": {
+      "op": "log",
+      "stack_out": []
+    },
+    "133": {
+      "op": "pushint 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "135": {
+      "op": "return",
+      "stack_out": []
+    },
+    "136": {
+      "subroutine": "smart_contracts/txn_counter/consumer.algo.ts::TxnCounterConsumer.readPaidBy[routing]",
+      "params": {},
+      "block": "readPaidBy",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "feePayer#0"
+      ],
+      "stack_out": [
+        "feePayer#0"
+      ]
+    },
+    "139": {
+      "op": "dup",
+      "defined_out": [
+        "feePayer#0",
+        "feePayer#0 (copy)"
+      ],
+      "stack_out": [
+        "feePayer#0",
+        "feePayer#0 (copy)"
+      ]
+    },
+    "140": {
+      "op": "len",
+      "defined_out": [
+        "feePayer#0",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "feePayer#0",
+        "len%0#0"
+      ]
+    },
+    "141": {
+      "op": "pushint 32",
+      "defined_out": [
+        "32",
+        "feePayer#0",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "feePayer#0",
+        "len%0#0",
+        "32"
+      ]
+    },
+    "143": {
+      "op": "==",
+      "defined_out": [
+        "eq%0#0",
+        "feePayer#0"
+      ],
+      "stack_out": [
+        "feePayer#0",
+        "eq%0#0"
+      ]
+    },
+    "144": {
+      "error": "invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "op": "assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "stack_out": [
+        "feePayer#0"
+      ]
+    },
+    "145": {
+      "callsub": "src/getTxnCounter.algo.ts::getTxnCounter",
+      "op": "callsub getTxnCounter",
+      "defined_out": [
+        "counter#0"
+      ],
+      "stack_out": [
+        "counter#0"
+      ]
+    },
+    "148": {
+      "op": "bytec_1 // \"counter\"",
+      "defined_out": [
+        "\"counter\"",
+        "counter#0"
+      ],
+      "stack_out": [
+        "counter#0",
+        "\"counter\""
+      ]
+    },
+    "149": {
+      "op": "dig 1",
+      "defined_out": [
+        "\"counter\"",
+        "counter#0",
+        "counter#0 (copy)"
+      ],
+      "stack_out": [
+        "counter#0",
+        "\"counter\"",
+        "counter#0 (copy)"
+      ]
+    },
+    "151": {
+      "op": "app_global_put",
+      "stack_out": [
+        "counter#0"
+      ]
+    },
+    "152": {
+      "op": "itob",
+      "defined_out": [
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "153": {
+      "op": "bytec_2 // 0x151f7c75",
+      "defined_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ],
+      "stack_out": [
+        "aggregate%val_as_bytes%0#0",
+        "0x151f7c75"
+      ]
+    },
+    "154": {
+      "op": "swap",
+      "stack_out": [
+        "0x151f7c75",
+        "aggregate%val_as_bytes%0#0"
+      ]
+    },
+    "155": {
+      "op": "concat",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "156": {
+      "op": "log",
+      "stack_out": []
+    },
+    "157": {
+      "op": "pushint 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "159": {
+      "op": "return",
+      "stack_out": []
+    }
+  }
+}

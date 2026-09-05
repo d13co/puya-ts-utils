@@ -1,7 +1,7 @@
 {
   "name": "@d13co/puya-ts-utils",
-  "version": "0.1.0",
-  "description": "Algorand TypeScript subroutines that mint keyless accounts out of application escrows",
+  "version": "0.2.0",
+  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter",
   "keywords": [
     "algorand",
     "algorand-typescript",
@@ -9,7 +9,9 @@
     "puya-ts",
     "avm",
     "smart-contracts",
-    "rekey"
+    "rekey",
+    "txn-counter",
+    "inner-transactions"
   ],
   "license": "MIT",
   "author": "Bit D13",
@@ -19,16 +21,14 @@
     "directory": "projects/puya-ts-utils"
   },
   "type": "commonjs",
-  "main": "./src/createAccount.algo.ts",
-  "types": "./src/createAccount.algo.ts",
   "exports": {
-    ".": {
-      "types": "./src/createAccount.algo.ts",
-      "default": "./src/createAccount.algo.ts"
-    },
     "./createAccount": {
       "types": "./src/createAccount.algo.ts",
       "default": "./src/createAccount.algo.ts"
+    },
+    "./getTxnCounter": {
+      "types": "./src/getTxnCounter.algo.ts",
+      "default": "./src/getTxnCounter.algo.ts"
     },
     "./package.json": "./package.json"
   },
@@ -36,6 +36,9 @@
     "*": {
       "createAccount": [
         "./src/createAccount.algo.ts"
+      ],
+      "getTxnCounter": [
+        "./src/getTxnCounter.algo.ts"
       ]
     }
   },

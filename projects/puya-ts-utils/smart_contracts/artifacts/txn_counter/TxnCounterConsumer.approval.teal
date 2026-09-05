@@ -1,0 +1,174 @@
+#pragma version 11
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    bytecblock 0x0a8101 "counter" 0x151f7c75
+    // smart_contracts/txn_counter/consumer.algo.ts:10
+    // export class TxnCounterConsumer extends Contract {
+    txn NumAppArgs
+    bz main___algots__.defaultCreate@9
+    txn OnCompletion
+    !
+    assert
+    txn ApplicationID
+    assert
+    pushbytess 0x490e374f 0xacc3e1b4 // method "read()uint64", method "readPaidBy(address)uint64"
+    txna ApplicationArgs 0
+    match read readPaidBy
+    err
+
+main___algots__.defaultCreate@9:
+    // smart_contracts/txn_counter/consumer.algo.ts:10
+    // export class TxnCounterConsumer extends Contract {
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    return
+
+
+// src/getTxnCounter.algo.ts::getTxnCounter(feePayer: bytes) -> uint64:
+getTxnCounter:
+    // src/getTxnCounter.algo.ts:42
+    // export function getTxnCounter(feePayer: Account): uint64 {
+    proto 1 1
+    // src/getTxnCounter.algo.ts:43
+    // const selfFunded = feePayer === Global.zeroAddress
+    frame_dig -1
+    global ZeroAddress
+    ==
+    dup
+    // src/getTxnCounter.algo.ts:45-53
+    // const probe = itxn
+    //   .applicationCall({
+    //     approvalProgram: PROBE_PROGRAM,
+    //     clearStateProgram: PROBE_PROGRAM,
+    //     onCompletion: OnCompleteAction.DeleteApplication,
+    //     sender: selfFunded ? Global.currentApplicationAddress : feePayer,
+    //     fee: selfFunded ? 0 : Global.minTxnFee,
+    //   })
+    //   .submit()
+    itxn_begin
+    // src/getTxnCounter.algo.ts:51
+    // fee: selfFunded ? 0 : Global.minTxnFee,
+    bz getTxnCounter_ternary_false@2
+    pushint 0
+    swap
+
+getTxnCounter_ternary_merge@3:
+    // src/getTxnCounter.algo.ts:50
+    // sender: selfFunded ? Global.currentApplicationAddress : feePayer,
+    bz getTxnCounter_ternary_false@5
+    global CurrentApplicationAddress
+
+getTxnCounter_ternary_merge@6:
+    itxn_field Sender
+    // src/getTxnCounter.algo.ts:49
+    // onCompletion: OnCompleteAction.DeleteApplication,
+    pushint 5
+    itxn_field OnCompletion
+    // src/getTxnCounter.algo.ts:48
+    // clearStateProgram: PROBE_PROGRAM,
+    bytec_0 // 0x0a8101
+    itxn_field ClearStateProgramPages
+    // src/getTxnCounter.algo.ts:47
+    // approvalProgram: PROBE_PROGRAM,
+    bytec_0 // 0x0a8101
+    itxn_field ApprovalProgramPages
+    // src/getTxnCounter.algo.ts:45-52
+    // const probe = itxn
+    //   .applicationCall({
+    //     approvalProgram: PROBE_PROGRAM,
+    //     clearStateProgram: PROBE_PROGRAM,
+    //     onCompletion: OnCompleteAction.DeleteApplication,
+    //     sender: selfFunded ? Global.currentApplicationAddress : feePayer,
+    //     fee: selfFunded ? 0 : Global.minTxnFee,
+    //   })
+    pushint 6
+    itxn_field TypeEnum
+    itxn_field Fee
+    // src/getTxnCounter.algo.ts:45-53
+    // const probe = itxn
+    //   .applicationCall({
+    //     approvalProgram: PROBE_PROGRAM,
+    //     clearStateProgram: PROBE_PROGRAM,
+    //     onCompletion: OnCompleteAction.DeleteApplication,
+    //     sender: selfFunded ? Global.currentApplicationAddress : feePayer,
+    //     fee: selfFunded ? 0 : Global.minTxnFee,
+    //   })
+    //   .submit()
+    itxn_submit
+    itxn CreatedApplicationID
+    // src/getTxnCounter.algo.ts:55
+    // return probe.createdApp.id + 1
+    pushint 1
+    +
+    retsub
+
+getTxnCounter_ternary_false@5:
+    frame_dig -1
+    b getTxnCounter_ternary_merge@6
+
+getTxnCounter_ternary_false@2:
+    // src/getTxnCounter.algo.ts:51
+    // fee: selfFunded ? 0 : Global.minTxnFee,
+    global MinTxnFee
+    swap
+    b getTxnCounter_ternary_merge@3
+
+
+// smart_contracts/txn_counter/consumer.algo.ts::TxnCounterConsumer.read[routing]() -> void:
+read:
+    // smart_contracts/txn_counter/consumer.algo.ts:19
+    // const counter = getTxnCounter(Global.zeroAddress)
+    global ZeroAddress
+    callsub getTxnCounter
+    // smart_contracts/txn_counter/consumer.algo.ts:12
+    // counter = GlobalState<uint64>({ key: 'counter' })
+    bytec_1 // "counter"
+    // smart_contracts/txn_counter/consumer.algo.ts:21
+    // this.counter.value = counter
+    dig 1
+    app_global_put
+    // smart_contracts/txn_counter/consumer.algo.ts:18
+    // public read(): uint64 {
+    itob
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    pushint 1
+    return
+
+
+// smart_contracts/txn_counter/consumer.algo.ts::TxnCounterConsumer.readPaidBy[routing]() -> void:
+readPaidBy:
+    // smart_contracts/txn_counter/consumer.algo.ts:29
+    // public readPaidBy(feePayer: Account): uint64 {
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // smart_contracts/txn_counter/consumer.algo.ts:30
+    // const counter = getTxnCounter(feePayer)
+    callsub getTxnCounter
+    // smart_contracts/txn_counter/consumer.algo.ts:12
+    // counter = GlobalState<uint64>({ key: 'counter' })
+    bytec_1 // "counter"
+    // smart_contracts/txn_counter/consumer.algo.ts:32
+    // this.counter.value = counter
+    dig 1
+    app_global_put
+    // smart_contracts/txn_counter/consumer.algo.ts:29
+    // public readPaidBy(feePayer: Account): uint64 {
+    itob
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    pushint 1
+    return
