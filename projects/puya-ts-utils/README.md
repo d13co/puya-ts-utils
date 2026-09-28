@@ -1,11 +1,13 @@
 # @d13co/puya-ts-utils
 
 Algorand TypeScript subroutines for things the AVM will not hand your contract
-directly: **keyless accounts**, and the **network transaction counter**.
+directly: **keyless accounts**, the **network transaction counter**, and **MBR credit
+accounting**.
 
 ```ts
 import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
 import { getTxnCounter } from '@d13co/puya-ts-utils/getTxnCounter'
+import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
 ```
 
 Each utility is imported from its own subpath. There is no root import: the Puya
@@ -221,6 +223,100 @@ plain `.ts` file rather than in your `.algo.spec.ts`. See
 
 ---
 
+# mbrManager
+
+An abstract contract that makes callers pay for the boxes they create. Each
+account deposits **MBR credits** up front. When a method changes the app
+account's minimum balance, the difference is charged to the sender's credits,
+or refunded to them if it went down.
+
+## What it does
+
+The AVM checks the minimum balance only when an app call ends, so a method may
+go over it partway through. Snapshot `minBalance` before the state changes,
+then call `manageMbrCredits` afterwards. It charges the exact difference, and
+you never have to work out box sizes by hand.
+
+## Usage
+
+```ts
+import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
+import { Account, BoxMap, bytes, Global, Txn } from '@algorandfoundation/algorand-typescript'
+
+export class Registry extends MbrManager {
+  entries = BoxMap<Account, bytes>({ keyPrefix: 'e' })
+
+  public put(value: bytes) {
+    const mbrBefore = Global.currentApplicationAddress.minBalance
+    this.entries(Txn.sender).value = value
+    this.manageMbrCredits(mbrBefore)
+  }
+}
+```
+
+Growing or shrinking a value in place is charged or refunded too, at 400 µALGO
+per byte.
+
+Credit boxes are named `'c'` + the account's 32-byte public key. Keep your own
+box prefixes distinct from that.
+
+## Warning: users own their boxes
+
+`MbrManager` is built for a model where **each box belongs to one account**, and
+only that account's calls create, resize or delete it. Key your boxes by
+`Txn.sender`, as above, or store an owner and assert it.
+
+Mixed ownership breaks down. A refund goes to whoever triggers the decrease,
+not to whoever paid for the box. If any account can delete a box another
+account paid for, the deleter collects the refund. Use `settleMbrCredits` to
+refund the owner instead.
+
+**Entries can get stuck, including shared ones.** A refund needs a credit box to
+land in (`RCV`). So an account that has called `withdrawCredits` can't delete
+its remaining boxes until it deposits again, which costs another 18 900 µALGO
+for the credit box (it gets that back on its next withdrawal). The same goes
+for a box shared between accounts: whoever deletes it must have a credit box.
+Clean up boxes before withdrawing.
+
+## API
+
+### `depositCredits(creditor: Account, txn: gtxn.PaymentTxn)` — ABI
+
+Credits `txn.amount` to `creditor`, who can be any account, not just the sender.
+The creditor's credit box costs 18 900 µALGO, and a first deposit pays for it out
+of the deposit itself. Fails with `RCV` if the payment does not go to the app,
+`AMT` if the amount is zero, and `CRD` if a first deposit is too small to pay
+for the box.
+
+### `withdrawCredits()` — ABI
+
+Pays the sender's credits back to them, plus the MBR freed by deleting their
+credit box. The inner payment has zero fee, so send `extraFee: 1000`. Fails with
+`AMT` if the sender has no credit box. Refunds for boxes deleted after this fail
+until the sender deposits again: see the warning above.
+
+### `logCredits(accounts: Account[])` — ABI, readonly
+
+Logs each account's balance as a big-endian uint64, in input order. An account
+with no credit box logs an empty line. Simulate it with `allowMoreLogging` to
+read many balances in one call.
+
+### `manageMbrCredits(mbrBefore: uint64)` — protected
+
+Charges the MBR increase since `mbrBefore` to the sender's credits (`CRD` if they
+do not have enough), or refunds a decrease to them (`RCV` if they have no credit
+box). Call it last, after the state changes.
+
+### `settleMbrCredits(account: Account, mbrBefore: uint64)` — protected
+
+The same as `manageMbrCredits`, but it charges or refunds `account` instead of
+the sender.
+
+Errors are raised with `loggedAssert`, so they show up as `ERR:CRD`, `ERR:RCV`
+and `ERR:AMT`.
+
+---
+
 ## Fees
 
 None of these subroutines pays for itself, with one exception: `getTxnCounter`
@@ -233,6 +329,7 @@ from an off-chain client that is `extraFee`:
 ```ts
 await appClient.send.open({ args: [], extraFee: AlgoAmount.MicroAlgo(2000) })   // createUnfundedAccount
 await appClient.send.issue({ args: [], extraFee: AlgoAmount.MicroAlgo(1000) })  // getTxnCounter
+await appClient.send.withdrawCredits({ args: [], extraFee: AlgoAmount.MicroAlgo(1000) }) // mbrManager
 ```
 
 ## Development
@@ -250,8 +347,9 @@ pnpm run check-types
 ```
 
 `src/` is the whole library: one file per utility, one utility per import
-subpath. Each has a worked example under `smart_contracts/` that both suites
-drive — `create_account/consumer.algo.ts` and `txn_counter/consumer.algo.ts`.
+subpath. Each has a worked example under `smart_contracts/` that the suites
+drive — `create_account/consumer.algo.ts` and `txn_counter/consumer.algo.ts`
+under both, `mbr_manager/consumer.algo.ts` under e2e only.
 See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md) for the
 rest of the AlgoKit workflow.
 

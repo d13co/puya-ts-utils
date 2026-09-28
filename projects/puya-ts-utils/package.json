@@ -1,7 +1,7 @@
 {
   "name": "@d13co/puya-ts-utils",
   "version": "0.2.0",
-  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter",
+  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter, MBR credit accounting",
   "keywords": [
     "algorand",
     "algorand-typescript",
@@ -11,6 +11,7 @@
     "smart-contracts",
     "rekey",
     "txn-counter",
+    "mbr",
     "inner-transactions"
   ],
   "license": "MIT",
@@ -30,6 +31,10 @@
       "types": "./src/getTxnCounter.algo.ts",
       "default": "./src/getTxnCounter.algo.ts"
     },
+    "./mbrManager": {
+      "types": "./src/mbrManager.algo.ts",
+      "default": "./src/mbrManager.algo.ts"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -39,6 +44,9 @@
       ],
       "getTxnCounter": [
         "./src/getTxnCounter.algo.ts"
+      ],
+      "mbrManager": [
+        "./src/mbrManager.algo.ts"
       ]
     }
   },
