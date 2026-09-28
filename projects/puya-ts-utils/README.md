@@ -242,6 +242,29 @@ parsed, since a lenient parser is what lets a forgery through when `e = 3`.
 Everything is pure: all input is passed in as bytes, and nothing reads state or
 boxes. That means the same code compiles into a contract or a logic signature.
 
+It is tested against [Wycheproof](https://github.com/C2SP/wycheproof)'s
+RSASSA-PKCS1-v1_5 vectors for 2048-bit keys with SHA-256 and SHA-512: 518
+cases, where only the valid signatures verify.
+
+## Program size
+
+Measured by compiling a contract with one ABI method around each, minus the
+same contract without the RSA code:
+
+| What the contract calls | Bytes added |
+|---|---|
+| `verifyRsaSha256` | 1.45 KB |
+| `verifyRsaSha256` and `verifyRsaSha512` | 1.6 KB |
+| `rsaStart`, `rsaStep` and `rsaFinish` | 1.6 KB |
+
+An app's approval program gets 2 KB per page, with up to 3 extra pages: 8 KB in
+all, shared with the clear program. So RSA takes most of a one-page app. Plan
+on one extra page (`extraProgramPages: 1`) once your own code is in.
+
+The logic signature example compiles to 1.5 KB. Logic signatures get 1 KB per
+transaction, pooled across the group, so size alone needs a group of 2. Budget
+needs more.
+
 ## Usage
 
 The subroutines take a digest, not the signed data, so hashing is up to you.
@@ -283,19 +306,21 @@ top limb, such as RSA-1280 or a 2047-bit key, it costs far more.
 It depends only on the key, so the prover can compute it off chain and pass it
 in as `hint`: `R² mod n`, left-padded to `k` limbs, followed by the quotient
 `⌊R / n⌋`, which the check needs. Checking a hint costs about a tenth of
-computing it, and a wrong one fails an assert:
+computing it. `@d13co/puya-ts-utils/rsaHint` computes it off chain:
 
 ```ts
-const toBytes = (x: bigint, length = 0) => {
-  const hex = x.toString(16)
-  return Buffer.from(hex.padStart(Math.max(2 * length, hex.length + (hex.length % 2)), '0'), 'hex')
-}
+import { rsaMontgomeryHint } from '@d13co/puya-ts-utils/rsaHint'
 
-const width = Math.ceil(modulus.length / 64) * 64
-const n = BigInt('0x' + Buffer.from(modulus).toString('hex'))
-const r = 1n << BigInt(8 * width)
-const hint = Buffer.concat([toBytes((r * r) % n, width), toBytes(r / n)])
+const hint = rsaMontgomeryHint(modulus) // Uint8Array
 ```
+
+**A hostile hint can only make the call fail, never make a signature verify.**
+The hint comes from whoever submits the transaction, so it's untrusted. Its
+first part is used only once the contract has proved it equals `R² mod n`. For
+`h` below `n`, `h·R⁻¹ mod n` is `R mod n` only when `h` is `R² mod n`, and
+`q·n + (h·R⁻¹ mod n) = R` holds only when it is `R mod n`. Any other `h` or `q`
+fails an assert. A hint that passes is the value the contract would have
+computed itself, so the result is the same with it or without it.
 
 Pass empty bytes instead to have `R² mod n` computed on chain.
 
@@ -440,6 +465,12 @@ All three return `false` for a well-formed signature that does not match.
 - an exponent that is over 4 bytes, even, or below 3
 - a Montgomery hint that is wrong, the wrong length, or whose `R² mod n` is not
   below the modulus
+
+
+### `rsaMontgomeryHint(modulus: Uint8Array): Uint8Array` — off chain
+
+From `@d13co/puya-ts-utils/rsaHint`: the `hint` for `modulus`. It's plain
+TypeScript with no AVM types, for your client or prover.
 
 ---
 

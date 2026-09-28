@@ -1,20 +1,8 @@
 import { createHash, generateKeyPairSync, sign } from 'node:crypto'
+import { rsaMontgomeryHint } from '../../src/rsaHint'
 
-/**
- * The Montgomery hint for `modulus`: `R² mod n` left-padded to `k` limbs, then
- * `⌊R / n⌋`, with `R = 2^(512·k)` and `k` the modulus length in 64-byte limbs,
- * rounded up.
- */
-export const montgomeryHint = (modulus: Uint8Array): Buffer => {
-  const width = Math.ceil(modulus.length / 64) * 64
-  const n = BigInt('0x' + Buffer.from(modulus).toString('hex'))
-  const r = 1n << BigInt(8 * width)
-  const q = (r / n).toString(16)
-  return Buffer.concat([
-    Buffer.from(((r * r) % n).toString(16).padStart(2 * width, '0'), 'hex'),
-    Buffer.from(q.padStart(q.length + (q.length % 2), '0'), 'hex'),
-  ])
-}
+/** The Montgomery hint for `modulus`, as a Buffer. */
+export const montgomeryHint = (modulus: Uint8Array): Buffer => Buffer.from(rsaMontgomeryHint(modulus))
 
 export type Signed = { modulus: Buffer; exponent: Buffer; digest: Buffer; signature: Buffer }
 
@@ -40,3 +28,6 @@ export const signWithNewKey = (
     signature: sign(hash, message, privateKey),
   }
 }
+
+/** `hash` of the bytes in `hex`. */
+export const digestHex = (hash: 'sha256' | 'sha512', hex: string): Buffer => createHash(hash).update(Buffer.from(hex, 'hex')).digest()

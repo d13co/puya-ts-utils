@@ -1,6 +1,6 @@
 {
   "name": "@d13co/puya-ts-utils",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter, RSA signature verification, MBR credit accounting",
   "keywords": [
     "algorand",
@@ -37,6 +37,10 @@
       "types": "./src/rsa.algo.ts",
       "default": "./src/rsa.algo.ts"
     },
+    "./rsaHint": {
+      "types": "./src/rsaHint.ts",
+      "default": "./src/rsaHint.ts"
+    },
     "./mbrManager": {
       "types": "./src/mbrManager.algo.ts",
       "default": "./src/mbrManager.algo.ts"
@@ -53,6 +57,9 @@
       ],
       "rsa": [
         "./src/rsa.algo.ts"
+      ],
+      "rsaHint": [
+        "./src/rsaHint.ts"
       ],
       "mbrManager": [
         "./src/mbrManager.algo.ts"
