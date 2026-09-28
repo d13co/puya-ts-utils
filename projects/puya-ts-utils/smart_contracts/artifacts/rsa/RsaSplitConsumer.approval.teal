@@ -1,0 +1,2170 @@
+#pragma version 11
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 0 1 64 2
+    bytecblock 0x "c" 0x01 "rsa" 0x068101 0x151f7c75 "ERR:RCV" "ERR:AMT"
+    // smart_contracts/rsa/consumer.algo.ts:110
+    // export class RsaSplitConsumer extends MbrManager {
+    txn NumAppArgs
+    bz main___algots__.defaultCreate@14
+    txn OnCompletion
+    !
+    assert
+    txn ApplicationID
+    assert
+    pushbytess 0x5c06042f 0x377d6611 0x71bed716 0x839fa521 0x3d75f0c4 0x941da4e5 0xeaee7fbd // method "start(byte[],byte[],byte[],uint64)void", method "step(uint64,uint64)uint64", method "finish(byte[],byte[])bool", method "pool()void", method "depositCredits(address,pay)void", method "logCredits(address[])void", method "withdrawCredits()void"
+    txna ApplicationArgs 0
+    match start step finish main_pool_route@7 depositCredits logCredits withdrawCredits
+    err
+
+main_pool_route@7:
+    // smart_contracts/rsa/consumer.algo.ts:145
+    // public pool(): void {}
+    intc_1 // 1
+    return
+
+main___algots__.defaultCreate@14:
+    // smart_contracts/rsa/consumer.algo.ts:110
+    // export class RsaSplitConsumer extends MbrManager {
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    return
+
+
+// _puya_lib.util.ensure_budget(required_budget: uint64, fee_source: uint64) -> void:
+ensure_budget:
+    proto 2 0
+    frame_dig -2
+    pushint 10
+    +
+
+ensure_budget_while_top@1:
+    dup
+    global OpcodeBudget
+    >
+    bz ensure_budget_after_while@6
+    itxn_begin
+    pushint 6 // appl
+    itxn_field TypeEnum
+    pushint 5 // DeleteApplication
+    itxn_field OnCompletion
+    bytec 4 // 0x068101
+    itxn_field ApprovalProgram
+    bytec 4 // 0x068101
+    itxn_field ClearStateProgram
+    frame_dig -1
+    switch ensure_budget_switch_case_0@3 ensure_budget_switch_case_1@4
+
+ensure_budget_switch_case_next@5:
+    itxn_submit
+    b ensure_budget_while_top@1
+
+ensure_budget_switch_case_1@4:
+    global MinTxnFee
+    itxn_field Fee
+    b ensure_budget_switch_case_next@5
+
+ensure_budget_switch_case_0@3:
+    intc_0 // 0
+    itxn_field Fee
+    b ensure_budget_switch_case_next@5
+
+ensure_budget_after_while@6:
+    retsub
+
+
+// src/rsa.algo.ts::parseRsaDnskey(publicKey: bytes) -> bytes:
+parseRsaDnskey:
+    // src/rsa.algo.ts:33
+    // export function parseRsaDnskey(publicKey: bytes): [bytes, bytes] {
+    proto 1 1
+    // src/rsa.algo.ts:34
+    // let exponentLength = op.getByte(publicKey, 0)
+    frame_dig -1
+    intc_0 // 0
+    getbyte
+    dup
+    // src/rsa.algo.ts:35
+    // let offset: uint64 = 1
+    intc_1 // 1
+    swap
+    // src/rsa.algo.ts:36
+    // if (exponentLength === 0) {
+    bnz parseRsaDnskey_after_if_else@2
+    // src/rsa.algo.ts:37
+    // exponentLength = op.extractUint16(publicKey, 1)
+    frame_dig -1
+    intc_1 // 1
+    extract_uint16
+    frame_bury 0
+    // src/rsa.algo.ts:38
+    // offset = 3
+    pushint 3
+    frame_bury 1
+
+parseRsaDnskey_after_if_else@2:
+    // src/rsa.algo.ts:40
+    // assert(publicKey.length > offset + exponentLength, 'RSA key has no modulus')
+    frame_dig -1
+    len
+    frame_dig 1
+    dup
+    cover 2
+    frame_dig 0
+    dup
+    cover 4
+    +
+    dup2
+    >
+    assert // RSA key has no modulus
+    // src/rsa.algo.ts:41
+    // return [op.extract(publicKey, offset, exponentLength), publicKey.slice(offset + exponentLength)]
+    frame_dig -1
+    uncover 3
+    uncover 4
+    extract3
+    dig 1
+    dig 3
+    >=
+    uncover 2
+    dig 3
+    uncover 2
+    select
+    frame_dig -1
+    swap
+    uncover 3
+    substring3
+    dig 1
+    len
+    itob
+    extract 6 2
+    uncover 2
+    concat
+    dup
+    len
+    pushint 4
+    +
+    dig 2
+    len
+    itob
+    extract 6 2
+    uncover 3
+    concat
+    swap
+    itob
+    extract 6 2
+    pushbytes 0x0004
+    swap
+    concat
+    uncover 2
+    concat
+    swap
+    concat
+    frame_bury 0
+    retsub
+
+
+// src/rsa.algo.ts::monMul(a: bytes, b: bytes, n: bytes, nInv: bytes) -> bytes:
+monMul:
+    // src/rsa.algo.ts:269
+    // function monMul(a: bytes, b: bytes, n: bytes, nInv: biguint): bytes {
+    proto 4 1
+    // src/rsa.algo.ts:270
+    // const len = n.length
+    frame_dig -2
+    len
+    // src/rsa.algo.ts:271
+    // const bottom: uint64 = len - LIMB
+    dup
+    intc_2 // 64
+    -
+    swap
+    // src/rsa.algo.ts:272
+    // let t = op.bzero(len)
+    dup
+    bzero
+    cover 2
+    // src/rsa.algo.ts:273
+    // let top = BigUint(0)
+    bytec_0 // 0x
+
+monMul_while_top@1:
+    // src/rsa.algo.ts:275
+    // for (let i = len; i > 0; ) {
+    dig 1
+    bz monMul_after_while@6
+    // src/rsa.algo.ts:276
+    // i -= LIMB
+    swap
+    intc_2 // 64
+    -
+    dup
+    cover 2
+    // src/rsa.algo.ts:277
+    // const bi = BigUint(op.extract(b, i, LIMB))
+    frame_dig -3
+    swap
+    intc_2 // 64
+    extract3
+    dup
+    cover 4
+    // src/rsa.algo.ts:278
+    // let r = mac(BigUint(op.extract(t, bottom, LIMB)), BigUint(op.extract(a, bottom, LIMB)), bi, BigUint(0))
+    frame_dig 0
+    dig 4
+    dup
+    cover 2
+    intc_2 // 64
+    extract3
+    frame_dig -4
+    dig 2
+    intc_2 // 64
+    extract3
+    uncover 3
+    bytec_0 // 0x
+    callsub mac
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    dup
+    extract 64 0
+    cover 4
+    // src/rsa.algo.ts:320
+    // return BigUint(op.extract(r, 0, LIMB))
+    extract 0 64
+    // src/rsa.algo.ts:281
+    // const m = low(s * nInv)
+    dup
+    frame_dig -1
+    b*
+    // src/rsa.algo.ts:330
+    // return BigUint(op.extract(pad128(x), LIMB, LIMB))
+    callsub pad128
+    extract 64 64
+    dup
+    cover 7
+    // src/rsa.algo.ts:283
+    // let c2 = hi(mac(s, m, BigUint(op.extract(n, bottom, LIMB)), BigUint(0)))
+    frame_dig -2
+    dig 3
+    intc_2 // 64
+    extract3
+    bytec_0 // 0x
+    callsub mac
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    extract 64 0
+    cover 4
+    // src/rsa.algo.ts:284
+    // let next = Bytes()
+    bytec_0 // 0x
+    cover 4
+    swap
+
+monMul_while_top@3:
+    // src/rsa.algo.ts:285
+    // for (let j = bottom; j > 0; ) {
+    dig 1
+    bz monMul_after_while@5
+    // src/rsa.algo.ts:286
+    // j -= LIMB
+    swap
+    intc_2 // 64
+    -
+    dup
+    cover 2
+    // src/rsa.algo.ts:287
+    // r = mac(BigUint(op.extract(t, j, LIMB)), BigUint(op.extract(a, j, LIMB)), bi, c1)
+    frame_dig 0
+    dig 1
+    intc_2 // 64
+    extract3
+    frame_dig -4
+    dig 2
+    intc_2 // 64
+    extract3
+    dig 11
+    uncover 7
+    callsub mac
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    dup
+    extract 64 0
+    cover 5
+    // src/rsa.algo.ts:320
+    // return BigUint(op.extract(r, 0, LIMB))
+    extract 0 64
+    // src/rsa.algo.ts:289
+    // r = mac(lo(r), m, BigUint(op.extract(n, j, LIMB)), c2)
+    frame_dig -2
+    uncover 2
+    intc_2 // 64
+    extract3
+    dig 9
+    swap
+    uncover 8
+    callsub mac
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    dup
+    extract 64 0
+    cover 6
+    // src/rsa.algo.ts:291
+    // next = op.extract(r, 0, LIMB).concat(next)
+    extract 0 64
+    uncover 5
+    concat
+    cover 4
+    b monMul_while_top@3
+
+monMul_after_while@5:
+    bury 1
+    uncover 6
+    pop
+    uncover 6
+    pop
+    // src/rsa.algo.ts:293
+    // r = mac(c1, top, BigUint(1), c2)
+    uncover 2
+    swap
+    bytec_2 // 0x01
+    uncover 5
+    callsub mac
+    // src/rsa.algo.ts:294
+    // t = op.extract(r, 0, LIMB).concat(next)
+    dup
+    extract 0 64
+    uncover 3
+    concat
+    frame_bury 0
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    extract 64 0
+    b monMul_while_top@1
+
+monMul_after_while@6:
+    bury 1
+    bury 1
+    // src/rsa.algo.ts:297
+    // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
+    bytec_0 // 0x
+    b>
+    bnz monMul_ternary_true@8
+    frame_dig 0
+    frame_dig -2
+    callsub gte
+    bz monMul_ternary_false@9
+
+monMul_ternary_true@8:
+    // src/rsa.algo.ts:297
+    // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
+    frame_dig 0
+    frame_dig -2
+    callsub sub
+
+monMul_ternary_merge@10:
+    // src/rsa.algo.ts:297
+    // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
+    swap
+    retsub
+
+monMul_ternary_false@9:
+    frame_dig 0
+    b monMul_ternary_merge@10
+
+
+// src/rsa.algo.ts::mac(t: bytes, x: bytes, y: bytes, c: bytes) -> bytes:
+mac:
+    // src/rsa.algo.ts:307
+    // function mac(t: biguint, x: biguint, y: biguint, c: biguint): bytes {
+    proto 4 1
+    // src/rsa.algo.ts:308
+    // const p = pad128(x * y)
+    frame_dig -3
+    frame_dig -2
+    b*
+    callsub pad128
+    // src/rsa.algo.ts:309
+    // let u = Bytes(BigUint(op.extract(p, LIMB, LIMB)) + t)
+    dup
+    extract 64 64
+    frame_dig -4
+    b+
+    // src/rsa.algo.ts:310
+    // u = op.bzero(LIMB + 1 - u.length).concat(u)
+    dup
+    len
+    pushint 65
+    swap
+    -
+    bzero
+    swap
+    concat
+    // src/rsa.algo.ts:311
+    // let v = Bytes(BigUint(op.extract(u, 1, LIMB)) + c)
+    dup
+    extract 1 64
+    frame_dig -1
+    b+
+    // src/rsa.algo.ts:312
+    // v = op.bzero(LIMB + 1 - v.length).concat(v)
+    dup
+    len
+    pushint 65
+    swap
+    -
+    bzero
+    swap
+    concat
+    // src/rsa.algo.ts:313-314
+    // return op
+    //   .extract(v, 1, LIMB)
+    dup
+    extract 1 64
+    // src/rsa.algo.ts:315
+    // .concat(Bytes(BigUint(op.extract(p, 0, LIMB)) + BigUint(op.getByte(u, 0) + op.getByte(v, 0))))
+    uncover 3
+    extract 0 64
+    uncover 3
+    intc_0 // 0
+    getbyte
+    uncover 3
+    intc_0 // 0
+    getbyte
+    +
+    itob
+    b+
+    // src/rsa.algo.ts:313-315
+    // return op
+    //   .extract(v, 1, LIMB)
+    //   .concat(Bytes(BigUint(op.extract(p, 0, LIMB)) + BigUint(op.getByte(u, 0) + op.getByte(v, 0))))
+    concat
+    retsub
+
+
+// src/rsa.algo.ts::pad128(x: bytes) -> bytes:
+pad128:
+    // src/rsa.algo.ts:334
+    // function pad128(x: biguint): bytes {
+    proto 1 1
+    // src/rsa.algo.ts:336
+    // return op.bzero(2 * LIMB - b.length).concat(b)
+    frame_dig -1
+    len
+    pushint 128
+    swap
+    -
+    bzero
+    frame_dig -1
+    concat
+    retsub
+
+
+// src/rsa.algo.ts::add(x: bytes, y: bytes) -> bytes:
+add:
+    // src/rsa.algo.ts:349
+    // function add(x: bytes, y: bytes): [biguint, bytes] {
+    proto 2 1
+    // src/rsa.algo.ts:350
+    // let carry = BigUint(0)
+    bytec_0 // 0x
+    // src/rsa.algo.ts:351
+    // let sum = Bytes()
+    dup
+    // src/rsa.algo.ts:352
+    // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
+    intc_0 // 0
+
+add_while_top@1:
+    // src/rsa.algo.ts:352
+    // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
+    frame_dig -2
+    len
+    intc_2 // 64
+    /
+    dig 1
+    >
+    bz add_after_while@3
+    // src/rsa.algo.ts:353
+    // const r = mac(limb(x, j), limb(y, j), BigUint(1), carry)
+    frame_dig -2
+    dig 1
+    callsub limb
+    frame_dig -1
+    dig 2
+    callsub limb
+    bytec_2 // 0x01
+    uncover 5
+    callsub mac
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    dup
+    extract 64 0
+    cover 3
+    // src/rsa.algo.ts:355
+    // sum = op.extract(r, 0, LIMB).concat(sum)
+    extract 0 64
+    uncover 2
+    concat
+    swap
+    // src/rsa.algo.ts:352
+    // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
+    intc_1 // 1
+    +
+    b add_while_top@1
+
+add_after_while@3:
+    pop
+    // src/rsa.algo.ts:357
+    // return [carry, sum]
+    swap
+    dup
+    len
+    intc_2 // 64
+    <=
+    assert // overflow
+    intc_2 // 64
+    bzero
+    b|
+    swap
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    swap
+    pushbytes 0x0042
+    concat
+    swap
+    concat
+    retsub
+
+
+// src/rsa.algo.ts::sub(x: bytes, n: bytes) -> bytes:
+sub:
+    // src/rsa.algo.ts:361
+    // function sub(x: bytes, n: bytes): bytes {
+    proto 2 1
+    // src/rsa.algo.ts:368
+    // return n.bitwiseInvert().bitwiseOr(Bytes.fromHex('01'))
+    frame_dig -1
+    b~
+    bytec_2 // 0x01
+    b|
+    // src/rsa.algo.ts:362
+    // const [, difference] = add(x, negate(n))
+    frame_dig -2
+    swap
+    callsub add
+    dup
+    intc_2 // 64
+    extract_uint16
+    dig 1
+    len
+    substring3
+    extract 2 0
+    // src/rsa.algo.ts:363
+    // return difference
+    retsub
+
+
+// src/rsa.algo.ts::gte(x: bytes, y: bytes) -> uint64:
+gte:
+    // src/rsa.algo.ts:372
+    // function gte(x: bytes, y: bytes): boolean {
+    proto 2 1
+    // src/rsa.algo.ts:373
+    // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
+    intc_0 // 0
+
+gte_while_top@1:
+    // src/rsa.algo.ts:373
+    // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
+    frame_dig -2
+    len
+    dig 1
+    >
+    bz gte_after_while@5
+    // src/rsa.algo.ts:374
+    // const xl = BigUint(op.extract(x, offset, LIMB))
+    frame_dig -2
+    dig 1
+    dup
+    cover 2
+    intc_2 // 64
+    extract3
+    dup
+    cover 2
+    cover 3
+    // src/rsa.algo.ts:375
+    // const yl = BigUint(op.extract(y, offset, LIMB))
+    frame_dig -1
+    swap
+    intc_2 // 64
+    extract3
+    dup
+    cover 2
+    // src/rsa.algo.ts:376
+    // if (xl !== yl) {
+    b!=
+    bz gte_after_if_else@4
+    bury 1
+    // src/rsa.algo.ts:377
+    // return xl > yl
+    b>
+    retsub
+
+gte_after_if_else@4:
+    pop
+    bury 1
+    // src/rsa.algo.ts:373
+    // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
+    intc_2 // 64
+    +
+    b gte_while_top@1
+
+gte_after_while@5:
+    // src/rsa.algo.ts:380
+    // return true
+    intc_1 // 1
+    swap
+    retsub
+
+
+// src/rsa.algo.ts::limb(x: bytes, i: uint64) -> bytes:
+limb:
+    // src/rsa.algo.ts:384
+    // function limb(x: bytes, i: uint64): biguint {
+    proto 2 1
+    // src/rsa.algo.ts:385
+    // return BigUint(op.extract(x, x.length - (i + 1) * LIMB, LIMB))
+    frame_dig -2
+    len
+    frame_dig -1
+    intc_1 // 1
+    +
+    intc_2 // 64
+    *
+    -
+    frame_dig -2
+    swap
+    intc_2 // 64
+    extract3
+    retsub
+
+
+// smart_contracts/rsa/consumer.algo.ts::RsaSplitConsumer.start[routing]() -> void:
+start:
+    intc_0 // 0
+    bytec_0 // ""
+    dupn 2
+    // smart_contracts/rsa/consumer.algo.ts:114
+    // public start(signature: bytes, publicKey: bytes, hint: bytes, budget: uint64): void {
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 3
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    swap
+    txna ApplicationArgs 4
+    dup
+    len
+    pushint 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/rsa/consumer.algo.ts:115
+    // ensureBudget(budget)
+    intc_0 // 0
+    callsub ensure_budget
+    // smart_contracts/rsa/consumer.algo.ts:116
+    // const [exponent, modulus] = parseRsaDnskey(publicKey)
+    callsub parseRsaDnskey
+    dup
+    intc_0 // 0
+    extract_uint16
+    dig 1
+    intc_3 // 2
+    extract_uint16
+    dig 2
+    uncover 2
+    dig 2
+    substring3
+    extract 2 0
+    cover 3
+    dig 1
+    len
+    substring3
+    extract 2 0
+    dup
+    // smart_contracts/rsa/consumer.algo.ts:117
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    swap
+    cover 6
+    assert // account funded
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_3 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:118
+    // this.state(Txn.sender).delete()
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:118
+    // this.state(Txn.sender).delete()
+    box_del
+    pop
+    // src/rsa.algo.ts:124
+    // const length = modulus.length
+    len
+    dup
+    cover 3
+    // src/rsa.algo.ts:125
+    // assert(length <= MAX_MODULUS, 'RSA modulus over 512 bytes')
+    dup
+    pushint 512
+    <=
+    assert // RSA modulus over 512 bytes
+    // src/rsa.algo.ts:126
+    // assert(length > 0 && op.getByte(modulus, 0) !== 0, 'RSA modulus has a leading zero')
+    bz start_bool_false@4
+    dup
+    intc_0 // 0
+    getbyte
+    bz start_bool_false@4
+    intc_1 // 1
+
+start_bool_merge@5:
+    // src/rsa.algo.ts:126
+    // assert(length > 0 && op.getByte(modulus, 0) !== 0, 'RSA modulus has a leading zero')
+    assert // RSA modulus has a leading zero
+    // src/rsa.algo.ts:127
+    // assert(signature.length === length, 'RSA signature length differs from the modulus')
+    dig 4
+    len
+    dup
+    cover 3
+    dig 4
+    ==
+    assert // RSA signature length differs from the modulus
+    // src/rsa.algo.ts:128
+    // assert(exponent.length > 0 && exponent.length <= 4, 'RSA exponent must be 1 to 4 bytes')
+    dig 4
+    len
+    dup
+    bury 9
+    bz start_bool_false@8
+    dig 7
+    pushint 4
+    <=
+    bz start_bool_false@8
+    intc_1 // 1
+
+start_bool_merge@9:
+    // src/rsa.algo.ts:128
+    // assert(exponent.length > 0 && exponent.length <= 4, 'RSA exponent must be 1 to 4 bytes')
+    assert // RSA exponent must be 1 to 4 bytes
+    // src/rsa.algo.ts:129
+    // const e = op.btoi(exponent)
+    uncover 4
+    btoi
+    dup
+    // src/rsa.algo.ts:130
+    // assert(e >= 3 && e % 2 === 1, 'RSA exponent must be odd and at least 3')
+    pushint 3
+    >=
+    bz start_bool_false@12
+    dup
+    intc_3 // 2
+    %
+    intc_1 // 1
+    ==
+    bz start_bool_false@12
+    intc_1 // 1
+
+start_bool_merge@13:
+    // src/rsa.algo.ts:130
+    // assert(e >= 3 && e % 2 === 1, 'RSA exponent must be odd and at least 3')
+    assert // RSA exponent must be odd and at least 3
+    // src/rsa.algo.ts:133
+    // const width: uint64 = ((length + LIMB - 1) / LIMB) * LIMB
+    dig 4
+    dup
+    intc_2 // 64
+    +
+    intc_1 // 1
+    -
+    intc_2 // 64
+    /
+    intc_2 // 64
+    *
+    // src/rsa.algo.ts:390
+    // return op.bzero(width - x.length).concat(x)
+    dup
+    uncover 2
+    -
+    bzero
+    uncover 3
+    concat
+    dup
+    cover 2
+    cover 3
+    dup
+    uncover 6
+    -
+    bzero
+    uncover 7
+    concat
+    dup
+    cover 2
+    bury 12
+    // src/rsa.algo.ts:136
+    // assert(op.getBit(n, width * 8 - 1), 'RSA modulus is even')
+    pushint 8
+    *
+    intc_1 // 1
+    -
+    dig 2
+    swap
+    getbit
+    assert // RSA modulus is even
+    // src/rsa.algo.ts:137
+    // assert(!gte(s, n), 'RSA signature is not below the modulus')
+    dig 1
+    callsub gte
+    !
+    assert // RSA signature is not below the modulus
+    // src/rsa.algo.ts:139
+    // const nInv = negInverse(limb(n, 0))
+    intc_0 // 0
+    callsub limb
+    // src/rsa.algo.ts:341
+    // let m = BigUint(1)
+    bytec_2 // 0x01
+    cover 5
+    // src/rsa.algo.ts:342
+    // for (let i: uint64 = 0; i < 9; i++) {
+    intc_0 // 0
+
+start_while_top@14:
+    // src/rsa.algo.ts:342
+    // for (let i: uint64 = 0; i < 9; i++) {
+    dup
+    pushint 9
+    <
+    bz start_after_while@16
+    // src/rsa.algo.ts:343
+    // m = low(m * low(low(n0 * m) + BigUint(2)))
+    dig 1
+    uncover 7
+    dup
+    cover 2
+    b*
+    // src/rsa.algo.ts:330
+    // return BigUint(op.extract(pad128(x), LIMB, LIMB))
+    callsub pad128
+    extract 64 64
+    // src/rsa.algo.ts:343
+    // m = low(m * low(low(n0 * m) + BigUint(2)))
+    pushbytes 0x02
+    b+
+    // src/rsa.algo.ts:330
+    // return BigUint(op.extract(pad128(x), LIMB, LIMB))
+    callsub pad128
+    extract 64 64
+    // src/rsa.algo.ts:343
+    // m = low(m * low(low(n0 * m) + BigUint(2)))
+    b*
+    // src/rsa.algo.ts:330
+    // return BigUint(op.extract(pad128(x), LIMB, LIMB))
+    callsub pad128
+    extract 64 64
+    cover 6
+    // src/rsa.algo.ts:342
+    // for (let i: uint64 = 0; i < 9; i++) {
+    intc_1 // 1
+    +
+    b start_while_top@14
+
+start_after_while@16:
+    popn 2
+    // src/rsa.algo.ts:140
+    // const base = monMul(s, hint.length === 0 ? computeRSquared(n, nInv) : checkHint(hint, n, nInv), n, nInv)
+    dig 2
+    len
+    dup
+    bnz start_ternary_false@28
+    pop
+    uncover 2
+    pop
+    // src/rsa.algo.ts:253
+    // const bits = op.bitLength(n)
+    dig 1
+    dup
+    bitlen
+    // src/rsa.algo.ts:254
+    // let x = op.setBit(op.bzero(n.length), n.length * 8 - bits, 1)
+    swap
+    len
+    dup
+    bury 10
+    dup
+    bzero
+    swap
+    pushint 8
+    *
+    dup
+    bury 10
+    dig 2
+    -
+    intc_1 // 1
+    setbit
+
+start_while_top@18:
+    // src/rsa.algo.ts:255
+    // for (let i = bits; i <= n.length * 8 + n.length / 16; i++) {
+    dig 9
+    pushint 16
+    /
+    dig 9
+    +
+    dig 2
+    >=
+    bz start_after_while@24
+    // src/rsa.algo.ts:256
+    // const [carry, twice] = add(x, x)
+    dup
+    callsub add
+    dup
+    extract 0 64
+    dig 1
+    intc_2 // 64
+    extract_uint16
+    dig 2
+    len
+    uncover 3
+    cover 2
+    substring3
+    extract 2 0
+    swap
+    // src/rsa.algo.ts:257
+    // x = carry > BigUint(0) || gte(twice, n) ? sub(twice, n) : twice
+    bytec_0 // 0x
+    b>
+    bnz start_ternary_true@21
+    dup
+    dig 4
+    callsub gte
+    bz start_ternary_false@22
+
+start_ternary_true@21:
+    // src/rsa.algo.ts:257
+    // x = carry > BigUint(0) || gte(twice, n) ? sub(twice, n) : twice
+    dig 3
+    callsub sub
+
+start_ternary_merge@23:
+    // src/rsa.algo.ts:255
+    // for (let i = bits; i <= n.length * 8 + n.length / 16; i++) {
+    swap
+    intc_1 // 1
+    +
+    swap
+    b start_while_top@18
+
+start_ternary_false@22:
+    b start_ternary_merge@23
+
+start_after_while@24:
+    bury 1
+    // src/rsa.algo.ts:259
+    // for (let i: uint64 = 0; i < 7; i++) {
+    intc_0 // 0
+    swap
+
+start_while_top@25:
+    // src/rsa.algo.ts:259
+    // for (let i: uint64 = 0; i < 7; i++) {
+    dig 1
+    pushint 7
+    <
+    bz start_after_while@27
+    // src/rsa.algo.ts:260
+    // x = monMul(x, x, n, nInv)
+    dup
+    dig 4
+    dig 7
+    callsub monMul
+    // src/rsa.algo.ts:259
+    // for (let i: uint64 = 0; i < 7; i++) {
+    swap
+    intc_1 // 1
+    +
+    swap
+    b start_while_top@25
+
+start_after_while@27:
+    bury 1
+
+start_ternary_merge@36:
+    // src/rsa.algo.ts:140
+    // const base = monMul(s, hint.length === 0 ? computeRSquared(n, nInv) : checkHint(hint, n, nInv), n, nInv)
+    dig 9
+    dup
+    uncover 2
+    uncover 4
+    dup
+    cover 3
+    uncover 7
+    dup
+    cover 4
+    callsub monMul
+    // src/rsa.algo.ts:143
+    // .itob(op.bitLength(e) - 1)
+    uncover 4
+    dup
+    bitlen
+    intc_1 // 1
+    -
+    // src/rsa.algo.ts:142-143
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    itob
+    // src/rsa.algo.ts:144
+    // .concat(op.itob(e))
+    swap
+    itob
+    // src/rsa.algo.ts:142-144
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    concat
+    // src/rsa.algo.ts:145
+    // .concat(op.itob(length))
+    uncover 5
+    itob
+    // src/rsa.algo.ts:142-145
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    concat
+    // src/rsa.algo.ts:390
+    // return op.bzero(width - x.length).concat(x)
+    dig 2
+    len
+    // src/rsa.algo.ts:146
+    // .concat(pad(Bytes(nInv), LIMB))
+    intc_2 // 64
+    // src/rsa.algo.ts:390
+    // return op.bzero(width - x.length).concat(x)
+    swap
+    -
+    bzero
+    uncover 3
+    concat
+    // src/rsa.algo.ts:142-146
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    //   .concat(pad(Bytes(nInv), LIMB))
+    concat
+    // src/rsa.algo.ts:142-147
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    //   .concat(pad(Bytes(nInv), LIMB))
+    //   .concat(n)
+    uncover 2
+    concat
+    // src/rsa.algo.ts:142-148
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    //   .concat(pad(Bytes(nInv), LIMB))
+    //   .concat(n)
+    //   .concat(s)
+    uncover 2
+    concat
+    // src/rsa.algo.ts:142-149
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    //   .concat(pad(Bytes(nInv), LIMB))
+    //   .concat(n)
+    //   .concat(s)
+    //   .concat(base)
+    dig 1
+    concat
+    // src/rsa.algo.ts:142-150
+    // return op
+    //   .itob(op.bitLength(e) - 1)
+    //   .concat(op.itob(e))
+    //   .concat(op.itob(length))
+    //   .concat(pad(Bytes(nInv), LIMB))
+    //   .concat(n)
+    //   .concat(s)
+    //   .concat(base)
+    //   .concat(base)
+    swap
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_3 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:119
+    // this.state(Txn.sender).value = rsaStart(signature, modulus, exponent, hint)
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:119
+    // this.state(Txn.sender).value = rsaStart(signature, modulus, exponent, hint)
+    dup
+    box_del
+    pop
+    swap
+    box_put
+    // src/mbrManager.algo.ts:60
+    // this.settleMbrCredits(Txn.sender, mbrBefore)
+    txn Sender
+    dig 1
+    callsub settleMbrCredits
+    // smart_contracts/rsa/consumer.algo.ts:114
+    // public start(signature: bytes, publicKey: bytes, hint: bytes, budget: uint64): void {
+    intc_1 // 1
+    return
+
+start_ternary_false@28:
+    // src/rsa.algo.ts:223
+    // assert(hint.length > n.length && hint.length <= n.length + LIMB, 'Montgomery hint is the wrong length')
+    dig 2
+    len
+    dup
+    dig 2
+    <
+    bz start_bool_false@31
+    dup
+    intc_2 // 64
+    +
+    dig 2
+    >=
+    bz start_bool_false@31
+    intc_1 // 1
+
+start_bool_merge@32:
+    // src/rsa.algo.ts:223
+    // assert(hint.length > n.length && hint.length <= n.length + LIMB, 'Montgomery hint is the wrong length')
+    assert // Montgomery hint is the wrong length
+    // src/rsa.algo.ts:224
+    // const h = op.extract(hint, 0, n.length)
+    uncover 4
+    dup
+    intc_0 // 0
+    dig 3
+    dup
+    cover 3
+    extract3
+    dup
+    cover 3
+    cover 7
+    // src/rsa.algo.ts:225
+    // const q = BigUint(op.extract(hint, n.length))
+    uncover 4
+    dig 1
+    -
+    uncover 2
+    dig 2
+    uncover 2
+    extract3
+    cover 8
+    // src/rsa.algo.ts:226
+    // assert(!gte(h, n), 'Montgomery hint is not below the modulus')
+    dig 1
+    dig 5
+    dup
+    cover 4
+    callsub gte
+    !
+    assert // Montgomery hint is not below the modulus
+    // src/rsa.algo.ts:227
+    // const one = op.setBit(op.bzero(n.length), n.length * 8 - 1, 1)
+    dup
+    bzero
+    swap
+    pushint 8
+    *
+    intc_1 // 1
+    -
+    intc_1 // 1
+    setbit
+    // src/rsa.algo.ts:228
+    // const rModN = monMul(h, one, n, nInv)
+    uncover 2
+    dig 8
+    callsub monMul
+    swap
+    // src/rsa.algo.ts:230
+    // let carry = BigUint(0)
+    bytec_0 // 0x
+    swap
+
+start_while_top@33:
+    // src/rsa.algo.ts:231
+    // for (let i = n.length; i > 0; ) {
+    dup
+    bz start_after_while@35
+    // src/rsa.algo.ts:232
+    // i -= LIMB
+    intc_2 // 64
+    -
+    dup
+    // src/rsa.algo.ts:233
+    // const r = mac(BigUint(op.extract(rModN, i, LIMB)), q, BigUint(op.extract(n, i, LIMB)), carry)
+    dig 3
+    dig 1
+    intc_2 // 64
+    extract3
+    dig 6
+    uncover 2
+    intc_2 // 64
+    extract3
+    dig 10
+    swap
+    uncover 4
+    callsub mac
+    // src/rsa.algo.ts:320
+    // return BigUint(op.extract(r, 0, LIMB))
+    dup
+    extract 0 64
+    // src/rsa.algo.ts:234
+    // assert(lo(r) === BigUint(0), 'Montgomery hint is wrong')
+    bytec_0 // 0x
+    b==
+    assert // Montgomery hint is wrong
+    // src/rsa.algo.ts:325
+    // return BigUint(op.extract(r, LIMB))
+    extract 64 0
+    swap
+    b start_while_top@33
+
+start_after_while@35:
+    pop
+    bury 1
+    uncover 6
+    pop
+    // src/rsa.algo.ts:237
+    // assert(carry === BigUint(1), 'Montgomery hint is wrong')
+    bytec_2 // 0x01
+    b==
+    assert // Montgomery hint is wrong
+    uncover 2
+    b start_ternary_merge@36
+
+start_bool_false@31:
+    intc_0 // 0
+    b start_bool_merge@32
+
+start_bool_false@12:
+    intc_0 // 0
+    b start_bool_merge@13
+
+start_bool_false@8:
+    intc_0 // 0
+    b start_bool_merge@9
+
+start_bool_false@4:
+    intc_0 // 0
+    b start_bool_merge@5
+
+
+// smart_contracts/rsa/consumer.algo.ts::RsaSplitConsumer.step[routing]() -> void:
+step:
+    // smart_contracts/rsa/consumer.algo.ts:124
+    // public step(bits: uint64, budget: uint64): uint64 {
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    txna ApplicationArgs 2
+    dup
+    len
+    pushint 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // smart_contracts/rsa/consumer.algo.ts:125
+    // ensureBudget(budget)
+    intc_0 // 0
+    callsub ensure_budget
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_3 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:126
+    // const state = this.state(Txn.sender)
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    dup
+    cover 2
+    // smart_contracts/rsa/consumer.algo.ts:127
+    // state.value = rsaStep(state.value, bits)
+    dup
+    box_get
+    swap
+    dup
+    cover 2
+    cover 3
+    assert // Box must have value
+    // src/rsa.algo.ts:162
+    // let remaining = op.extractUint64(state, 0)
+    dup
+    intc_0 // 0
+    extract_uint64
+    cover 2
+    // src/rsa.algo.ts:163
+    // const e = op.extractUint64(state, 8)
+    pushint 8
+    extract_uint64
+    cover 2
+    // src/rsa.algo.ts:164
+    // const nInv = BigUint(op.extract(state, 24, LIMB))
+    dup
+    pushint 24
+    intc_2 // 64
+    box_extract
+    cover 3
+    // src/rsa.algo.ts:165
+    // const width: uint64 = (state.length - HEADER) / 4
+    dup
+    box_len
+    pop
+    pushint 88
+    -
+    pushint 4
+    /
+    // src/rsa.algo.ts:166
+    // const n = op.extract(state, HEADER, width)
+    dig 1
+    pushint 88
+    dig 2
+    box_extract
+    cover 3
+    // src/rsa.algo.ts:167
+    // const s = op.extract(state, HEADER + width, width)
+    pushint 88
+    dig 1
+    +
+    dig 2
+    swap
+    dig 2
+    box_extract
+    cover 3
+    // src/rsa.algo.ts:168
+    // const base = op.extract(state, HEADER + 2 * width, width)
+    intc_3 // 2
+    dig 1
+    *
+    pushint 88
+    +
+    dig 2
+    swap
+    dig 2
+    box_extract
+    cover 3
+    // src/rsa.algo.ts:169
+    // let acc = op.extract(state, HEADER + 3 * width, width)
+    pushint 3
+    dig 1
+    *
+    pushint 88
+    +
+    dup
+    cover 4
+    swap
+    box_extract
+    // src/rsa.algo.ts:170
+    // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
+    intc_0 // 0
+
+step_while_top@2:
+    // src/rsa.algo.ts:170
+    // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
+    dup
+    dig 11
+    <
+    bz step_after_while@10
+    dig 2
+    bz step_after_while@10
+    // src/rsa.algo.ts:171
+    // remaining--
+    uncover 2
+    intc_1 // 1
+    -
+    dup
+    cover 3
+    // src/rsa.algo.ts:172
+    // acc = monMul(acc, acc, n, nInv)
+    uncover 2
+    dup
+    dig 8
+    dig 11
+    callsub monMul
+    cover 2
+    // src/rsa.algo.ts:173
+    // if (remaining === 0) {
+    bnz step_else_body@6
+    // src/rsa.algo.ts:174
+    // acc = monMul(acc, s, n, nInv)
+    swap
+    dig 5
+    dig 7
+    dig 10
+    callsub monMul
+    swap
+
+step_after_if_else@9:
+    // src/rsa.algo.ts:170
+    // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
+    intc_1 // 1
+    +
+    b step_while_top@2
+
+step_else_body@6:
+    // src/rsa.algo.ts:175
+    // } else if (op.getBit(e, remaining)) {
+    dig 7
+    dig 3
+    getbit
+    bz step_after_if_else@9
+    // src/rsa.algo.ts:176
+    // acc = monMul(acc, base, n, nInv)
+    swap
+    dig 4
+    dig 7
+    dig 10
+    callsub monMul
+    swap
+    b step_after_if_else@9
+
+step_after_while@10:
+    pop
+    uncover 3
+    pop
+    uncover 3
+    pop
+    uncover 3
+    pop
+    uncover 3
+    pop
+    uncover 3
+    pop
+    uncover 4
+    pop
+    // src/rsa.algo.ts:179
+    // return op.replace(op.replace(state, 0, op.itob(remaining)), HEADER + 3 * width, acc)
+    swap
+    itob
+    uncover 3
+    swap
+    replace2 0
+    cover 2
+    replace3
+    // smart_contracts/rsa/consumer.algo.ts:127
+    // state.value = rsaStep(state.value, bits)
+    swap
+    dup
+    box_del
+    pop
+    dig 1
+    box_put
+    // smart_contracts/rsa/consumer.algo.ts:124
+    // public step(bits: uint64, budget: uint64): uint64 {
+    extract 0 8
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts/rsa/consumer.algo.ts::RsaSplitConsumer.finish[routing]() -> void:
+finish:
+    // smart_contracts/rsa/consumer.algo.ts:135
+    // public finish(signedData: bytes, publicKey: bytes): boolean {
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/rsa/consumer.algo.ts:136
+    // const [exponent, modulus] = parseRsaDnskey(publicKey)
+    callsub parseRsaDnskey
+    dup
+    intc_0 // 0
+    extract_uint16
+    dig 1
+    intc_3 // 2
+    extract_uint16
+    dig 2
+    uncover 2
+    dig 2
+    substring3
+    extract 2 0
+    cover 3
+    dig 1
+    len
+    substring3
+    extract 2 0
+    dup
+    cover 2
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_3 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:137
+    // const valid = rsaFinish(this.state(Txn.sender).value, op.sha256(signedData), modulus, exponent, SHA256_DIGEST_INFO)
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    dup
+    cover 3
+    // smart_contracts/rsa/consumer.algo.ts:137
+    // const valid = rsaFinish(this.state(Txn.sender).value, op.sha256(signedData), modulus, exponent, SHA256_DIGEST_INFO)
+    dup
+    box_get
+    swap
+    dup
+    cover 2
+    cover 6
+    assert // Box must have value
+    uncover 3
+    sha256
+    cover 3
+    // src/rsa.algo.ts:196
+    // assert(op.extractUint64(state, 0) === 0, 'RSA verification is not finished')
+    dup
+    intc_0 // 0
+    extract_uint64
+    !
+    assert // RSA verification is not finished
+    // src/rsa.algo.ts:197
+    // const length = op.extractUint64(state, 16)
+    pushint 16
+    extract_uint64
+    dup
+    cover 3
+    // src/rsa.algo.ts:198
+    // const width: uint64 = (state.length - HEADER) / 4
+    swap
+    box_len
+    pop
+    pushint 88
+    -
+    pushint 4
+    /
+    cover 2
+    // src/rsa.algo.ts:200
+    // modulus.length === length &&
+    swap
+    len
+    dup
+    cover 6
+    ==
+    // src/rsa.algo.ts:200-201
+    // modulus.length === length &&
+    //   op.extract(state, HEADER, width) === pad(modulus, width) &&
+    bz finish_bool_false@6
+    // src/rsa.algo.ts:201
+    // op.extract(state, HEADER, width) === pad(modulus, width) &&
+    dig 3
+    pushint 88
+    dig 2
+    dup
+    cover 3
+    box_extract
+    // src/rsa.algo.ts:390
+    // return op.bzero(width - x.length).concat(x)
+    swap
+    dig 6
+    -
+    bzero
+    dig 8
+    concat
+    // src/rsa.algo.ts:201
+    // op.extract(state, HEADER, width) === pad(modulus, width) &&
+    ==
+    // src/rsa.algo.ts:200-201
+    // modulus.length === length &&
+    //   op.extract(state, HEADER, width) === pad(modulus, width) &&
+    bz finish_bool_false@6
+    // src/rsa.algo.ts:202
+    // exponent.length <= 8 &&
+    dig 7
+    len
+    pushint 8
+    <=
+    // src/rsa.algo.ts:200-202
+    // modulus.length === length &&
+    //   op.extract(state, HEADER, width) === pad(modulus, width) &&
+    //   exponent.length <= 8 &&
+    bz finish_bool_false@6
+    // src/rsa.algo.ts:203
+    // op.btoi(exponent) === op.extractUint64(state, 8),
+    dig 7
+    btoi
+    dig 6
+    pushint 8
+    extract_uint64
+    ==
+    // src/rsa.algo.ts:200-203
+    // modulus.length === length &&
+    //   op.extract(state, HEADER, width) === pad(modulus, width) &&
+    //   exponent.length <= 8 &&
+    //   op.btoi(exponent) === op.extractUint64(state, 8),
+    bz finish_bool_false@6
+    intc_1 // 1
+
+finish_bool_merge@7:
+    // src/rsa.algo.ts:199-205
+    // assert(
+    //   modulus.length === length &&
+    //     op.extract(state, HEADER, width) === pad(modulus, width) &&
+    //     exponent.length <= 8 &&
+    //     op.btoi(exponent) === op.extractUint64(state, 8),
+    //   'RSA state is for a different key',
+    // )
+    assert // RSA state is for a different key
+    // smart_contracts/rsa/consumer.algo.ts:137
+    // const valid = rsaFinish(this.state(Txn.sender).value, op.sha256(signedData), modulus, exponent, SHA256_DIGEST_INFO)
+    pushbytes 0x3031300d060960864801650304020105000420
+    // src/rsa.algo.ts:206
+    // const tail = digestInfo.concat(digest)
+    uncover 3
+    concat
+    // src/rsa.algo.ts:207
+    // assert(length >= tail.length + 11, 'RSA modulus too short for the digest')
+    dup
+    len
+    dup
+    pushint 11
+    +
+    uncover 4
+    dup
+    uncover 2
+    >=
+    assert // RSA modulus too short for the digest
+    // src/rsa.algo.ts:209
+    // .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
+    pushint 3
+    -
+    swap
+    -
+    bzero
+    b~
+    // src/rsa.algo.ts:208
+    // const block = Bytes.fromHex('0001')
+    pushbytes 0x0001
+    // src/rsa.algo.ts:208-209
+    // const block = Bytes.fromHex('0001')
+    //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
+    swap
+    concat
+    // src/rsa.algo.ts:210
+    // .concat(Bytes.fromHex('00'))
+    pushbytes 0x00
+    // src/rsa.algo.ts:208-210
+    // const block = Bytes.fromHex('0001')
+    //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
+    //   .concat(Bytes.fromHex('00'))
+    concat
+    // src/rsa.algo.ts:208-211
+    // const block = Bytes.fromHex('0001')
+    //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
+    //   .concat(Bytes.fromHex('00'))
+    //   .concat(tail)
+    swap
+    concat
+    // src/rsa.algo.ts:212
+    // return op.extract(state, HEADER + 3 * width, width) === pad(block, width)
+    pushint 3
+    uncover 2
+    dup
+    cover 2
+    *
+    pushint 88
+    +
+    uncover 3
+    swap
+    dig 2
+    box_extract
+    // src/rsa.algo.ts:390
+    // return op.bzero(width - x.length).concat(x)
+    dig 2
+    len
+    uncover 2
+    swap
+    -
+    bzero
+    uncover 2
+    concat
+    // src/rsa.algo.ts:212
+    // return op.extract(state, HEADER + 3 * width, width) === pad(block, width)
+    ==
+    // smart_contracts/rsa/consumer.algo.ts:138
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_3 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:139
+    // this.state(Txn.sender).delete()
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:112
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:139
+    // this.state(Txn.sender).delete()
+    box_del
+    pop
+    // src/mbrManager.algo.ts:60
+    // this.settleMbrCredits(Txn.sender, mbrBefore)
+    txn Sender
+    swap
+    callsub settleMbrCredits
+    // smart_contracts/rsa/consumer.algo.ts:135
+    // public finish(signedData: bytes, publicKey: bytes): boolean {
+    pushbytes 0x00
+    intc_0 // 0
+    uncover 2
+    setbit
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+finish_bool_false@6:
+    intc_0 // 0
+    b finish_bool_merge@7
+
+
+// src/mbrManager.algo.ts::MbrManager.depositCredits[routing]() -> void:
+depositCredits:
+    // src/mbrManager.algo.ts:86
+    // public depositCredits(creditor: Account, txn: gtxn.PaymentTxn) {
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txn GroupIndex
+    intc_1 // 1
+    -
+    dupn 2
+    gtxns TypeEnum
+    intc_1 // pay
+    ==
+    assert // transaction type is pay
+    // src/mbrManager.algo.ts:87
+    // loggedAssert(txn.receiver === Global.currentApplicationAddress, errReceiver)
+    gtxns Receiver
+    global CurrentApplicationAddress
+    ==
+    bnz depositCredits_after_assert@3
+    bytec 6 // "ERR:RCV"
+    log
+    err // ERR:RCV
+
+depositCredits_after_assert@3:
+    // src/mbrManager.algo.ts:88
+    // loggedAssert(txn.amount > 0, errAmt)
+    gtxns Amount
+    dup
+    bnz depositCredits_after_assert@5
+    bytec 7 // "ERR:AMT"
+    log
+    err // ERR:AMT
+
+depositCredits_after_assert@5:
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    uncover 2
+    dup
+    cover 2
+    concat
+    // src/mbrManager.algo.ts:89
+    // const current = this.userCredits(creditor).get({ default: 0 })
+    dup
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    // src/mbrManager.algo.ts:91
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // src/mbrManager.algo.ts:92
+    // this.userCredits(creditor).value = current + txn.amount
+    swap
+    uncover 4
+    +
+    itob
+    uncover 2
+    swap
+    box_put
+    // src/mbrManager.algo.ts:93
+    // this.settleMbrCredits(creditor, mbrBefore)
+    callsub settleMbrCredits
+    // src/mbrManager.algo.ts:86
+    // public depositCredits(creditor: Account, txn: gtxn.PaymentTxn) {
+    intc_1 // 1
+    return
+
+
+// src/mbrManager.algo.ts::MbrManager.logCredits[routing]() -> void:
+logCredits:
+    // src/mbrManager.algo.ts:102-103
+    // @readonly
+    // public logCredits(accounts: Account[]): void {
+    txna ApplicationArgs 1
+    dupn 2
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    dup
+    cover 2
+    pushint 32
+    *
+    intc_3 // 2
+    +
+    swap
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<account>
+    intc_0 // 0
+
+logCredits_for_header@2:
+    // src/mbrManager.algo.ts:104
+    // for (const account of accounts) {
+    dup
+    dig 2
+    <
+    bz logCredits_after_for@8
+    dig 2
+    extract 2 0
+    dig 1
+    pushint 32
+    *
+    pushint 32
+    extract3 // on error: index access is out of bounds
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    swap
+    concat
+    dup
+    // src/mbrManager.algo.ts:106
+    // if (box.exists) {
+    box_len
+    bury 1
+    bz logCredits_else_body@5
+    // src/mbrManager.algo.ts:107
+    // log(op.itob(box.value))
+    box_get
+    assert // Box must have value
+    btoi
+    itob
+    log
+
+logCredits_after_if_else@6:
+    intc_1 // 1
+    +
+    b logCredits_for_header@2
+
+logCredits_else_body@5:
+    pop
+    // src/mbrManager.algo.ts:109
+    // log(Bytes())
+    bytec_0 // 0x
+    log
+    b logCredits_after_if_else@6
+
+logCredits_after_for@8:
+    // src/mbrManager.algo.ts:102-103
+    // @readonly
+    // public logCredits(accounts: Account[]): void {
+    intc_1 // 1
+    return
+
+
+// src/mbrManager.algo.ts::MbrManager.withdrawCredits[routing]() -> void:
+withdrawCredits:
+    // src/mbrManager.algo.ts:120
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    // src/mbrManager.algo.ts:122
+    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:122
+    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
+    box_len
+    bury 1
+    bnz withdrawCredits_after_assert@3
+    bytec 7 // "ERR:AMT"
+    log
+    err // ERR:AMT
+
+withdrawCredits_after_assert@3:
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    // src/mbrManager.algo.ts:123
+    // const credit: uint64 = this.userCredits(Txn.sender).value
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:123
+    // const credit: uint64 = this.userCredits(Txn.sender).value
+    box_get
+    assert // Box must have value
+    btoi
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    // src/mbrManager.algo.ts:125
+    // this.userCredits(Txn.sender).delete()
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:125
+    // this.userCredits(Txn.sender).delete()
+    box_del
+    pop
+    // src/mbrManager.algo.ts:126
+    // const mbrAfter = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // src/mbrManager.algo.ts:127
+    // const finalCredit: uint64 = credit + (mbrBefore - mbrAfter)
+    uncover 2
+    swap
+    -
+    +
+    // src/mbrManager.algo.ts:129-134
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    //   .submit()
+    itxn_begin
+    // src/mbrManager.algo.ts:131
+    // receiver: Txn.sender,
+    txn Sender
+    itxn_field Receiver
+    itxn_field Amount
+    // src/mbrManager.algo.ts:129-133
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    intc_1 // 1
+    itxn_field TypeEnum
+    intc_0 // 0
+    itxn_field Fee
+    // src/mbrManager.algo.ts:129-134
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    //   .submit()
+    itxn_submit
+    // src/mbrManager.algo.ts:119
+    // public withdrawCredits() {
+    intc_1 // 1
+    return
+
+
+// src/mbrManager.algo.ts::MbrManager.settleMbrCredits(account: bytes, mbrBefore: uint64) -> void:
+settleMbrCredits:
+    // src/mbrManager.algo.ts:64
+    // protected settleMbrCredits(account: Account, mbrBefore: uint64) {
+    proto 2 0
+    // src/mbrManager.algo.ts:65
+    // const mbrAfter = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    swap
+    dup
+    uncover 2
+    assert // account funded
+    // src/mbrManager.algo.ts:66
+    // if (mbrAfter === mbrBefore) return
+    frame_dig -1
+    ==
+    bz settleMbrCredits_else_body@2
+    retsub
+
+settleMbrCredits_else_body@2:
+    // src/mbrManager.algo.ts:67
+    // else if (mbrAfter > mbrBefore) {
+    dup
+    frame_dig -1
+    >
+    bz settleMbrCredits_else_body@6
+    // src/mbrManager.algo.ts:68
+    // const creditNeeded: uint64 = mbrAfter - mbrBefore
+    frame_dig -1
+    -
+    dup
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    frame_dig -2
+    concat
+    dup
+    cover 2
+    // src/mbrManager.algo.ts:69
+    // const userCredit = this.userCredits(account).get({ default: 0 })
+    box_get
+    swap
+    btoi
+    intc_0 // 0
+    swap
+    uncover 2
+    select
+    dup
+    uncover 2
+    // src/mbrManager.algo.ts:70
+    // loggedAssert(userCredit >= creditNeeded, errCredit)
+    >=
+    bnz settleMbrCredits_after_assert@5
+    pushbytes "ERR:CRD"
+    log
+    err // ERR:CRD
+
+settleMbrCredits_after_assert@5:
+    // src/mbrManager.algo.ts:71
+    // this.userCredits(account).value = userCredit - creditNeeded
+    uncover 2
+    -
+    itob
+    box_put
+    retsub
+
+settleMbrCredits_else_body@6:
+    // src/mbrManager.algo.ts:73
+    // const creditToReturn: uint64 = mbrBefore - mbrAfter
+    frame_dig -1
+    swap
+    -
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_1 // "c"
+    frame_dig -2
+    concat
+    dup
+    // src/mbrManager.algo.ts:74
+    // loggedAssert(this.userCredits(account).exists, errReceiver)
+    box_len
+    bury 1
+    bnz settleMbrCredits_after_assert@8
+    bytec 6 // "ERR:RCV"
+    log
+    err // ERR:RCV
+
+settleMbrCredits_after_assert@8:
+    // src/mbrManager.algo.ts:75
+    // this.userCredits(account).value += creditToReturn
+    dup
+    box_get
+    assert // Box must have value
+    btoi
+    uncover 2
+    +
+    itob
+    box_put
+    retsub

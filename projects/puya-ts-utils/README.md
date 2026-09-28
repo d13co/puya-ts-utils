@@ -1,12 +1,13 @@
 # @d13co/puya-ts-utils
 
 Algorand TypeScript subroutines for things the AVM will not hand your contract
-directly: **keyless accounts**, the **network transaction counter**, and **MBR credit
-accounting**.
+directly: **keyless accounts**, the **network transaction counter**, **RSA
+signature verification**, and **MBR credit accounting**.
 
 ```ts
 import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
 import { getTxnCounter } from '@d13co/puya-ts-utils/getTxnCounter'
+import { parseRsaDnskey, verifyRsaSha256 } from '@d13co/puya-ts-utils/rsa'
 import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
 ```
 
@@ -223,6 +224,225 @@ plain `.ts` file rather than in your `.algo.spec.ts`. See
 
 ---
 
+# rsa
+
+Verifies **RSASSA-PKCS1-v1_5 signatures** — DNSSEC algorithms 8 (RSASHA256)
+and 10 (RSASHA512) — for keys up to 512 bytes, with exponents up to 4 bytes.
+
+## What it does
+
+The AVM has no modular exponentiation, and its byte math takes operands of at
+most 64 bytes. So the signature is raised to the exponent with multi-precision
+Montgomery arithmetic over 512-bit limbs.
+
+The expected block, `00 01 FF..FF 00 || DigestInfo || digest`, is then built in
+full and compared byte-for-byte with the result. The decrypted block is never
+parsed, since a lenient parser is what lets a forgery through when `e = 3`.
+
+Everything is pure: all input is passed in as bytes, and nothing reads state or
+boxes. That means the same code compiles into a contract or a logic signature.
+
+## Usage
+
+The subroutines take a digest, not the signed data, so hashing is up to you.
+For a DNSSEC RRSIG, hash the RRSIG rdata without its signature field, followed
+by the RRset in canonical form:
+
+```ts
+import { parseRsaDnskey, verifyRsaSha256 } from '@d13co/puya-ts-utils/rsa'
+import { assert, Global, LogicSig, op, TransactionType, Txn } from '@algorandfoundation/algorand-typescript'
+
+/**
+ * arg 0: SHA-256 of the signed data, arg 1: RRSIG signature,
+ * arg 2: DNSKEY public key field, arg 3: Montgomery hint, or empty
+ */
+export class RrsigVerifier extends LogicSig {
+  program(): boolean {
+    // Approve only an inert transaction, and say in its note what was checked.
+    assert(
+      Txn.typeEnum === TransactionType.Payment &&
+        Txn.amount === 0 &&
+        Txn.fee === 0 &&
+        Txn.rekeyTo === Global.zeroAddress &&
+        Txn.closeRemainderTo === Global.zeroAddress,
+    )
+    assert(Txn.note === op.sha256(op.arg(2)).concat(op.arg(0)))
+    const [exponent, modulus] = parseRsaDnskey(op.arg(2))
+    return verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3))
+  }
+}
+```
+
+## The Montgomery hint
+
+Montgomery form needs one constant per key, `R² mod n`, where `R = 2^(512·k)`
+and `k` is the modulus length in 64-byte limbs, rounded up. Working it out on
+chain is about 50k of the RSA-2048 budget. For a modulus that does not fill its
+top limb, such as RSA-1280 or a 2047-bit key, it costs far more.
+
+It depends only on the key, so the prover can compute it off chain and pass it
+in as `hint`: `R² mod n`, left-padded to `k` limbs, followed by the quotient
+`⌊R / n⌋`, which the check needs. Checking a hint costs about a tenth of
+computing it, and a wrong one fails an assert:
+
+```ts
+const toBytes = (x: bigint, length = 0) => {
+  const hex = x.toString(16)
+  return Buffer.from(hex.padStart(Math.max(2 * length, hex.length + (hex.length % 2)), '0'), 'hex')
+}
+
+const width = Math.ceil(modulus.length / 64) * 64
+const n = BigInt('0x' + Buffer.from(modulus).toString('hex'))
+const r = 1n << BigInt(8 * width)
+const hint = Buffer.concat([toBytes((r * r) % n, width), toBytes(r / n)])
+```
+
+Pass empty bytes instead to have `R² mod n` computed on chain.
+
+## Opcode budget
+
+One verification costs far more than the 700 a single application call gets.
+Measured on LocalNet:
+
+| Key | Budget, with hint | Budget, R² computed |
+|---|---|---|
+| RSA-2048, e = 3 | 20k | 65k |
+| RSA-1024, e = 65537 | 29k | 41k |
+| RSA-1280, e = 65537 | 53k | 292k |
+| RSA-2047, e = 65537 | 90k | — |
+| RSA-2048, e = 65537 (the root zone KSK) | 92k | 139k |
+| RSA-3072, e = 65537 | 189k | 285k |
+| RSA-4096, e = 65537 | ~320k: split over groups, below | — |
+
+The cheapest host is a **logic signature**. Logic signature budget is 20,000
+per transaction, pooled across the whole group, and program size pools the same
+way. The root KSK check passes in a group of 5 transactions with the hint, or 7
+without it, and the other transactions can be plain zero-amount payments.
+
+The args, the key among them, come from whoever submits the transaction, and an
+application can't read them. So a verified signature on its own proves only
+that *some* key signed *some* digest. That's what the note is for: an
+application confirms the check by matching `gtxn N Sender` against the
+verifier's address **and** `gtxn N Note` against `sha256(trusted key) ‖ digest`.
+The transaction checks keep the verifier's address from being rekeyed or
+drained by anyone who can produce a valid signature with a key of their own.
+
+Hosted in an **application** instead, the budget has to come from OpUp inner
+transactions. At 700 each, RSA-2048 needs about 130 of them.
+
+## RSA-4096: across several groups
+
+RSA-4096 needs more budget than one group can pool, so the check comes in
+pieces as well. `rsaStart` validates the input and sets up Montgomery form, and
+returns a state. `rsaStep` processes a number of exponent bits at a time.
+`rsaFinish` compares the result with the expected block. `rsaPkcs1v15Verify` is
+those three calls in a row.
+
+Keep the state in a box between groups: 2136 bytes for RSA-4096. That rules out
+a logic signature host, since it cannot read or write boxes. The steps trust the
+state: whoever can write it can make anything verify. Keep it where only your
+contract writes it, one per caller, so no one can overwrite a verification in
+progress. `rsaFinish` takes the key again and asserts that the state was
+started with it, so a caller can't start with a key of their own and have the
+result pass for yours.
+
+Each box costs about 0.87 ALGO in minimum balance. If the app paid for it, anyone
+could drain it by starting verifications and never finishing them. The example
+extends [`MbrManager`](#mbrmanager) so the sender pays out of their MBR credits,
+and `finish` refunds them.
+
+```ts
+import { rsaBitsLeft, rsaFinish, rsaStart, rsaStep, SHA256_DIGEST_INFO } from '@d13co/puya-ts-utils/rsa'
+import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
+
+export class Verifier extends MbrManager {
+  state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+
+  public start(signature: bytes, modulus: bytes, exponent: bytes, hint: bytes): void {
+    const mbrBefore = Global.currentApplicationAddress.minBalance
+    this.state(Txn.sender).delete()
+    this.state(Txn.sender).value = rsaStart(signature, modulus, exponent, hint)
+    this.manageMbrCredits(mbrBefore)
+  }
+
+  public step(bits: uint64): uint64 {
+    const state = this.state(Txn.sender)
+    state.value = rsaStep(state.value, bits)
+    return rsaBitsLeft(state.value)
+  }
+
+  public finish(digest: bytes, modulus: bytes, exponent: bytes): boolean {
+    const valid = rsaFinish(this.state(Txn.sender).value, digest, modulus, exponent, SHA256_DIGEST_INFO)
+    const mbrBefore = Global.currentApplicationAddress.minBalance
+    this.state(Txn.sender).delete()
+    this.manageMbrCredits(mbrBefore)
+    return valid
+  }
+}
+```
+
+For RSA-4096 with a hint and e = 65537, measured on LocalNet:
+
+| Piece | Budget |
+|---|---|
+| `rsaStart` | 35k |
+| `rsaStep`, per bit | 17k for each clear bit, 33k for the last |
+
+That comes to about 320k.
+
+An application group pools at most about 190k: 700 for each of 16 app calls,
+plus 700 for each of 256 inner OpUp transactions. Two groups are enough:
+
+- `start` plus 8 bits
+- the last 8 bits plus `finish`
+
+`smart_contracts/rsa/consumer.algo.ts` has the worked version, `RsaSplitConsumer`.
+
+## API
+
+### `parseRsaDnskey(publicKey: bytes): [bytes, bytes]`
+
+Splits the public key field of an RSA DNSKEY record (RFC 3110) into
+`[exponent, modulus]`. It reads the one-byte exponent length and the three-byte
+form alike, and asserts that a modulus follows.
+
+### `verifyRsaSha256(digest, signature, modulus, exponent, hint): boolean`
+
+### `verifyRsaSha512(digest, signature, modulus, exponent, hint): boolean`
+
+Verify a signature over a 32-byte SHA-256 or 64-byte SHA-512 digest. Computing
+the digest with `op.sha512` needs AVM 13.
+
+### `rsaPkcs1v15Verify(digest, signature, modulus, exponent, digestInfo, hint): boolean`
+
+The same, with the DER `DigestInfo` prefix supplied by you:
+`SHA256_DIGEST_INFO` and `SHA512_DIGEST_INFO` are exported.
+
+### `rsaStart(signature, modulus, exponent, hint): bytes`
+
+### `rsaStep(state, bits): bytes`
+
+### `rsaBitsLeft(state): uint64`
+
+### `rsaFinish(state, digest, modulus, exponent, digestInfo): boolean`
+
+`rsaPkcs1v15Verify` in pieces, for a check that spans groups. `rsaFinish`
+asserts if the state has bits left, or was started with a key other than
+`modulus` and `exponent`. Pass the key you trust there, not one taken from the
+caller's state.
+
+All three return `false` for a well-formed signature that does not match.
+**They assert** on malformed input:
+
+- a modulus that is over 512 bytes, even, has a leading zero byte, or is too
+  short to hold the block
+- a signature whose length differs from the modulus, or that is not below it
+- an exponent that is over 4 bytes, even, or below 3
+- a Montgomery hint that is wrong, the wrong length, or whose `R² mod n` is not
+  below the modulus
+
+---
+
 # mbrManager
 
 An abstract contract that makes callers pay for the boxes they create. Each
@@ -348,8 +568,8 @@ pnpm run check-types
 
 `src/` is the whole library: one file per utility, one utility per import
 subpath. Each has a worked example under `smart_contracts/` that the suites
-drive — `create_account/consumer.algo.ts` and `txn_counter/consumer.algo.ts`
-under both, `mbr_manager/consumer.algo.ts` under e2e only.
+drive — `create_account/consumer.algo.ts`, `txn_counter/consumer.algo.ts` and
+`rsa/consumer.algo.ts` under both, `mbr_manager/consumer.algo.ts` under e2e only.
 See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md) for the
 rest of the AlgoKit workflow.
 
