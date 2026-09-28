@@ -1,0 +1,2757 @@
+{
+  "version": 3,
+  "sources": [
+    "../../mbr_manager/consumer.algo.ts",
+    "../../../src/mbrManager.algo.ts"
+  ],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;AASA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;;;AAAA;;;;;;;;;;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAKE;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;;;AACoB;;AAAA;;AAAA;AAJV;AAKK;;AALL;AAKR;AAAA;;AAAA;;AAAA;AC2CsB;;AAAtB;AAAA;;;AD7CF;AAAA;AAQoB;;AAAA;;AAAA;AAXV;AAYK;;AAZL;AAYR;;ACoCsB;;AAAtB;AAAA;;;ADtCF;AAAA;ACgEA;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;;AAAA;;AAAA;AAAA;AAAA;AACe;;AAAiB;;AAAjB;AAAb;;;AAAA;AAAA;AAAA;AACa;;AAAA;AAAb;;;AAAA;AAAA;AAAA;AArCmB;AAAA;;AAAA;AAAA;;AAAA;AAsCH;AAAA;AAAA;AAAA;AAA0C;AAA1C;AAAA;;AAAA;AAEE;;AAAA;;AAAA;AACiB;AAAA;;AAAA;AAAnC;AAAA;;AAAA;AAAA;AACA;;;AAPF;AAAA;AAgBA;;;AAAA;;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;;AAEE;AAAA;;AAAA;AAAA;;;AAAA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;AAAA;AArDmB;AAAA;AAAA;AAAA;AAuDb;AAAA;;AAAJ;;;AACc;AAAA;AAAA;AAAR;AAAJ;;;;;;;AAEI;;AAAJ;;;;AAPN;AAAA;AAkBoB;;AAAA;;AAAA;AArEC;AAuEW;;AAvEX;AAuEN;AAAA;;AAAb;;;AAAA;AAAA;AAAA;AAvEmB;AAwEqB;;AAxErB;AAwEI;AAAA;AAAA;AAxEJ;AA0EF;;AA1EE;AA0EnB;;AACiB;;AAAA;;AAAA;AACqB;;AAAA;AAAA;AAAV;AAE5B;AAEc;;;;;;AAFd;;;AAAA;;;AAAA;AAVF;AAAA;AAvDA;;;AACmB;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AACb;;AAAA;AAAJ;;;AAA4B;AACnB;AAAA;;AAAA;AAAJ;;;AAC0B;;AAAA;AAAA;AAjBZ;AAAA;;AAAA;AAAA;AAAA;;AAkBE;AAAA;AAAA;AAAyC;AAAzC;AAAA;;AAAA;AAAA;AAAA;;AACN;AAAb;;;AAAA;;;;;;;;;AAAA;AAAA;AACkC;;AAAA;AAAlC;AAAA;;AAE+B;;AAAA;AAAA;AAtBd;AAAA;;AAAA;AAAA;AAuBJ;AAAA;;AAAb;;;AAAA;AAAA;AAAA;AACA;AAAA;AAAA;AAAA;AAAA;;AAAA;AAAA;AAAA;",
+  "op_pc_offset": 0,
+  "pc_events": {
+    "1": {
+      "subroutine": "@algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram",
+      "params": {},
+      "block": "main",
+      "stack_in": [],
+      "op": "intcblock 1 0 32 2"
+    },
+    "7": {
+      "op": "bytecblock \"c\" \"e\" \"ERR:RCV\" \"ERR:AMT\""
+    },
+    "29": {
+      "op": "txn NumAppArgs",
+      "defined_out": [
+        "tmp%0#1"
+      ],
+      "stack_out": [
+        "tmp%0#1"
+      ]
+    },
+    "31": {
+      "op": "bz main___algots__.defaultCreate@12",
+      "stack_out": []
+    },
+    "34": {
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "tmp%2#0"
+      ]
+    },
+    "36": {
+      "op": "!",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "tmp%3#0"
+      ]
+    },
+    "37": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "38": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%4#0"
+      ],
+      "stack_out": [
+        "tmp%4#0"
+      ]
+    },
+    "40": {
+      "op": "assert",
+      "stack_out": []
+    },
+    "41": {
+      "op": "pushbytess 0x1734050e 0x0d1ec456 0x3d75f0c4 0x941da4e5 0xeaee7fbd // method \"put(byte[])void\", method \"remove()void\", method \"depositCredits(address,pay)void\", method \"logCredits(address[])void\", method \"withdrawCredits()void\"",
+      "defined_out": [
+        "Method(depositCredits(address,pay)void)",
+        "Method(logCredits(address[])void)",
+        "Method(put(byte[])void)",
+        "Method(remove()void)",
+        "Method(withdrawCredits()void)"
+      ],
+      "stack_out": [
+        "Method(put(byte[])void)",
+        "Method(remove()void)",
+        "Method(depositCredits(address,pay)void)",
+        "Method(logCredits(address[])void)",
+        "Method(withdrawCredits()void)"
+      ]
+    },
+    "68": {
+      "op": "txna ApplicationArgs 0",
+      "defined_out": [
+        "Method(depositCredits(address,pay)void)",
+        "Method(logCredits(address[])void)",
+        "Method(put(byte[])void)",
+        "Method(remove()void)",
+        "Method(withdrawCredits()void)",
+        "tmp%6#0"
+      ],
+      "stack_out": [
+        "Method(put(byte[])void)",
+        "Method(remove()void)",
+        "Method(depositCredits(address,pay)void)",
+        "Method(logCredits(address[])void)",
+        "Method(withdrawCredits()void)",
+        "tmp%6#0"
+      ]
+    },
+    "71": {
+      "op": "match put remove depositCredits logCredits withdrawCredits",
+      "stack_out": []
+    },
+    "83": {
+      "op": "err"
+    },
+    "84": {
+      "block": "main___algots__.defaultCreate@12",
+      "stack_in": [],
+      "op": "txn OnCompletion",
+      "defined_out": [
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "tmp%7#0"
+      ]
+    },
+    "86": {
+      "op": "!",
+      "defined_out": [
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0"
+      ]
+    },
+    "87": {
+      "op": "txn ApplicationID",
+      "defined_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%9#0"
+      ]
+    },
+    "89": {
+      "op": "!",
+      "defined_out": [
+        "tmp%10#0",
+        "tmp%8#0"
+      ],
+      "stack_out": [
+        "tmp%8#0",
+        "tmp%10#0"
+      ]
+    },
+    "90": {
+      "op": "&&",
+      "defined_out": [
+        "tmp%11#0"
+      ],
+      "stack_out": [
+        "tmp%11#0"
+      ]
+    },
+    "91": {
+      "op": "return",
+      "defined_out": [],
+      "stack_out": []
+    },
+    "92": {
+      "subroutine": "smart_contracts/mbr_manager/consumer.algo.ts::MbrManagerConsumer.put[routing]",
+      "params": {},
+      "block": "put",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "95": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%0#0",
+        "tmp%0#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "tmp%0#0 (copy)"
+      ]
+    },
+    "96": {
+      "op": "intc_1 // 0",
+      "defined_out": [
+        "0",
+        "tmp%0#0",
+        "tmp%0#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "tmp%0#0 (copy)",
+        "0"
+      ]
+    },
+    "97": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "aggregate%array_length%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "98": {
+      "op": "intc_3 // 2",
+      "defined_out": [
+        "2",
+        "aggregate%array_length%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "aggregate%array_length%0#0",
+        "2"
+      ]
+    },
+    "99": {
+      "op": "+",
+      "defined_out": [
+        "add%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "add%0#0"
+      ]
+    },
+    "100": {
+      "op": "dig 1",
+      "stack_out": [
+        "tmp%0#0",
+        "add%0#0",
+        "tmp%0#0 (copy)"
+      ]
+    },
+    "102": {
+      "op": "len",
+      "defined_out": [
+        "add%0#0",
+        "len%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "add%0#0",
+        "len%0#0"
+      ]
+    },
+    "103": {
+      "op": "==",
+      "defined_out": [
+        "eq%0#0",
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0",
+        "eq%0#0"
+      ]
+    },
+    "104": {
+      "error": "invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>",
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "105": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0"
+      ]
+    },
+    "108": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "tmp%0#1",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "tmp%0#1"
+      ]
+    },
+    "110": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%0#0",
+        "mbrBefore#0",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "check%0#0"
+      ]
+    },
+    "112": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0"
+      ]
+    },
+    "113": {
+      "op": "bytec_1 // \"e\"",
+      "defined_out": [
+        "\"e\"",
+        "mbrBefore#0",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "\"e\""
+      ]
+    },
+    "114": {
+      "op": "txn Sender",
+      "defined_out": [
+        "\"e\"",
+        "materialized_values%0#0",
+        "mbrBefore#0",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "\"e\"",
+        "materialized_values%0#0"
+      ]
+    },
+    "116": {
+      "op": "concat",
+      "defined_out": [
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "117": {
+      "op": "dup",
+      "defined_out": [
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)",
+        "mbrBefore#0",
+        "value#0"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)"
+      ]
+    },
+    "118": {
+      "op": "box_del",
+      "defined_out": [
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "value#0",
+        "{box_del}"
+      ],
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "map_prefixed_key%0#0",
+        "{box_del}"
+      ]
+    },
+    "119": {
+      "op": "pop",
+      "stack_out": [
+        "value#0",
+        "mbrBefore#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "120": {
+      "op": "uncover 2",
+      "stack_out": [
+        "mbrBefore#0",
+        "map_prefixed_key%0#0",
+        "value#0"
+      ]
+    },
+    "122": {
+      "op": "box_put",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "123": {
+      "op": "txn Sender",
+      "stack_out": [
+        "mbrBefore#0",
+        "tmp%0#1"
+      ]
+    },
+    "125": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%0#1",
+        "mbrBefore#0"
+      ]
+    },
+    "126": {
+      "callsub": "src/mbrManager.algo.ts::MbrManager.settleMbrCredits",
+      "op": "callsub settleMbrCredits",
+      "stack_out": []
+    },
+    "129": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "130": {
+      "op": "return",
+      "stack_out": []
+    },
+    "131": {
+      "subroutine": "smart_contracts/mbr_manager/consumer.algo.ts::MbrManagerConsumer.remove[routing]",
+      "params": {},
+      "block": "remove",
+      "stack_in": [],
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "133": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "check%0#0"
+      ]
+    },
+    "135": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "136": {
+      "op": "bytec_1 // \"e\"",
+      "defined_out": [
+        "\"e\"",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"e\""
+      ]
+    },
+    "137": {
+      "op": "txn Sender",
+      "defined_out": [
+        "\"e\"",
+        "materialized_values%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"e\"",
+        "materialized_values%0#0"
+      ]
+    },
+    "139": {
+      "op": "concat",
+      "defined_out": [
+        "map_prefixed_key%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "140": {
+      "op": "box_del",
+      "defined_out": [
+        "mbrBefore#0",
+        "{box_del}"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "{box_del}"
+      ]
+    },
+    "141": {
+      "op": "pop",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "142": {
+      "op": "txn Sender",
+      "stack_out": [
+        "mbrBefore#0",
+        "tmp%0#0"
+      ]
+    },
+    "144": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%0#0",
+        "mbrBefore#0"
+      ]
+    },
+    "145": {
+      "callsub": "src/mbrManager.algo.ts::MbrManager.settleMbrCredits",
+      "op": "callsub settleMbrCredits",
+      "stack_out": []
+    },
+    "148": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "149": {
+      "op": "return",
+      "stack_out": []
+    },
+    "150": {
+      "subroutine": "src/mbrManager.algo.ts::MbrManager.depositCredits[routing]",
+      "params": {},
+      "block": "depositCredits",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1"
+    },
+    "153": {
+      "op": "dup",
+      "defined_out": [
+        "creditor#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "creditor#0"
+      ]
+    },
+    "154": {
+      "op": "len",
+      "defined_out": [
+        "creditor#0",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "len%0#0"
+      ]
+    },
+    "155": {
+      "op": "intc_2 // 32",
+      "defined_out": [
+        "32",
+        "creditor#0",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "len%0#0",
+        "32"
+      ]
+    },
+    "156": {
+      "op": "==",
+      "defined_out": [
+        "creditor#0",
+        "eq%0#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "eq%0#0"
+      ]
+    },
+    "157": {
+      "error": "invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "op": "assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>",
+      "stack_out": [
+        "creditor#0"
+      ]
+    },
+    "158": {
+      "op": "txn GroupIndex",
+      "defined_out": [
+        "creditor#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%2#0"
+      ]
+    },
+    "160": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1",
+        "creditor#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%2#0",
+        "1"
+      ]
+    },
+    "161": {
+      "op": "-",
+      "defined_out": [
+        "creditor#0",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0"
+      ]
+    },
+    "162": {
+      "op": "dupn 2",
+      "defined_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0 (copy)"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0",
+        "txn#0 (copy)"
+      ]
+    },
+    "164": {
+      "op": "gtxns TypeEnum",
+      "defined_out": [
+        "creditor#0",
+        "gtxn_type%0#0",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0",
+        "gtxn_type%0#0"
+      ]
+    },
+    "166": {
+      "op": "intc_0 // pay",
+      "defined_out": [
+        "creditor#0",
+        "gtxn_type%0#0",
+        "pay",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0",
+        "gtxn_type%0#0",
+        "pay"
+      ]
+    },
+    "167": {
+      "op": "==",
+      "defined_out": [
+        "creditor#0",
+        "gtxn_type_matches%0#0",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0",
+        "gtxn_type_matches%0#0"
+      ]
+    },
+    "168": {
+      "error": "transaction type is pay",
+      "op": "assert // transaction type is pay",
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "txn#0"
+      ]
+    },
+    "169": {
+      "op": "gtxns Receiver",
+      "defined_out": [
+        "creditor#0",
+        "tmp%0#1",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "tmp%0#1"
+      ]
+    },
+    "171": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "creditor#0",
+        "tmp%0#1",
+        "tmp%1#1",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "tmp%0#1",
+        "tmp%1#1"
+      ]
+    },
+    "173": {
+      "op": "==",
+      "defined_out": [
+        "creditor#0",
+        "tmp%2#1",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "tmp%2#1"
+      ]
+    },
+    "174": {
+      "op": "bnz depositCredits_after_assert@3",
+      "stack_out": [
+        "creditor#0",
+        "txn#0"
+      ]
+    },
+    "177": {
+      "op": "bytec_2 // \"ERR:RCV\"",
+      "defined_out": [
+        "\"ERR:RCV\"",
+        "creditor#0",
+        "txn#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "txn#0",
+        "\"ERR:RCV\""
+      ]
+    },
+    "178": {
+      "op": "log",
+      "stack_out": [
+        "creditor#0",
+        "txn#0"
+      ]
+    },
+    "179": {
+      "error": "ERR:RCV",
+      "op": "err // ERR:RCV"
+    },
+    "180": {
+      "block": "depositCredits_after_assert@3",
+      "stack_in": [
+        "creditor#0",
+        "txn#0"
+      ],
+      "op": "gtxns Amount",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0"
+      ]
+    },
+    "182": {
+      "op": "dup",
+      "defined_out": [
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0",
+        "tmp%3#0"
+      ]
+    },
+    "183": {
+      "op": "bnz depositCredits_after_assert@5",
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0"
+      ]
+    },
+    "186": {
+      "op": "bytec_3 // \"ERR:AMT\"",
+      "defined_out": [
+        "\"ERR:AMT\"",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0",
+        "\"ERR:AMT\""
+      ]
+    },
+    "187": {
+      "op": "log",
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0"
+      ]
+    },
+    "188": {
+      "error": "ERR:AMT",
+      "op": "err // ERR:AMT"
+    },
+    "189": {
+      "block": "depositCredits_after_assert@5",
+      "stack_in": [
+        "creditor#0",
+        "tmp%3#0"
+      ],
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\""
+      ],
+      "stack_out": [
+        "creditor#0",
+        "tmp%3#0",
+        "\"c\""
+      ]
+    },
+    "190": {
+      "op": "uncover 2",
+      "defined_out": [
+        "\"c\"",
+        "creditor#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "\"c\"",
+        "creditor#0"
+      ]
+    },
+    "192": {
+      "op": "dup",
+      "defined_out": [
+        "\"c\"",
+        "creditor#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "\"c\"",
+        "creditor#0 (copy)",
+        "creditor#0 (copy)"
+      ]
+    },
+    "193": {
+      "op": "cover 2",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "\"c\"",
+        "creditor#0 (copy)"
+      ]
+    },
+    "195": {
+      "op": "concat",
+      "defined_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "196": {
+      "op": "dup",
+      "defined_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0 (copy)"
+      ]
+    },
+    "197": {
+      "op": "box_get",
+      "defined_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "198": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ]
+    },
+    "199": {
+      "op": "btoi",
+      "defined_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0"
+      ]
+    },
+    "200": {
+      "op": "intc_1 // 0",
+      "defined_out": [
+        "0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0",
+        "0"
+      ]
+    },
+    "201": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "0",
+        "maybe_value_converted%0#0"
+      ]
+    },
+    "202": {
+      "op": "uncover 2",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "0",
+        "maybe_value_converted%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "204": {
+      "op": "select",
+      "defined_out": [
+        "creditor#0",
+        "current#0",
+        "map_prefixed_key%0#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "current#0"
+      ]
+    },
+    "205": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "creditor#0",
+        "current#0",
+        "map_prefixed_key%0#0",
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "current#0",
+        "tmp%5#0"
+      ]
+    },
+    "207": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%0#0",
+        "creditor#0",
+        "current#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "current#0",
+        "mbrBefore#0",
+        "check%0#0"
+      ]
+    },
+    "209": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "current#0",
+        "mbrBefore#0"
+      ]
+    },
+    "210": {
+      "op": "swap",
+      "stack_out": [
+        "tmp%3#0",
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "current#0"
+      ]
+    },
+    "211": {
+      "op": "uncover 4",
+      "defined_out": [
+        "creditor#0",
+        "current#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "tmp%3#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "current#0",
+        "tmp%3#0"
+      ]
+    },
+    "213": {
+      "op": "+",
+      "defined_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "tmp%7#0"
+      ]
+    },
+    "214": {
+      "op": "itob",
+      "defined_out": [
+        "creditor#0",
+        "encoded_value%0#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "creditor#0",
+        "map_prefixed_key%0#0",
+        "mbrBefore#0",
+        "encoded_value%0#0"
+      ]
+    },
+    "215": {
+      "op": "uncover 2",
+      "stack_out": [
+        "creditor#0",
+        "mbrBefore#0",
+        "encoded_value%0#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "217": {
+      "op": "swap",
+      "stack_out": [
+        "creditor#0",
+        "mbrBefore#0",
+        "map_prefixed_key%0#0",
+        "encoded_value%0#0"
+      ]
+    },
+    "218": {
+      "op": "box_put",
+      "stack_out": [
+        "creditor#0",
+        "mbrBefore#0"
+      ]
+    },
+    "219": {
+      "callsub": "src/mbrManager.algo.ts::MbrManager.settleMbrCredits",
+      "op": "callsub settleMbrCredits",
+      "stack_out": []
+    },
+    "222": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "223": {
+      "op": "return",
+      "stack_out": []
+    },
+    "224": {
+      "subroutine": "src/mbrManager.algo.ts::MbrManager.logCredits[routing]",
+      "params": {},
+      "block": "logCredits",
+      "stack_in": [],
+      "op": "txna ApplicationArgs 1"
+    },
+    "227": {
+      "op": "dupn 2",
+      "defined_out": [
+        "accounts#0",
+        "accounts#0 (copy)"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "accounts#0",
+        "accounts#0 (copy)"
+      ]
+    },
+    "229": {
+      "op": "intc_1 // 0",
+      "stack_out": [
+        "accounts#0",
+        "accounts#0",
+        "accounts#0 (copy)",
+        "0"
+      ]
+    },
+    "230": {
+      "error": "invalid array length header",
+      "op": "extract_uint16 // on error: invalid array length header",
+      "defined_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "231": {
+      "op": "dup",
+      "stack_out": [
+        "accounts#0",
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "232": {
+      "op": "cover 2",
+      "defined_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "234": {
+      "op": "intc_2 // 32",
+      "defined_out": [
+        "32",
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "32"
+      ]
+    },
+    "235": {
+      "op": "*",
+      "defined_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "mul%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "accounts#0",
+        "mul%0#0"
+      ]
+    },
+    "236": {
+      "op": "intc_3 // 2",
+      "defined_out": [
+        "2",
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "mul%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "accounts#0",
+        "mul%0#0",
+        "2"
+      ]
+    },
+    "237": {
+      "op": "+",
+      "defined_out": [
+        "accounts#0",
+        "add%0#0",
+        "aggregate%array_length%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "accounts#0",
+        "add%0#0"
+      ]
+    },
+    "238": {
+      "op": "swap",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "add%0#0",
+        "accounts#0"
+      ]
+    },
+    "239": {
+      "op": "len",
+      "defined_out": [
+        "accounts#0",
+        "add%0#0",
+        "aggregate%array_length%0#0",
+        "len%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "add%0#0",
+        "len%0#0"
+      ]
+    },
+    "240": {
+      "op": "==",
+      "defined_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "eq%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "eq%0#0"
+      ]
+    },
+    "241": {
+      "error": "invalid number of bytes for arc4.dynamic_array<account>",
+      "op": "assert // invalid number of bytes for arc4.dynamic_array<account>",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0"
+      ]
+    },
+    "242": {
+      "op": "intc_1 // 0",
+      "defined_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "243": {
+      "block": "logCredits_for_header@2",
+      "stack_in": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "op": "dup",
+      "defined_out": [
+        "item_index_internal%0#0 (copy)"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0 (copy)"
+      ]
+    },
+    "244": {
+      "op": "dig 2",
+      "defined_out": [
+        "aggregate%array_length%0#0 (copy)",
+        "item_index_internal%0#0 (copy)"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "item_index_internal%0#0 (copy)",
+        "aggregate%array_length%0#0 (copy)"
+      ]
+    },
+    "246": {
+      "op": "<",
+      "defined_out": [
+        "continue_looping%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "continue_looping%0#0"
+      ]
+    },
+    "247": {
+      "op": "bz logCredits_after_for@8",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "250": {
+      "op": "dig 2",
+      "defined_out": [
+        "accounts#0 (copy)"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "accounts#0 (copy)"
+      ]
+    },
+    "252": {
+      "op": "extract 2 0",
+      "defined_out": [
+        "aggregate%array_trimmed%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%array_trimmed%0#0"
+      ]
+    },
+    "255": {
+      "op": "dig 1",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%array_trimmed%0#0",
+        "item_index_internal%0#0 (copy)"
+      ]
+    },
+    "257": {
+      "op": "intc_2 // 32",
+      "defined_out": [
+        "32",
+        "aggregate%array_trimmed%0#0",
+        "item_index_internal%0#0 (copy)"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%array_trimmed%0#0",
+        "item_index_internal%0#0 (copy)",
+        "32"
+      ]
+    },
+    "258": {
+      "op": "*",
+      "defined_out": [
+        "aggregate%array_trimmed%0#0",
+        "aggregate%bytes_offset%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%array_trimmed%0#0",
+        "aggregate%bytes_offset%0#0"
+      ]
+    },
+    "259": {
+      "op": "intc_2 // 32",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%array_trimmed%0#0",
+        "aggregate%bytes_offset%0#0",
+        "32"
+      ]
+    },
+    "260": {
+      "error": "index access is out of bounds",
+      "op": "extract3 // on error: index access is out of bounds",
+      "defined_out": [
+        "temp#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "temp#0"
+      ]
+    },
+    "261": {
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\"",
+        "temp#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "temp#0",
+        "\"c\""
+      ]
+    },
+    "262": {
+      "op": "swap",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "\"c\"",
+        "temp#0"
+      ]
+    },
+    "263": {
+      "op": "concat",
+      "defined_out": [
+        "box#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0"
+      ]
+    },
+    "264": {
+      "op": "dup",
+      "defined_out": [
+        "box#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0",
+        "box#0"
+      ]
+    },
+    "265": {
+      "op": "box_len",
+      "defined_out": [
+        "_%0#0",
+        "box#0",
+        "maybe_exists%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0",
+        "_%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "266": {
+      "op": "bury 1",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "268": {
+      "op": "bz logCredits_else_body@5",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0"
+      ]
+    },
+    "271": {
+      "op": "box_get",
+      "defined_out": [
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0"
+      ]
+    },
+    "272": {
+      "error": "Box must have value",
+      "op": "assert // Box must have value",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "aggregate%box_get%0#0"
+      ]
+    },
+    "273": {
+      "op": "btoi",
+      "defined_out": [
+        "maybe_value_converted%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "maybe_value_converted%0#0"
+      ]
+    },
+    "274": {
+      "op": "itob",
+      "defined_out": [
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "tmp%1#0"
+      ]
+    },
+    "275": {
+      "op": "log",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "276": {
+      "block": "logCredits_after_if_else@6",
+      "stack_in": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1",
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "1"
+      ]
+    },
+    "277": {
+      "op": "+",
+      "defined_out": [
+        "item_index_internal%0#0"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "278": {
+      "op": "b logCredits_for_header@2"
+    },
+    "281": {
+      "block": "logCredits_else_body@5",
+      "stack_in": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "box#0"
+      ],
+      "op": "pop",
+      "defined_out": [],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "282": {
+      "op": "pushbytes 0x",
+      "defined_out": [
+        "0x"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "0x"
+      ]
+    },
+    "284": {
+      "op": "log",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "285": {
+      "op": "b logCredits_after_if_else@6"
+    },
+    "288": {
+      "block": "logCredits_after_for@8",
+      "stack_in": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ],
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0",
+        "1"
+      ]
+    },
+    "289": {
+      "op": "return",
+      "stack_out": [
+        "accounts#0",
+        "aggregate%array_length%0#0",
+        "item_index_internal%0#0"
+      ]
+    },
+    "290": {
+      "subroutine": "src/mbrManager.algo.ts::MbrManager.withdrawCredits[routing]",
+      "params": {},
+      "block": "withdrawCredits",
+      "stack_in": [],
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "292": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "check%0#0"
+      ]
+    },
+    "294": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "295": {
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\"",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"c\""
+      ]
+    },
+    "296": {
+      "op": "txn Sender",
+      "defined_out": [
+        "\"c\"",
+        "materialized_values%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"c\"",
+        "materialized_values%0#0"
+      ]
+    },
+    "298": {
+      "op": "concat",
+      "defined_out": [
+        "map_prefixed_key%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "299": {
+      "op": "box_len",
+      "defined_out": [
+        "_%0#0",
+        "maybe_exists%0#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "_%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "300": {
+      "op": "bury 1",
+      "stack_out": [
+        "mbrBefore#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "302": {
+      "op": "bnz withdrawCredits_after_assert@3",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "305": {
+      "op": "bytec_3 // \"ERR:AMT\"",
+      "defined_out": [
+        "\"ERR:AMT\"",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"ERR:AMT\""
+      ]
+    },
+    "306": {
+      "op": "log",
+      "stack_out": [
+        "mbrBefore#0"
+      ]
+    },
+    "307": {
+      "error": "ERR:AMT",
+      "op": "err // ERR:AMT"
+    },
+    "308": {
+      "block": "withdrawCredits_after_assert@3",
+      "stack_in": [
+        "mbrBefore#0"
+      ],
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\""
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"c\""
+      ]
+    },
+    "309": {
+      "op": "txn Sender",
+      "defined_out": [
+        "\"c\"",
+        "materialized_values%1#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "\"c\"",
+        "materialized_values%1#0"
+      ]
+    },
+    "311": {
+      "op": "concat",
+      "defined_out": [
+        "map_prefixed_key%1#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "map_prefixed_key%1#0"
+      ]
+    },
+    "312": {
+      "op": "box_get",
+      "defined_out": [
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0"
+      ]
+    },
+    "313": {
+      "error": "Box must have value",
+      "op": "assert // Box must have value",
+      "stack_out": [
+        "mbrBefore#0",
+        "aggregate%box_get%0#0"
+      ]
+    },
+    "314": {
+      "op": "btoi",
+      "defined_out": [
+        "credit#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0"
+      ]
+    },
+    "315": {
+      "op": "bytec_0 // \"c\"",
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "\"c\""
+      ]
+    },
+    "316": {
+      "op": "txn Sender",
+      "defined_out": [
+        "\"c\"",
+        "credit#0",
+        "materialized_values%2#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "\"c\"",
+        "materialized_values%2#0"
+      ]
+    },
+    "318": {
+      "op": "concat",
+      "defined_out": [
+        "credit#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "map_prefixed_key%2#0"
+      ]
+    },
+    "319": {
+      "op": "box_del",
+      "defined_out": [
+        "credit#0",
+        "{box_del}"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "{box_del}"
+      ]
+    },
+    "320": {
+      "op": "pop",
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0"
+      ]
+    },
+    "321": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "credit#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "tmp%1#0"
+      ]
+    },
+    "323": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%1#0",
+        "credit#0",
+        "mbrAfter#0"
+      ],
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "mbrAfter#0",
+        "check%1#0"
+      ]
+    },
+    "325": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "mbrBefore#0",
+        "credit#0",
+        "mbrAfter#0"
+      ]
+    },
+    "326": {
+      "op": "uncover 2",
+      "defined_out": [
+        "credit#0",
+        "mbrAfter#0",
+        "mbrBefore#0"
+      ],
+      "stack_out": [
+        "credit#0",
+        "mbrAfter#0",
+        "mbrBefore#0"
+      ]
+    },
+    "328": {
+      "op": "swap",
+      "stack_out": [
+        "credit#0",
+        "mbrBefore#0",
+        "mbrAfter#0"
+      ]
+    },
+    "329": {
+      "op": "-",
+      "defined_out": [
+        "credit#0",
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "credit#0",
+        "tmp%2#0"
+      ]
+    },
+    "330": {
+      "op": "+",
+      "defined_out": [
+        "finalCredit#0"
+      ],
+      "stack_out": [
+        "finalCredit#0"
+      ]
+    },
+    "331": {
+      "op": "itxn_begin"
+    },
+    "332": {
+      "op": "txn Sender",
+      "defined_out": [
+        "finalCredit#0",
+        "inner_txn_params%0%%param_Receiver_idx_0#0"
+      ],
+      "stack_out": [
+        "finalCredit#0",
+        "inner_txn_params%0%%param_Receiver_idx_0#0"
+      ]
+    },
+    "334": {
+      "op": "itxn_field Receiver"
+    },
+    "336": {
+      "op": "itxn_field Amount",
+      "stack_out": []
+    },
+    "338": {
+      "op": "intc_0 // 1",
+      "defined_out": [
+        "1"
+      ],
+      "stack_out": [
+        "1"
+      ]
+    },
+    "339": {
+      "op": "itxn_field TypeEnum",
+      "stack_out": []
+    },
+    "341": {
+      "op": "intc_1 // 0",
+      "defined_out": [
+        "0"
+      ],
+      "stack_out": [
+        "0"
+      ]
+    },
+    "342": {
+      "op": "itxn_field Fee",
+      "stack_out": []
+    },
+    "344": {
+      "op": "itxn_submit"
+    },
+    "345": {
+      "op": "intc_0 // 1",
+      "stack_out": [
+        "1"
+      ]
+    },
+    "346": {
+      "op": "return",
+      "stack_out": []
+    },
+    "347": {
+      "subroutine": "src/mbrManager.algo.ts::MbrManager.settleMbrCredits",
+      "params": {
+        "account#0": "bytes",
+        "mbrBefore#0": "uint64"
+      },
+      "block": "settleMbrCredits",
+      "stack_in": [],
+      "op": "proto 2 0"
+    },
+    "350": {
+      "op": "global CurrentApplicationAddress",
+      "defined_out": [
+        "tmp%0#0"
+      ],
+      "stack_out": [
+        "tmp%0#0"
+      ]
+    },
+    "352": {
+      "op": "acct_params_get AcctMinBalance",
+      "defined_out": [
+        "check%0#0",
+        "mbrAfter#0"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "check%0#0"
+      ]
+    },
+    "354": {
+      "op": "swap",
+      "stack_out": [
+        "check%0#0",
+        "mbrAfter#0"
+      ]
+    },
+    "355": {
+      "op": "dup",
+      "stack_out": [
+        "check%0#0",
+        "mbrAfter#0",
+        "mbrAfter#0 (copy)"
+      ]
+    },
+    "356": {
+      "op": "uncover 2",
+      "defined_out": [
+        "check%0#0",
+        "mbrAfter#0"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrAfter#0",
+        "check%0#0"
+      ]
+    },
+    "358": {
+      "error": "account funded",
+      "op": "assert // account funded",
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrAfter#0"
+      ]
+    },
+    "359": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ]
+    },
+    "361": {
+      "op": "==",
+      "defined_out": [
+        "mbrAfter#0",
+        "tmp%1#0"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "tmp%1#0"
+      ]
+    },
+    "362": {
+      "op": "bz settleMbrCredits_else_body@2",
+      "stack_out": [
+        "mbrAfter#0"
+      ]
+    },
+    "365": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "366": {
+      "block": "settleMbrCredits_else_body@2",
+      "stack_in": [
+        "mbrAfter#0"
+      ],
+      "op": "dup",
+      "defined_out": [
+        "mbrAfter#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrAfter#0 (copy)"
+      ]
+    },
+    "367": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "mbrAfter#0 (copy)",
+        "mbrBefore#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrAfter#0 (copy)",
+        "mbrBefore#0 (copy)"
+      ]
+    },
+    "369": {
+      "op": ">",
+      "defined_out": [
+        "tmp%2#0"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "tmp%2#0"
+      ]
+    },
+    "370": {
+      "op": "bz settleMbrCredits_else_body@6",
+      "stack_out": [
+        "mbrAfter#0"
+      ]
+    },
+    "373": {
+      "op": "frame_dig -1",
+      "defined_out": [
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ]
+    },
+    "375": {
+      "op": "-",
+      "defined_out": [
+        "creditNeeded#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0"
+      ]
+    },
+    "376": {
+      "op": "dup",
+      "defined_out": [
+        "creditNeeded#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "creditNeeded#0"
+      ]
+    },
+    "377": {
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\"",
+        "creditNeeded#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "creditNeeded#0",
+        "\"c\""
+      ]
+    },
+    "378": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "\"c\"",
+        "account#0 (copy)",
+        "creditNeeded#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "creditNeeded#0",
+        "\"c\"",
+        "account#0 (copy)"
+      ]
+    },
+    "380": {
+      "op": "concat",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "creditNeeded#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "381": {
+      "op": "dup",
+      "stack_out": [
+        "creditNeeded#0",
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "382": {
+      "op": "cover 2",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "map_prefixed_key%0#0"
+      ]
+    },
+    "384": {
+      "op": "box_get",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "maybe_value%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "385": {
+      "op": "swap",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "maybe_exists%0#0",
+        "maybe_value%0#0"
+      ]
+    },
+    "386": {
+      "op": "btoi",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0"
+      ]
+    },
+    "387": {
+      "op": "intc_1 // 0",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "maybe_exists%0#0",
+        "maybe_value_converted%0#0",
+        "0"
+      ]
+    },
+    "388": {
+      "op": "swap",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "maybe_exists%0#0",
+        "0",
+        "maybe_value_converted%0#0"
+      ]
+    },
+    "389": {
+      "op": "uncover 2",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "0",
+        "maybe_value_converted%0#0",
+        "maybe_exists%0#0"
+      ]
+    },
+    "391": {
+      "op": "select",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "creditNeeded#0",
+        "userCredit#0"
+      ]
+    },
+    "392": {
+      "op": "dup"
+    },
+    "393": {
+      "op": "uncover 2",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0",
+        "userCredit#0",
+        "creditNeeded#0"
+      ]
+    },
+    "395": {
+      "op": ">=",
+      "defined_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "tmp%4#0",
+        "userCredit#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0",
+        "tmp%4#0"
+      ]
+    },
+    "396": {
+      "op": "bnz settleMbrCredits_after_assert@5",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ]
+    },
+    "399": {
+      "op": "pushbytes \"ERR:CRD\"",
+      "defined_out": [
+        "\"ERR:CRD\"",
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ],
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0",
+        "\"ERR:CRD\""
+      ]
+    },
+    "408": {
+      "op": "log",
+      "stack_out": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ]
+    },
+    "409": {
+      "error": "ERR:CRD",
+      "op": "err // ERR:CRD"
+    },
+    "410": {
+      "block": "settleMbrCredits_after_assert@5",
+      "stack_in": [
+        "creditNeeded#0",
+        "map_prefixed_key%0#0",
+        "userCredit#0"
+      ],
+      "op": "uncover 2",
+      "defined_out": [
+        "creditNeeded#0",
+        "userCredit#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%0#0",
+        "userCredit#0",
+        "creditNeeded#0"
+      ]
+    },
+    "412": {
+      "op": "-",
+      "defined_out": [
+        "tmp%5#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%0#0",
+        "tmp%5#0"
+      ]
+    },
+    "413": {
+      "op": "itob",
+      "defined_out": [
+        "encoded_value%0#0",
+        "map_prefixed_key%0#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%0#0",
+        "encoded_value%0#0"
+      ]
+    },
+    "414": {
+      "op": "box_put",
+      "stack_out": []
+    },
+    "415": {
+      "retsub": true,
+      "op": "retsub"
+    },
+    "416": {
+      "block": "settleMbrCredits_else_body@6",
+      "stack_in": [
+        "mbrAfter#0"
+      ],
+      "op": "frame_dig -1",
+      "defined_out": [
+        "mbrBefore#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ]
+    },
+    "418": {
+      "op": "swap",
+      "defined_out": [
+        "mbrAfter#0",
+        "mbrBefore#0 (copy)"
+      ],
+      "stack_out": [
+        "mbrBefore#0 (copy)",
+        "mbrAfter#0"
+      ]
+    },
+    "419": {
+      "op": "-",
+      "defined_out": [
+        "creditToReturn#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0"
+      ]
+    },
+    "420": {
+      "op": "bytec_0 // \"c\"",
+      "defined_out": [
+        "\"c\"",
+        "creditToReturn#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "\"c\""
+      ]
+    },
+    "421": {
+      "op": "frame_dig -2",
+      "defined_out": [
+        "\"c\"",
+        "account#0 (copy)",
+        "creditToReturn#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "\"c\"",
+        "account#0 (copy)"
+      ]
+    },
+    "423": {
+      "op": "concat",
+      "defined_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ]
+    },
+    "424": {
+      "op": "dup",
+      "defined_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0"
+      ]
+    },
+    "425": {
+      "op": "box_len",
+      "defined_out": [
+        "_%0#0",
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "maybe_exists%1#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "_%0#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "426": {
+      "op": "bury 1",
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "maybe_exists%1#0"
+      ]
+    },
+    "428": {
+      "op": "bnz settleMbrCredits_after_assert@8",
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ]
+    },
+    "431": {
+      "op": "bytec_2 // \"ERR:RCV\"",
+      "defined_out": [
+        "\"ERR:RCV\"",
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "\"ERR:RCV\""
+      ]
+    },
+    "432": {
+      "op": "log",
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ]
+    },
+    "433": {
+      "error": "ERR:RCV",
+      "op": "err // ERR:RCV"
+    },
+    "434": {
+      "block": "settleMbrCredits_after_assert@8",
+      "stack_in": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0"
+      ],
+      "op": "dup",
+      "defined_out": [
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "map_prefixed_key%2#0 (copy)"
+      ]
+    },
+    "435": {
+      "op": "box_get",
+      "defined_out": [
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "aggregate%box_get%0#0",
+        "aggregate%box_get%1#0"
+      ]
+    },
+    "436": {
+      "error": "Box must have value",
+      "op": "assert // Box must have value",
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "aggregate%box_get%0#0"
+      ]
+    },
+    "437": {
+      "op": "btoi",
+      "defined_out": [
+        "map_prefixed_key%2#0",
+        "maybe_value_converted%1#0"
+      ],
+      "stack_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "maybe_value_converted%1#0"
+      ]
+    },
+    "438": {
+      "op": "uncover 2",
+      "defined_out": [
+        "creditToReturn#0",
+        "map_prefixed_key%2#0",
+        "maybe_value_converted%1#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%2#0",
+        "maybe_value_converted%1#0",
+        "creditToReturn#0"
+      ]
+    },
+    "440": {
+      "op": "+",
+      "defined_out": [
+        "map_prefixed_key%2#0",
+        "tmp%7#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%2#0",
+        "tmp%7#0"
+      ]
+    },
+    "441": {
+      "op": "itob",
+      "defined_out": [
+        "encoded_value%1#0",
+        "map_prefixed_key%2#0"
+      ],
+      "stack_out": [
+        "map_prefixed_key%2#0",
+        "encoded_value%1#0"
+      ]
+    },
+    "442": {
+      "op": "box_put",
+      "stack_out": []
+    },
+    "443": {
+      "retsub": true,
+      "op": "retsub"
+    }
+  }
+}
