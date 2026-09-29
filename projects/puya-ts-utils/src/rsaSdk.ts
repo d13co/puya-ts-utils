@@ -41,7 +41,7 @@ const verifierLogic = `Logic:[${verifierProgram.join(' ')}]`
  */
 export const errorTransformer = async (error: Error): Promise<Error> => {
   if (error.message.includes(verifierLogic)) {
-    const pc = /rejected by logic err=.*?pc=(\d+)/.exec(error.message)?.[1]
+    const pc = /rejected by logic err=assert failed pc=(\d+)/.exec(error.message)?.[1]
     const code = pc && RSA_SHA256_VERIFIER.errorPcs[Number(pc)]
     if (code) error.message = `${code} ${error.message}`
   }
