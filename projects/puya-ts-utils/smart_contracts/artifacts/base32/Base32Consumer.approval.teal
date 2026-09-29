@@ -1,0 +1,360 @@
+#pragma version 11
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 1 5 31 0
+    bytecblock "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567" 0x151f7c75 0x068101
+    // smart_contracts/base32/consumer.algo.ts:10
+    // export class Base32Consumer extends Contract {
+    txn NumAppArgs
+    bz main___algots__.defaultCreate@9
+    txn OnCompletion
+    !
+    assert
+    txn ApplicationID
+    assert
+    pushbytess 0x63b05276 0xb2248b29 // method "encode(byte[])string", method "encodeAddress(address)string"
+    txna ApplicationArgs 0
+    match encode encodeAddress
+    err
+
+main___algots__.defaultCreate@9:
+    // smart_contracts/base32/consumer.algo.ts:10
+    // export class Base32Consumer extends Contract {
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    return
+
+
+// src/base32.algo.ts::base32Encode(data: bytes) -> bytes:
+base32Encode:
+    // src/base32.algo.ts:48
+    // export function base32Encode(data: bytes): string {
+    proto 1 1
+    // src/base32.algo.ts:49
+    // const byteLength: uint64 = data.length
+    frame_dig -1
+    len
+    dupn 2
+    // src/base32.algo.ts:53
+    // const groups: uint64 = (byteLength + 4) / 5
+    pushint 4
+    +
+    intc_1 // 5
+    /
+    dup
+    cover 2
+    // src/base32.algo.ts:54
+    // const padding: uint64 = groups * 5 - byteLength
+    intc_1 // 5
+    *
+    swap
+    -
+    // src/base32.algo.ts:55
+    // const padded = data.concat(op.bzero(padding))
+    bzero
+    frame_dig -1
+    swap
+    concat
+    // src/base32.algo.ts:57
+    // let encoded = Bytes()
+    pushbytes 0x
+    // src/base32.algo.ts:58
+    // for (let group: uint64 = 0; group < groups; group += 1) {
+    intc_3 // 0
+
+base32Encode_while_top@1:
+    // src/base32.algo.ts:58
+    // for (let group: uint64 = 0; group < groups; group += 1) {
+    dup
+    dig 4
+    <
+    bz base32Encode_after_while@3
+    // src/base32.algo.ts:61
+    // const bits: uint64 = op.btoi(op.extract(padded, group * 5, 5))
+    dup
+    intc_1 // 5
+    *
+    dig 3
+    swap
+    intc_1 // 5
+    extract3
+    btoi
+    // src/base32.algo.ts:64
+    // .concat(op.extract(ALPHABET, bits >> 35, 1))
+    dup
+    pushint 35
+    shr
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-64
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    uncover 3
+    swap
+    concat
+    // src/base32.algo.ts:65
+    // .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    dig 1
+    pushint 30
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-65
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    concat
+    // src/base32.algo.ts:66
+    // .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    dig 1
+    pushint 25
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-66
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    concat
+    // src/base32.algo.ts:67
+    // .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    dig 1
+    pushint 20
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-67
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    concat
+    // src/base32.algo.ts:68
+    // .concat(op.extract(ALPHABET, (bits >> 15) & 31, 1))
+    dig 1
+    pushint 15
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-68
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 15) & 31, 1))
+    concat
+    // src/base32.algo.ts:69
+    // .concat(op.extract(ALPHABET, (bits >> 10) & 31, 1))
+    dig 1
+    pushint 10
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-69
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 15) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 10) & 31, 1))
+    concat
+    // src/base32.algo.ts:70
+    // .concat(op.extract(ALPHABET, (bits >> 5) & 31, 1))
+    dig 1
+    intc_1 // 5
+    shr
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-70
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 15) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 10) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 5) & 31, 1))
+    concat
+    // src/base32.algo.ts:71
+    // .concat(op.extract(ALPHABET, bits & 31, 1))
+    swap
+    intc_2 // 31
+    &
+    bytec_0 // "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"
+    swap
+    intc_0 // 1
+    extract3
+    // src/base32.algo.ts:63-71
+    // encoded = encoded
+    //   .concat(op.extract(ALPHABET, bits >> 35, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 30) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 25) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 20) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 15) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 10) & 31, 1))
+    //   .concat(op.extract(ALPHABET, (bits >> 5) & 31, 1))
+    //   .concat(op.extract(ALPHABET, bits & 31, 1))
+    concat
+    swap
+    // src/base32.algo.ts:58
+    // for (let group: uint64 = 0; group < groups; group += 1) {
+    intc_0 // 1
+    +
+    b base32Encode_while_top@1
+
+base32Encode_after_while@3:
+    pop
+    bury 1
+    bury 1
+    // src/base32.algo.ts:76
+    // return encoded.slice(0, (byteLength * 8 + 4) / 5).toString()
+    dup
+    len
+    intc_3 // 0
+    dig 1
+    >=
+    intc_3 // 0
+    dig 2
+    uncover 2
+    select
+    uncover 3
+    pushint 8
+    *
+    pushint 4
+    +
+    intc_1 // 5
+    /
+    dup
+    dig 3
+    >=
+    swap
+    uncover 3
+    uncover 2
+    select
+    substring3
+    retsub
+
+
+// smart_contracts/base32/consumer.algo.ts::Base32Consumer.encode[routing]() -> void:
+encode:
+    // smart_contracts/base32/consumer.algo.ts:18
+    // public encode(data: bytes): string {
+    txna ApplicationArgs 1
+    dup
+    intc_3 // 0
+    extract_uint16 // on error: invalid array length header
+    pushint 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    // smart_contracts/base32/consumer.algo.ts:19
+    // return base32Encode(data)
+    callsub base32Encode
+    // smart_contracts/base32/consumer.algo.ts:18
+    // public encode(data: bytes): string {
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return
+
+
+// smart_contracts/base32/consumer.algo.ts::Base32Consumer.encodeAddress[routing]() -> void:
+encodeAddress:
+    // smart_contracts/base32/consumer.algo.ts:23
+    // public encodeAddress(account: Account): string {
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+
+encodeAddress_while_top@2:
+    pushint 1210
+    global OpcodeBudget
+    >
+    bz encodeAddress_after_while@7
+    itxn_begin
+    pushint 6 // appl
+    itxn_field TypeEnum
+    intc_1 // DeleteApplication
+    itxn_field OnCompletion
+    bytec_2 // 0x068101
+    itxn_field ApprovalProgram
+    bytec_2 // 0x068101
+    itxn_field ClearStateProgram
+    intc_3 // 0
+    itxn_field Fee
+    itxn_submit
+    b encodeAddress_while_top@2
+
+encodeAddress_after_while@7:
+    // src/base32.algo.ts:95
+    // const checksum = op.extract(op.sha512_256(publicKey), 28, 4)
+    dup
+    sha512_256
+    extract 28 4
+    // src/base32.algo.ts:97
+    // return base32Encode(publicKey.concat(checksum))
+    concat
+    callsub base32Encode
+    // smart_contracts/base32/consumer.algo.ts:23
+    // public encodeAddress(account: Account): string {
+    dup
+    len
+    itob
+    extract 6 2
+    swap
+    concat
+    bytec_1 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return

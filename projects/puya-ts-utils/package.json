@@ -1,7 +1,7 @@
 {
   "name": "@d13co/puya-ts-utils",
   "version": "0.3.0",
-  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter, RSA signature verification, MBR credit accounting",
+  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter, RSA signature verification, MBR credit accounting, base32 encoding",
   "keywords": [
     "algorand",
     "algorand-typescript",
@@ -14,7 +14,8 @@
     "rsa",
     "dnssec",
     "mbr",
-    "inner-transactions"
+    "inner-transactions",
+    "base32"
   ],
   "license": "MIT",
   "author": "Bit D13",
@@ -49,6 +50,10 @@
       "types": "./src/mbrManager.algo.ts",
       "default": "./src/mbrManager.algo.ts"
     },
+    "./base32": {
+      "types": "./src/base32.algo.ts",
+      "default": "./src/base32.algo.ts"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -70,6 +75,9 @@
       ],
       "mbrManager": [
         "./src/mbrManager.algo.ts"
+      ],
+      "base32": [
+        "./src/base32.algo.ts"
       ]
     }
   },

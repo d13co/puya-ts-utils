@@ -2,18 +2,34 @@
 
 Algorand TypeScript subroutines for things the AVM will not hand your contract
 directly: **keyless accounts**, the **network transaction counter**, **RSA
-signature verification**, and **MBR credit accounting**.
+signature verification**, **MBR credit accounting**, and **base32 encoding**.
 
 ```ts
 import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
 import { getTxnCounter } from '@d13co/puya-ts-utils/getTxnCounter'
 import { parseRsaDnskey, verifyRsaSha256 } from '@d13co/puya-ts-utils/rsa'
 import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
+import { base32Encode, encodeAddress } from '@d13co/puya-ts-utils/base32'
 ```
 
 Each utility is imported from its own subpath. There is no root import: the Puya
 compiler rejects re-export barrels, so a single entry point cannot serve more
 than one of them.
+
+## Contents
+
+- [Install](#install) · [Unit testing](#unit-testing)
+- [createAccount](#createaccount) — keyless accounts
+- [getTxnCounter](#gettxncounter) — the network transaction counter
+- [rsa](#rsa) — PKCS#1 v1.5 signature verification
+  - [Program size](#program-size) · [The Montgomery hint](#the-montgomery-hint) ·
+    [Opcode budget](#opcode-budget) ·
+    [RSA-4096](#rsa-4096-across-several-groups) ·
+    [RSA SDK](#rsa-sdk--off-chain)
+- [mbrManager](#mbrmanager) — MBR credit accounting
+  - [Warning: users own their boxes](#warning-users-own-their-boxes)
+- [base32](#base32) — unpadded RFC 4648 encoding
+- [Fees](#fees) · [Development](#development) · [License](#license)
 
 ## Install
 
@@ -594,6 +610,83 @@ and `ERR:AMT`.
 
 ---
 
+# base32
+
+Encodes bytes as **base32** (RFC 4648) without the trailing `=`: the form
+Algorand uses for addresses, transaction ids and block hashes. `encodeAddress`
+writes an account out as its 58-character address, checksum included.
+
+## What it does
+
+Every five bytes become eight characters. A tail shorter than five bytes is
+padded out with zero bits, and the `=` RFC 4648 would add on top of that is
+dropped, so `n` bytes encode to `ceil(n * 8 / 5)` characters. Empty input
+encodes to an empty string.
+
+The result is a `string` only in the sense that the AVM has no separate
+character type. It is the same byte sequence either way, and `Bytes(...)` takes
+it back if you need to join it to binary data.
+
+## Usage
+
+```ts
+import { base32Encode, encodeAddress } from '@d13co/puya-ts-utils/base32'
+import { Account, bytes, Contract, ensureBudget, OpUpFeeSource } from '@algorandfoundation/algorand-typescript'
+
+export class Directory extends Contract {
+  public encode(data: bytes): string {
+    return base32Encode(data) // 32 bytes -> 52 chars, no checksum
+  }
+
+  public address(account: Account): string {
+    // 36 bytes (key + checksum) costs 840, so buy another 700 opcodes first.
+    ensureBudget(1200, OpUpFeeSource.GroupCredit)
+    return encodeAddress(account) // 58 chars
+  }
+}
+```
+
+`GroupCredit` takes the inner call's fee out of the group's excess, so the
+caller covers it with `extraFee`.
+
+## Cost
+
+About **94 opcodes per five bytes**. Measured on LocalNet for a whole ABI call
+that takes the bytes and returns the encoding, which spends about 88 on its own:
+
+| Input | Budget |
+|---|---|
+| 10 bytes | 276 |
+| 20 bytes | 464 |
+| 30 bytes | 652 |
+| 35 bytes | 746 |
+| 36 bytes | 840 |
+
+An application call starts with 700, so that call encodes up to 30 bytes without
+help. Inside a method that does more, the headroom is smaller.
+Anything longer needs the budget raised, and the subroutine won't raise it for
+you: that spends an inner transaction and its fee, which is the caller's call.
+
+The AVM caps a byte value at 4096 bytes, and the cap applies to the encoding
+too, so inputs above 2560 bytes can't be encoded at all. Returning the result
+from an ABI method logs it, and a log line is capped at 1024 bytes, so a
+returned encoding stops at about 636 bytes of input.
+
+## API
+
+### `base32Encode(data: bytes): string`
+
+Returns `data` in unpadded base32. Adds no checksum: 32 bytes give 52
+characters.
+
+### `encodeAddress(account: Account): string`
+
+Returns the account's 58-character address: the public key plus the last four
+bytes of its `sha512_256` digest, encoded as base32. Costs about 840 opcodes, so
+raise the budget first.
+
+---
+
 ## Fees
 
 None of these subroutines pays for itself, with one exception: `getTxnCounter`
@@ -607,6 +700,7 @@ from an off-chain client that is `extraFee`:
 await appClient.send.open({ args: [], extraFee: AlgoAmount.MicroAlgo(2000) })   // createUnfundedAccount
 await appClient.send.issue({ args: [], extraFee: AlgoAmount.MicroAlgo(1000) })  // getTxnCounter
 await appClient.send.withdrawCredits({ args: [], extraFee: AlgoAmount.MicroAlgo(1000) }) // mbrManager
+await appClient.send.encodeAddress({ args: { account }, extraFee: AlgoAmount.MicroAlgo(1000) }) // base32, with ensureBudget
 ```
 
 ## Development
@@ -625,8 +719,9 @@ pnpm run check-types
 
 `src/` is the whole library: one file per utility, one utility per import
 subpath. Each has a worked example under `smart_contracts/` that the suites
-drive — `create_account/consumer.algo.ts`, `txn_counter/consumer.algo.ts` and
-`rsa/consumer.algo.ts` under both, `mbr_manager/consumer.algo.ts` under e2e only.
+drive — `create_account/consumer.algo.ts`, `txn_counter/consumer.algo.ts`,
+`rsa/consumer.algo.ts` and `base32/consumer.algo.ts` under both,
+`mbr_manager/consumer.algo.ts` under e2e only.
 See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md) for the
 rest of the AlgoKit workflow.
 
