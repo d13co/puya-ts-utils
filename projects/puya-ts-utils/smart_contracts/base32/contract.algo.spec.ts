@@ -1,4 +1,4 @@
-import { Bytes } from '@algorandfoundation/algorand-typescript'
+import { Account, Bytes } from '@algorandfoundation/algorand-typescript'
 import { TestExecutionContext, toExternalValue } from '@algorandfoundation/algorand-typescript-testing'
 import { encodeAddress as sdkEncodeAddress } from 'algosdk'
 import { afterEach, describe, expect, it } from 'vitest'
@@ -83,6 +83,13 @@ describe('encodeAddress', () => {
     const account = ctx.any.account()
 
     expect(encodeAddress(account)).toEqual(sdkEncodeAddress(toExternalValue(account.bytes)))
+  })
+
+  /** Pinned without algosdk, so a checksum both sides got wrong would still show. */
+  it('writes out the zero address', () => {
+    const zero = Account(Bytes.fromHex('00'.repeat(32)))
+
+    expect(encodeAddress(zero)).toEqual('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY5HFKQ')
   })
 })
 

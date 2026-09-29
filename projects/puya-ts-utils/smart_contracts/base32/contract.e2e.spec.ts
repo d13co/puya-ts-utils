@@ -52,6 +52,23 @@ describe('base32Encode on LocalNet', () => {
     expect(encoded).toBe(testAccount.addr.toString())
   })
 
+  test('needs more than one call’s budget to write out an address', async () => {
+    const { testAccount } = localnet.context
+    const consumer = await deployConsumer(testAccount.addr)
+    const args = { account: testAccount.addr.toString() }
+
+    // With simulate's extra budget, ensureBudget finds enough already and skips
+    // its inner call, so what is consumed is the encoding alone.
+    const { simulateResponse } = await consumer
+      .newGroup()
+      .encodeAddress({ args })
+      .simulate({ extraOpcodeBudget: 20_000 })
+    expect(Number(simulateResponse.txnGroups[0].appBudgetConsumed)).toBeGreaterThan(700)
+
+    // Without the extra fee the method cannot pay for the budget it has to buy.
+    await expect(consumer.send.encodeAddress({ args })).rejects.toThrow(/group fee .* too small/)
+  })
+
   test('costs the documented 94 opcodes per five-byte group', async () => {
     const { testAccount } = localnet.context
     const consumer = await deployConsumer(testAccount.addr)
