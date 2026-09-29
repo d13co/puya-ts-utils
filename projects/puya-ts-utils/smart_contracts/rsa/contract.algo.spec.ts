@@ -1,6 +1,22 @@
 import { Bytes } from '@algorandfoundation/algorand-typescript'
 import { TestExecutionContext } from '@algorandfoundation/algorand-typescript-testing'
 import { afterEach, describe, expect, it } from 'vitest'
+import {
+  errDigestLength,
+  errExponent,
+  errExponentLength,
+  errHint,
+  errHintLength,
+  errHintRange,
+  errKeyMismatch,
+  errModulusEven,
+  errModulusShort,
+  errModulusZero,
+  errNoModulus,
+  errSignatureLength,
+  errSignatureRange,
+  errUnfinished,
+} from '../../src/rsaErrors.algo'
 import { RsaConsumer, RsaSplitConsumer } from './consumer.algo'
 import { PL_DNSKEY, ROOT_DNSKEY } from './dnskey-fixtures'
 import { montgomeryHint, signWithNewKey } from './test-keys'
@@ -100,7 +116,7 @@ describe('the Montgomery hint', () => {
 
     expect(() =>
       consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(flip(hint, (at + hint.length) % hint.length))),
-    ).toThrow('Montgomery hint is wrong')
+    ).toThrow(errHint)
   })
 
   it('refuses a hint whose R² is not below the modulus', () => {
@@ -108,9 +124,7 @@ describe('the Montgomery hint', () => {
     const { modulus, exponent, digest, signature } = signWithNewKey(1024, 65537, 'sha256')
     const hint = Buffer.concat([modulus, Buffer.from([1])])
 
-    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(hint))).toThrow(
-      'not below the modulus',
-    )
+    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(hint))).toThrow(errHintRange)
   })
 
   // R mod n + n also satisfies q'·n + m' = R, with q' = q - 1. It is ruled out only
@@ -129,18 +143,14 @@ describe('the Montgomery hint', () => {
       const consumer = ctx.contract.create(RsaConsumer)
       const forged = Buffer.concat([toBytes(h + n, width), hint.subarray(width)])
 
-      expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(forged))).toThrow(
-        'not below the modulus',
-      )
+      expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(forged))).toThrow(errHintRange)
     })
 
     it('refuses the quotient one short, as if R mod n were R mod n + n', () => {
       const consumer = ctx.contract.create(RsaConsumer)
       const forged = Buffer.concat([hint.subarray(0, width), toBytes(q - 1n, 1)])
 
-      expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(forged))).toThrow(
-        'Montgomery hint is wrong',
-      )
+      expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(forged))).toThrow(errHint)
     })
   })
 
@@ -149,7 +159,7 @@ describe('the Montgomery hint', () => {
     const { modulus, exponent, digest, signature } = signWithNewKey(1024, 65537, 'sha256')
     const hint = montgomeryHint(modulus).subarray(0, 128)
 
-    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(hint))).toThrow('wrong length')
+    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), b(exponent), b(hint))).toThrow(errHintLength)
   })
 })
 
@@ -175,7 +185,7 @@ describe('parseRsaDnskey', () => {
   it('refuses a key with no modulus', () => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.parse(hex('03010001'))).toThrow('RSA key has no modulus')
+    expect(() => consumer.parse(hex('03010001'))).toThrow(errNoModulus)
   })
 })
 
@@ -185,25 +195,23 @@ describe('malformed input', () => {
   it('refuses a signature that is not below the modulus', () => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.verifySha256(b(digest), b(modulus), b(modulus), b(exponent), NO_HINT)).toThrow('not below the modulus')
+    expect(() => consumer.verifySha256(b(digest), b(modulus), b(modulus), b(exponent), NO_HINT)).toThrow(errSignatureRange)
   })
 
   it('refuses a signature of the wrong length', () => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.verifySha256(b(digest), b(signature.subarray(1)), b(modulus), b(exponent), NO_HINT)).toThrow(
-      'length differs',
-    )
+    expect(() => consumer.verifySha256(b(digest), b(signature.subarray(1)), b(modulus), b(exponent), NO_HINT)).toThrow(errSignatureLength)
   })
 
   it.each([
-    ['over 4 bytes', '0100000001'],
-    ['even', '010000'],
-    ['below 3', '01'],
-  ])('refuses an exponent %s', (_, e) => {
+    ['over 4 bytes', '0100000001', errExponentLength],
+    ['even', '010000', errExponent],
+    ['below 3', '01', errExponent],
+  ])('refuses an exponent %s', (_, e, code) => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), hex(e), NO_HINT)).toThrow('RSA exponent')
+    expect(() => consumer.verifySha256(b(digest), b(signature), b(modulus), hex(e), NO_HINT)).toThrow(code)
   })
 
   it('refuses a modulus with a leading zero', () => {
@@ -212,21 +220,19 @@ describe('malformed input', () => {
 
     expect(() =>
       consumer.verifySha256(b(digest), b(Buffer.concat([zero, signature])), b(Buffer.concat([zero, modulus])), b(exponent), NO_HINT),
-    ).toThrow('leading zero')
+    ).toThrow(errModulusZero)
   })
 
   it('refuses an even modulus', () => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.verifySha256(b(digest), b(signature), b(flip(modulus, modulus.length - 1)), b(exponent), NO_HINT)).toThrow(
-      'RSA modulus is even',
-    )
+    expect(() => consumer.verifySha256(b(digest), b(signature), b(flip(modulus, modulus.length - 1)), b(exponent), NO_HINT)).toThrow(errModulusEven)
   })
 
   it('refuses a digest of the wrong length', () => {
     const consumer = ctx.contract.create(RsaConsumer)
 
-    expect(() => consumer.verifySha256(b(digest.subarray(1)), b(signature), b(modulus), b(exponent), NO_HINT)).toThrow('32 bytes')
+    expect(() => consumer.verifySha256(b(digest.subarray(1)), b(signature), b(modulus), b(exponent), NO_HINT)).toThrow(errDigestLength)
   })
 
   it('refuses a modulus too short for the digest', () => {
@@ -234,7 +240,7 @@ describe('malformed input', () => {
 
     expect(() =>
       consumer.verify(b(digest), b(signature.subarray(0, 60)), b(modulus.subarray(0, 60)), b(exponent), SHA256_DIGEST_INFO, NO_HINT),
-    ).toThrow('too short')
+    ).toThrow(errModulusShort)
   })
 })
 
@@ -279,7 +285,7 @@ describe('verification split over several calls', () => {
 
     run(consumer, PL_DNSKEY.signature, [15])
 
-    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), hex(PL_DNSKEY.publicKey))).toThrow('not finished')
+    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), hex(PL_DNSKEY.publicKey))).toThrow(errUnfinished)
   })
 
   /** A key of the caller's own that really did sign the .pl RRset, started and run to the end. */
@@ -294,7 +300,7 @@ describe('verification split over several calls', () => {
 
     startOwn(consumer)
 
-    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), hex(PL_DNSKEY.publicKey))).toThrow('different key')
+    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), hex(PL_DNSKEY.publicKey))).toThrow(errKeyMismatch)
   })
 
   it('refuses to finish against the same modulus with another exponent', () => {
@@ -302,7 +308,7 @@ describe('verification split over several calls', () => {
 
     const { own } = startOwn(consumer)
 
-    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), dnskey(Buffer.from([3]), own.modulus))).toThrow('different key')
+    expect(() => consumer.finish(hex(PL_DNSKEY.signedData), dnskey(Buffer.from([3]), own.modulus))).toThrow(errKeyMismatch)
   })
 
   it('runs a 4-byte exponent to the end', () => {

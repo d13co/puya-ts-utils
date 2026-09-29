@@ -10,47 +10,47 @@ main:
     dup
     bytec_0 // ""
     dupn 6
-    // smart_contracts/rsa/consumer.algo.ts:82
+    // smart_contracts/rsa/consumer.algo.ts:83
     // Txn.typeEnum === TransactionType.Payment &&
     txn TypeEnum
     intc_1 // 1
     ==
-    // smart_contracts/rsa/consumer.algo.ts:82-83
+    // smart_contracts/rsa/consumer.algo.ts:83-84
     // Txn.typeEnum === TransactionType.Payment &&
     //   Txn.amount === 0 &&
     bz main_bool_false@6
-    // smart_contracts/rsa/consumer.algo.ts:83
+    // smart_contracts/rsa/consumer.algo.ts:84
     // Txn.amount === 0 &&
     txn Amount
-    // smart_contracts/rsa/consumer.algo.ts:82-83
+    // smart_contracts/rsa/consumer.algo.ts:83-84
     // Txn.typeEnum === TransactionType.Payment &&
     //   Txn.amount === 0 &&
     bnz main_bool_false@6
-    // smart_contracts/rsa/consumer.algo.ts:84
+    // smart_contracts/rsa/consumer.algo.ts:85
     // Txn.fee === 0 &&
     txn Fee
-    // smart_contracts/rsa/consumer.algo.ts:82-84
+    // smart_contracts/rsa/consumer.algo.ts:83-85
     // Txn.typeEnum === TransactionType.Payment &&
     //   Txn.amount === 0 &&
     //   Txn.fee === 0 &&
     bnz main_bool_false@6
-    // smart_contracts/rsa/consumer.algo.ts:85
+    // smart_contracts/rsa/consumer.algo.ts:86
     // Txn.rekeyTo === Global.zeroAddress &&
     txn RekeyTo
     global ZeroAddress
     ==
-    // smart_contracts/rsa/consumer.algo.ts:82-85
+    // smart_contracts/rsa/consumer.algo.ts:83-86
     // Txn.typeEnum === TransactionType.Payment &&
     //   Txn.amount === 0 &&
     //   Txn.fee === 0 &&
     //   Txn.rekeyTo === Global.zeroAddress &&
     bz main_bool_false@6
-    // smart_contracts/rsa/consumer.algo.ts:86
+    // smart_contracts/rsa/consumer.algo.ts:87
     // Txn.closeRemainderTo === Global.zeroAddress,
     txn CloseRemainderTo
     global ZeroAddress
     ==
-    // smart_contracts/rsa/consumer.algo.ts:82-86
+    // smart_contracts/rsa/consumer.algo.ts:83-87
     // Txn.typeEnum === TransactionType.Payment &&
     //   Txn.amount === 0 &&
     //   Txn.fee === 0 &&
@@ -60,56 +60,56 @@ main:
     intc_1 // 1
 
 main_bool_merge@7:
-    // smart_contracts/rsa/consumer.algo.ts:81-88
+    // smart_contracts/rsa/consumer.algo.ts:82-89
     // assert(
     //   Txn.typeEnum === TransactionType.Payment &&
     //     Txn.amount === 0 &&
     //     Txn.fee === 0 &&
     //     Txn.rekeyTo === Global.zeroAddress &&
     //     Txn.closeRemainderTo === Global.zeroAddress,
-    //   'verifier transaction must be an inert payment',
+    //   errNotInert,
     // )
-    assert // verifier transaction must be an inert payment
-    // smart_contracts/rsa/consumer.algo.ts:89
-    // assert(Txn.note === op.sha256(op.arg(2)).concat(op.arg(0)), 'note must be sha256(key) ‖ digest')
+    assert // ERR:INERT
+    // smart_contracts/rsa/consumer.algo.ts:90
+    // assert(Txn.note === op.sha256(op.arg(2)).concat(op.arg(0)), errNote)
     txn Note
     arg_2
     sha256
     arg_0
     concat
     ==
-    assert // note must be sha256(key) ‖ digest
-    // smart_contracts/rsa/consumer.algo.ts:90
+    assert // ERR:NOTE
+    // smart_contracts/rsa/consumer.algo.ts:91
     // const [exponent, modulus] = parseRsaDnskey(op.arg(2))
     arg_2
     dup
-    // src/rsa.algo.ts:34
+    // src/rsa.algo.ts:51
     // let exponentLength = op.getByte(publicKey, 0)
     intc_2 // 0
     getbyte
     dup
     bury 8
-    // src/rsa.algo.ts:35
+    // src/rsa.algo.ts:52
     // let offset: uint64 = 1
     intc_1 // 1
     bury 6
-    // src/rsa.algo.ts:36
+    // src/rsa.algo.ts:53
     // if (exponentLength === 0) {
     bnz main_after_if_else@10
-    // src/rsa.algo.ts:37
+    // src/rsa.algo.ts:54
     // exponentLength = op.extractUint16(publicKey, 1)
     dup
     intc_1 // 1
     extract_uint16
     bury 7
-    // src/rsa.algo.ts:38
+    // src/rsa.algo.ts:55
     // offset = 3
     pushint 3
     bury 5
 
 main_after_if_else@10:
-    // src/rsa.algo.ts:40
-    // assert(publicKey.length > offset + exponentLength, 'RSA key has no modulus')
+    // src/rsa.algo.ts:57
+    // assert(publicKey.length > offset + exponentLength, errNoModulus)
     dup
     len
     dig 5
@@ -121,8 +121,8 @@ main_after_if_else@10:
     +
     dup2
     >
-    assert // RSA key has no modulus
-    // src/rsa.algo.ts:41
+    assert // ERR:NOMOD
+    // src/rsa.algo.ts:58
     // return [op.extract(publicKey, offset, exponentLength), publicKey.slice(offset + exponentLength)]
     dig 4
     uncover 3
@@ -165,7 +165,7 @@ main_after_if_else@10:
     concat
     swap
     concat
-    // smart_contracts/rsa/consumer.algo.ts:90
+    // smart_contracts/rsa/consumer.algo.ts:91
     // const [exponent, modulus] = parseRsaDnskey(op.arg(2))
     dup
     intc_2 // 0
@@ -185,8 +185,8 @@ main_after_if_else@10:
     extract 2 0
     dup
     bury 10
-    // smart_contracts/rsa/consumer.algo.ts:91
-    // return verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3))
+    // smart_contracts/rsa/consumer.algo.ts:93
+    // assert(verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3)), errSignature)
     arg_0
     dup
     bury 12
@@ -194,15 +194,15 @@ main_after_if_else@10:
     cover 2
     arg_3
     cover 2
-    // src/rsa.algo.ts:52
-    // assert(digest.length === 32, 'SHA-256 digest must be 32 bytes')
+    // src/rsa.algo.ts:69
+    // assert(digest.length === 32, errDigestLength)
     len
     dup
     pushint 32
     ==
-    assert // SHA-256 digest must be 32 bytes
-    // src/rsa.algo.ts:98
-    // assert(modulus.length >= digestInfo.length + digest.length + 11, 'RSA modulus too short for the digest')
+    assert // ERR:DIGLEN
+    // src/rsa.algo.ts:115
+    // assert(modulus.length >= digestInfo.length + digest.length + 11, errModulusShort)
     swap
     len
     dup
@@ -212,15 +212,15 @@ main_after_if_else@10:
     +
     dig 1
     <=
-    assert // RSA modulus too short for the digest
-    // src/rsa.algo.ts:125
-    // assert(length <= MAX_MODULUS, 'RSA modulus over 512 bytes')
+    assert // ERR:MODSHORT
+    // src/rsa.algo.ts:142
+    // assert(length <= MAX_MODULUS, errModulusLong)
     dup
     pushint 512
     <=
-    assert // RSA modulus over 512 bytes
-    // src/rsa.algo.ts:126
-    // assert(length > 0 && op.getByte(modulus, 0) !== 0, 'RSA modulus has a leading zero')
+    assert // ERR:MODLONG
+    // src/rsa.algo.ts:143
+    // assert(length > 0 && op.getByte(modulus, 0) !== 0, errModulusZero)
     bz main_bool_false@14
     dig 10
     intc_2 // 0
@@ -229,20 +229,20 @@ main_after_if_else@10:
     intc_1 // 1
 
 main_bool_merge@15:
-    // src/rsa.algo.ts:126
-    // assert(length > 0 && op.getByte(modulus, 0) !== 0, 'RSA modulus has a leading zero')
-    assert // RSA modulus has a leading zero
-    // src/rsa.algo.ts:127
-    // assert(signature.length === length, 'RSA signature length differs from the modulus')
+    // src/rsa.algo.ts:143
+    // assert(length > 0 && op.getByte(modulus, 0) !== 0, errModulusZero)
+    assert // ERR:MODZERO
+    // src/rsa.algo.ts:144
+    // assert(signature.length === length, errSignatureLength)
     dig 1
     len
     dup
     cover 2
     dig 9
     ==
-    assert // RSA signature length differs from the modulus
-    // src/rsa.algo.ts:128
-    // assert(exponent.length > 0 && exponent.length <= 4, 'RSA exponent must be 1 to 4 bytes')
+    assert // ERR:SIGLEN
+    // src/rsa.algo.ts:145
+    // assert(exponent.length > 0 && exponent.length <= 4, errExponentLength)
     dig 3
     len
     dup
@@ -255,17 +255,17 @@ main_bool_merge@15:
     intc_1 // 1
 
 main_bool_merge@19:
-    // src/rsa.algo.ts:128
-    // assert(exponent.length > 0 && exponent.length <= 4, 'RSA exponent must be 1 to 4 bytes')
-    assert // RSA exponent must be 1 to 4 bytes
-    // src/rsa.algo.ts:129
+    // src/rsa.algo.ts:145
+    // assert(exponent.length > 0 && exponent.length <= 4, errExponentLength)
+    assert // ERR:EXPLEN
+    // src/rsa.algo.ts:146
     // const e = op.btoi(exponent)
     uncover 3
     btoi
     dup
     bury 11
-    // src/rsa.algo.ts:130
-    // assert(e >= 3 && e % 2 === 1, 'RSA exponent must be odd and at least 3')
+    // src/rsa.algo.ts:147
+    // assert(e >= 3 && e % 2 === 1, errExponent)
     pushint 3
     >=
     bz main_bool_false@22
@@ -278,10 +278,10 @@ main_bool_merge@19:
     intc_1 // 1
 
 main_bool_merge@23:
-    // src/rsa.algo.ts:130
-    // assert(e >= 3 && e % 2 === 1, 'RSA exponent must be odd and at least 3')
-    assert // RSA exponent must be odd and at least 3
-    // src/rsa.algo.ts:133
+    // src/rsa.algo.ts:147
+    // assert(e >= 3 && e % 2 === 1, errExponent)
+    assert // ERR:EXPVAL
+    // src/rsa.algo.ts:150
     // const width: uint64 = ((length + LIMB - 1) / LIMB) * LIMB
     dig 7
     dup
@@ -293,7 +293,7 @@ main_bool_merge@23:
     /
     intc_0 // 64
     *
-    // src/rsa.algo.ts:390
+    // src/rsa.algo.ts:407
     // return op.bzero(width - x.length).concat(x)
     dup
     uncover 2
@@ -313,8 +313,8 @@ main_bool_merge@23:
     dup
     cover 2
     cover 4
-    // src/rsa.algo.ts:136
-    // assert(op.getBit(n, width * 8 - 1), 'RSA modulus is even')
+    // src/rsa.algo.ts:153
+    // assert(op.getBit(n, width * 8 - 1), errModulusEven)
     pushint 8
     *
     intc_1 // 1
@@ -322,61 +322,61 @@ main_bool_merge@23:
     dig 2
     swap
     getbit
-    assert // RSA modulus is even
-    // src/rsa.algo.ts:137
-    // assert(!gte(s, n), 'RSA signature is not below the modulus')
+    assert // ERR:MODEVEN
+    // src/rsa.algo.ts:154
+    // assert(!gte(s, n), errSignatureRange)
     dig 1
     callsub gte
     !
-    assert // RSA signature is not below the modulus
-    // src/rsa.algo.ts:139
+    assert // ERR:SIGRANGE
+    // src/rsa.algo.ts:156
     // const nInv = negInverse(limb(n, 0))
     intc_2 // 0
     callsub limb
     swap
-    // src/rsa.algo.ts:341
+    // src/rsa.algo.ts:358
     // let m = BigUint(1)
     bytec_1 // 0x01
     cover 4
-    // src/rsa.algo.ts:342
+    // src/rsa.algo.ts:359
     // for (let i: uint64 = 0; i < 9; i++) {
     intc_2 // 0
 
 main_while_top@64:
-    // src/rsa.algo.ts:342
+    // src/rsa.algo.ts:359
     // for (let i: uint64 = 0; i < 9; i++) {
     dup
     pushint 9
     <
     bz main_after_while@66
-    // src/rsa.algo.ts:343
+    // src/rsa.algo.ts:360
     // m = low(m * low(low(n0 * m) + BigUint(2)))
     dig 2
     uncover 6
     dup
     cover 2
     b*
-    // src/rsa.algo.ts:330
+    // src/rsa.algo.ts:347
     // return BigUint(op.extract(pad128(x), LIMB, LIMB))
     callsub pad128
     extract 64 64
-    // src/rsa.algo.ts:343
+    // src/rsa.algo.ts:360
     // m = low(m * low(low(n0 * m) + BigUint(2)))
     pushbytes 0x02
     b+
-    // src/rsa.algo.ts:330
+    // src/rsa.algo.ts:347
     // return BigUint(op.extract(pad128(x), LIMB, LIMB))
     callsub pad128
     extract 64 64
-    // src/rsa.algo.ts:343
+    // src/rsa.algo.ts:360
     // m = low(m * low(low(n0 * m) + BigUint(2)))
     b*
-    // src/rsa.algo.ts:330
+    // src/rsa.algo.ts:347
     // return BigUint(op.extract(pad128(x), LIMB, LIMB))
     callsub pad128
     extract 64 64
     cover 5
-    // src/rsa.algo.ts:342
+    // src/rsa.algo.ts:359
     // for (let i: uint64 = 0; i < 9; i++) {
     intc_1 // 1
     +
@@ -385,7 +385,7 @@ main_while_top@64:
 main_after_while@66:
     pop
     bury 1
-    // src/rsa.algo.ts:140
+    // src/rsa.algo.ts:157
     // const base = monMul(s, hint.length === 0 ? computeRSquared(n, nInv) : checkHint(hint, n, nInv), n, nInv)
     dup
     len
@@ -393,12 +393,12 @@ main_after_while@66:
     cover 2
     bnz main_ternary_false@25
     popn 2
-    // src/rsa.algo.ts:253
+    // src/rsa.algo.ts:270
     // const bits = op.bitLength(n)
     dig 1
     dup
     bitlen
-    // src/rsa.algo.ts:254
+    // src/rsa.algo.ts:271
     // let x = op.setBit(op.bzero(n.length), n.length * 8 - bits, 1)
     swap
     len
@@ -417,7 +417,7 @@ main_after_while@66:
     setbit
 
 main_while_top@52:
-    // src/rsa.algo.ts:255
+    // src/rsa.algo.ts:272
     // for (let i = bits; i <= n.length * 8 + n.length / 16; i++) {
     dig 7
     pushint 16
@@ -427,7 +427,7 @@ main_while_top@52:
     dig 2
     >=
     bz main_after_while@58
-    // src/rsa.algo.ts:256
+    // src/rsa.algo.ts:273
     // const [carry, twice] = add(x, x)
     dup
     callsub add
@@ -443,7 +443,7 @@ main_while_top@52:
     substring3
     extract 2 0
     swap
-    // src/rsa.algo.ts:257
+    // src/rsa.algo.ts:274
     // x = carry > BigUint(0) || gte(twice, n) ? sub(twice, n) : twice
     bytec_0 // 0x
     b>
@@ -454,13 +454,13 @@ main_while_top@52:
     bz main_ternary_false@56
 
 main_ternary_true@55:
-    // src/rsa.algo.ts:257
+    // src/rsa.algo.ts:274
     // x = carry > BigUint(0) || gte(twice, n) ? sub(twice, n) : twice
     dig 3
     callsub sub
 
 main_ternary_merge@57:
-    // src/rsa.algo.ts:255
+    // src/rsa.algo.ts:272
     // for (let i = bits; i <= n.length * 8 + n.length / 16; i++) {
     swap
     intc_1 // 1
@@ -473,25 +473,25 @@ main_ternary_false@56:
 
 main_after_while@58:
     bury 1
-    // src/rsa.algo.ts:259
+    // src/rsa.algo.ts:276
     // for (let i: uint64 = 0; i < 7; i++) {
     intc_2 // 0
     swap
 
 main_while_top@59:
-    // src/rsa.algo.ts:259
+    // src/rsa.algo.ts:276
     // for (let i: uint64 = 0; i < 7; i++) {
     dig 1
     pushint 7
     <
     bz main_after_while@61
-    // src/rsa.algo.ts:260
+    // src/rsa.algo.ts:277
     // x = monMul(x, x, n, nInv)
     dup
     dig 4
     dig 6
     callsub monMul
-    // src/rsa.algo.ts:259
+    // src/rsa.algo.ts:276
     // for (let i: uint64 = 0; i < 7; i++) {
     swap
     intc_1 // 1
@@ -503,7 +503,7 @@ main_after_while@61:
     bury 1
 
 main_ternary_merge@26:
-    // src/rsa.algo.ts:140
+    // src/rsa.algo.ts:157
     // const base = monMul(s, hint.length === 0 ? computeRSquared(n, nInv) : checkHint(hint, n, nInv), n, nInv)
     swap
     dup
@@ -515,58 +515,58 @@ main_ternary_merge@26:
     dup
     cover 4
     callsub monMul
-    // src/rsa.algo.ts:143
+    // src/rsa.algo.ts:160
     // .itob(op.bitLength(e) - 1)
     dig 10
     dup
     bitlen
     intc_1 // 1
     -
-    // src/rsa.algo.ts:142-143
+    // src/rsa.algo.ts:159-160
     // return op
     //   .itob(op.bitLength(e) - 1)
     itob
-    // src/rsa.algo.ts:144
+    // src/rsa.algo.ts:161
     // .concat(op.itob(e))
     swap
     itob
-    // src/rsa.algo.ts:142-144
+    // src/rsa.algo.ts:159-161
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
     concat
-    // src/rsa.algo.ts:145
+    // src/rsa.algo.ts:162
     // .concat(op.itob(length))
     dig 9
     itob
-    // src/rsa.algo.ts:142-145
+    // src/rsa.algo.ts:159-162
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
     //   .concat(op.itob(length))
     concat
-    // src/rsa.algo.ts:390
+    // src/rsa.algo.ts:407
     // return op.bzero(width - x.length).concat(x)
     dig 2
     len
-    // src/rsa.algo.ts:146
+    // src/rsa.algo.ts:163
     // .concat(pad(Bytes(nInv), LIMB))
     intc_0 // 64
-    // src/rsa.algo.ts:390
+    // src/rsa.algo.ts:407
     // return op.bzero(width - x.length).concat(x)
     swap
     -
     bzero
     uncover 3
     concat
-    // src/rsa.algo.ts:142-146
+    // src/rsa.algo.ts:159-163
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
     //   .concat(op.itob(length))
     //   .concat(pad(Bytes(nInv), LIMB))
     concat
-    // src/rsa.algo.ts:142-147
+    // src/rsa.algo.ts:159-164
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
@@ -575,7 +575,7 @@ main_ternary_merge@26:
     //   .concat(n)
     uncover 2
     concat
-    // src/rsa.algo.ts:142-148
+    // src/rsa.algo.ts:159-165
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
@@ -585,7 +585,7 @@ main_ternary_merge@26:
     //   .concat(s)
     uncover 2
     concat
-    // src/rsa.algo.ts:142-149
+    // src/rsa.algo.ts:159-166
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
@@ -596,7 +596,7 @@ main_ternary_merge@26:
     //   .concat(base)
     dig 1
     concat
-    // src/rsa.algo.ts:142-150
+    // src/rsa.algo.ts:159-167
     // return op
     //   .itob(op.bitLength(e) - 1)
     //   .concat(op.itob(e))
@@ -609,23 +609,23 @@ main_ternary_merge@26:
     swap
     concat
     dupn 2
-    // src/rsa.algo.ts:162
+    // src/rsa.algo.ts:179
     // let remaining = op.extractUint64(state, 0)
     intc_2 // 0
     extract_uint64
     swap
-    // src/rsa.algo.ts:163
+    // src/rsa.algo.ts:180
     // const e = op.extractUint64(state, 8)
     dup
     pushint 8
     extract_uint64
     cover 3
-    // src/rsa.algo.ts:164
+    // src/rsa.algo.ts:181
     // const nInv = BigUint(op.extract(state, 24, LIMB))
     dup
     extract 24 64
     cover 4
-    // src/rsa.algo.ts:165
+    // src/rsa.algo.ts:182
     // const width: uint64 = (state.length - HEADER) / 4
     dup
     len
@@ -633,14 +633,14 @@ main_ternary_merge@26:
     -
     pushint 4
     /
-    // src/rsa.algo.ts:166
+    // src/rsa.algo.ts:183
     // const n = op.extract(state, HEADER, width)
     dig 1
     intc_3 // 88
     dig 2
     extract3
     cover 3
-    // src/rsa.algo.ts:167
+    // src/rsa.algo.ts:184
     // const s = op.extract(state, HEADER + width, width)
     intc_3 // 88
     dig 1
@@ -650,7 +650,7 @@ main_ternary_merge@26:
     dig 2
     extract3
     cover 3
-    // src/rsa.algo.ts:168
+    // src/rsa.algo.ts:185
     // const base = op.extract(state, HEADER + 2 * width, width)
     pushint 2
     dig 1
@@ -662,7 +662,7 @@ main_ternary_merge@26:
     dig 2
     extract3
     cover 3
-    // src/rsa.algo.ts:169
+    // src/rsa.algo.ts:186
     // let acc = op.extract(state, HEADER + 3 * width, width)
     pushint 3
     dig 1
@@ -673,31 +673,31 @@ main_ternary_merge@26:
     cover 4
     swap
     extract3
-    // src/rsa.algo.ts:170
+    // src/rsa.algo.ts:187
     // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
     intc_2 // 0
 
 main_while_top@27:
-    // src/rsa.algo.ts:170
+    // src/rsa.algo.ts:187
     // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
     dup
-    // src/rsa.algo.ts:99
+    // src/rsa.algo.ts:116
     // return rsaFinish(rsaStep(rsaStart(signature, modulus, exponent, hint), ALL_BITS), digest, modulus, exponent, digestInfo)
     pushint 32
-    // src/rsa.algo.ts:170
+    // src/rsa.algo.ts:187
     // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
     <
     bz main_after_while@35
     dig 2
     bz main_after_while@35
-    // src/rsa.algo.ts:171
+    // src/rsa.algo.ts:188
     // remaining--
     uncover 2
     intc_1 // 1
     -
     dup
     cover 3
-    // src/rsa.algo.ts:172
+    // src/rsa.algo.ts:189
     // acc = monMul(acc, acc, n, nInv)
     uncover 2
     dup
@@ -705,10 +705,10 @@ main_while_top@27:
     dig 12
     callsub monMul
     cover 2
-    // src/rsa.algo.ts:173
+    // src/rsa.algo.ts:190
     // if (remaining === 0) {
     bnz main_else_body@31
-    // src/rsa.algo.ts:174
+    // src/rsa.algo.ts:191
     // acc = monMul(acc, s, n, nInv)
     swap
     dig 5
@@ -718,20 +718,20 @@ main_while_top@27:
     swap
 
 main_after_if_else@34:
-    // src/rsa.algo.ts:170
+    // src/rsa.algo.ts:187
     // for (let done: uint64 = 0; done < bits && remaining > 0; done++) {
     intc_1 // 1
     +
     b main_while_top@27
 
 main_else_body@31:
-    // src/rsa.algo.ts:175
+    // src/rsa.algo.ts:192
     // } else if (op.getBit(e, remaining)) {
     dig 8
     dig 3
     getbit
     bz main_after_if_else@34
-    // src/rsa.algo.ts:176
+    // src/rsa.algo.ts:193
     // acc = monMul(acc, base, n, nInv)
     swap
     dig 4
@@ -753,7 +753,7 @@ main_after_while@35:
     pop
     uncover 4
     pop
-    // src/rsa.algo.ts:179
+    // src/rsa.algo.ts:196
     // return op.replace(op.replace(state, 0, op.itob(remaining)), HEADER + 3 * width, acc)
     swap
     itob
@@ -763,20 +763,20 @@ main_after_while@35:
     cover 2
     replace3
     dupn 2
-    // src/rsa.algo.ts:196
-    // assert(op.extractUint64(state, 0) === 0, 'RSA verification is not finished')
+    // src/rsa.algo.ts:213
+    // assert(op.extractUint64(state, 0) === 0, errUnfinished)
     intc_2 // 0
     extract_uint64
     !
-    assert // RSA verification is not finished
-    // src/rsa.algo.ts:197
+    assert // ERR:UNFINISHED
+    // src/rsa.algo.ts:214
     // const length = op.extractUint64(state, 16)
     dup
     pushint 16
     extract_uint64
     dup
     uncover 2
-    // src/rsa.algo.ts:198
+    // src/rsa.algo.ts:215
     // const width: uint64 = (state.length - HEADER) / 4
     len
     intc_3 // 88
@@ -784,15 +784,15 @@ main_after_while@35:
     pushint 4
     /
     swap
-    // src/rsa.algo.ts:200
+    // src/rsa.algo.ts:217
     // modulus.length === length &&
     dig 8
     ==
-    // src/rsa.algo.ts:200-201
+    // src/rsa.algo.ts:217-218
     // modulus.length === length &&
     //   op.extract(state, HEADER, width) === pad(modulus, width) &&
     bz main_bool_false@40
-    // src/rsa.algo.ts:201
+    // src/rsa.algo.ts:218
     // op.extract(state, HEADER, width) === pad(modulus, width) &&
     dig 2
     intc_3 // 88
@@ -800,7 +800,7 @@ main_after_while@35:
     dup
     cover 3
     extract3
-    // src/rsa.algo.ts:390
+    // src/rsa.algo.ts:407
     // return op.bzero(width - x.length).concat(x)
     swap
     dig 9
@@ -808,31 +808,31 @@ main_after_while@35:
     bzero
     dig 12
     concat
-    // src/rsa.algo.ts:201
+    // src/rsa.algo.ts:218
     // op.extract(state, HEADER, width) === pad(modulus, width) &&
     ==
-    // src/rsa.algo.ts:200-201
+    // src/rsa.algo.ts:217-218
     // modulus.length === length &&
     //   op.extract(state, HEADER, width) === pad(modulus, width) &&
     bz main_bool_false@40
-    // src/rsa.algo.ts:202
+    // src/rsa.algo.ts:219
     // exponent.length <= 8 &&
     dig 3
     pushint 8
     <=
-    // src/rsa.algo.ts:200-202
+    // src/rsa.algo.ts:217-219
     // modulus.length === length &&
     //   op.extract(state, HEADER, width) === pad(modulus, width) &&
     //   exponent.length <= 8 &&
     bz main_bool_false@40
-    // src/rsa.algo.ts:203
+    // src/rsa.algo.ts:220
     // op.btoi(exponent) === op.extractUint64(state, 8),
     dig 2
     pushint 8
     extract_uint64
     dig 10
     ==
-    // src/rsa.algo.ts:200-203
+    // src/rsa.algo.ts:217-220
     // modulus.length === length &&
     //   op.extract(state, HEADER, width) === pad(modulus, width) &&
     //   exponent.length <= 8 &&
@@ -841,24 +841,24 @@ main_after_while@35:
     intc_1 // 1
 
 main_bool_merge@41:
-    // src/rsa.algo.ts:199-205
+    // src/rsa.algo.ts:216-222
     // assert(
     //   modulus.length === length &&
     //     op.extract(state, HEADER, width) === pad(modulus, width) &&
     //     exponent.length <= 8 &&
     //     op.btoi(exponent) === op.extractUint64(state, 8),
-    //   'RSA state is for a different key',
+    //   errKeyMismatch,
     // )
-    assert // RSA state is for a different key
-    // src/rsa.algo.ts:53
+    assert // ERR:KEY
+    // src/rsa.algo.ts:70
     // return rsaPkcs1v15Verify(digest, signature, modulus, exponent, SHA256_DIGEST_INFO, hint)
     pushbytes 0x3031300d060960864801650304020105000420
-    // src/rsa.algo.ts:206
+    // src/rsa.algo.ts:223
     // const tail = digestInfo.concat(digest)
     dig 12
     concat
-    // src/rsa.algo.ts:207
-    // assert(length >= tail.length + 11, 'RSA modulus too short for the digest')
+    // src/rsa.algo.ts:224
+    // assert(length >= tail.length + 11, errModulusShort)
     dup
     len
     dup
@@ -868,8 +868,8 @@ main_bool_merge@41:
     dup
     uncover 2
     >=
-    assert // RSA modulus too short for the digest
-    // src/rsa.algo.ts:209
+    assert // ERR:MODSHORT
+    // src/rsa.algo.ts:226
     // .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
     pushint 3
     -
@@ -877,30 +877,30 @@ main_bool_merge@41:
     -
     bzero
     b~
-    // src/rsa.algo.ts:208
+    // src/rsa.algo.ts:225
     // const block = Bytes.fromHex('0001')
     pushbytes 0x0001
-    // src/rsa.algo.ts:208-209
+    // src/rsa.algo.ts:225-226
     // const block = Bytes.fromHex('0001')
     //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
     swap
     concat
-    // src/rsa.algo.ts:210
+    // src/rsa.algo.ts:227
     // .concat(Bytes.fromHex('00'))
     pushbytes 0x00
-    // src/rsa.algo.ts:208-210
+    // src/rsa.algo.ts:225-227
     // const block = Bytes.fromHex('0001')
     //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
     //   .concat(Bytes.fromHex('00'))
     concat
-    // src/rsa.algo.ts:208-211
+    // src/rsa.algo.ts:225-228
     // const block = Bytes.fromHex('0001')
     //   .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
     //   .concat(Bytes.fromHex('00'))
     //   .concat(tail)
     swap
     concat
-    // src/rsa.algo.ts:212
+    // src/rsa.algo.ts:229
     // return op.extract(state, HEADER + 3 * width, width) === pad(block, width)
     pushint 3
     uncover 2
@@ -913,7 +913,7 @@ main_bool_merge@41:
     swap
     dig 2
     extract3
-    // src/rsa.algo.ts:390
+    // src/rsa.algo.ts:407
     // return op.bzero(width - x.length).concat(x)
     dig 2
     len
@@ -923,11 +923,15 @@ main_bool_merge@41:
     bzero
     uncover 2
     concat
-    // src/rsa.algo.ts:212
+    // src/rsa.algo.ts:229
     // return op.extract(state, HEADER + 3 * width, width) === pad(block, width)
     ==
-    // smart_contracts/rsa/consumer.algo.ts:91
-    // return verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3))
+    // smart_contracts/rsa/consumer.algo.ts:93
+    // assert(verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3)), errSignature)
+    assert // ERR:BADSIG
+    // smart_contracts/rsa/consumer.algo.ts:94
+    // return true
+    intc_1 // 1
     return
 
 main_bool_false@40:
@@ -935,8 +939,8 @@ main_bool_false@40:
     b main_bool_merge@41
 
 main_ternary_false@25:
-    // src/rsa.algo.ts:223
-    // assert(hint.length > n.length && hint.length <= n.length + LIMB, 'Montgomery hint is the wrong length')
+    // src/rsa.algo.ts:240
+    // assert(hint.length > n.length && hint.length <= n.length + LIMB, errHintLength)
     dig 3
     len
     dup
@@ -952,10 +956,10 @@ main_ternary_false@25:
     intc_1 // 1
 
 main_bool_merge@46:
-    // src/rsa.algo.ts:223
-    // assert(hint.length > n.length && hint.length <= n.length + LIMB, 'Montgomery hint is the wrong length')
-    assert // Montgomery hint is the wrong length
-    // src/rsa.algo.ts:224
+    // src/rsa.algo.ts:240
+    // assert(hint.length > n.length && hint.length <= n.length + LIMB, errHintLength)
+    assert // ERR:HINTLEN
+    // src/rsa.algo.ts:241
     // const h = op.extract(hint, 0, n.length)
     swap
     dup
@@ -967,7 +971,7 @@ main_bool_merge@46:
     dup
     cover 3
     cover 4
-    // src/rsa.algo.ts:225
+    // src/rsa.algo.ts:242
     // const q = BigUint(op.extract(hint, n.length))
     uncover 5
     dig 1
@@ -977,16 +981,16 @@ main_bool_merge@46:
     uncover 2
     extract3
     cover 7
-    // src/rsa.algo.ts:226
-    // assert(!gte(h, n), 'Montgomery hint is not below the modulus')
+    // src/rsa.algo.ts:243
+    // assert(!gte(h, n), errHintRange)
     dig 1
     dig 6
     dup
     cover 4
     callsub gte
     !
-    assert // Montgomery hint is not below the modulus
-    // src/rsa.algo.ts:227
+    assert // ERR:HINTRANGE
+    // src/rsa.algo.ts:244
     // const one = op.setBit(op.bzero(n.length), n.length * 8 - 1, 1)
     dup
     bzero
@@ -997,28 +1001,28 @@ main_bool_merge@46:
     -
     intc_1 // 1
     setbit
-    // src/rsa.algo.ts:228
+    // src/rsa.algo.ts:245
     // const rModN = monMul(h, one, n, nInv)
     uncover 2
     dig 7
     callsub monMul
     swap
-    // src/rsa.algo.ts:230
+    // src/rsa.algo.ts:247
     // let carry = BigUint(0)
     bytec_0 // 0x
     swap
 
 main_while_top@47:
-    // src/rsa.algo.ts:231
+    // src/rsa.algo.ts:248
     // for (let i = n.length; i > 0; ) {
     dup
     bz main_after_while@49
-    // src/rsa.algo.ts:232
+    // src/rsa.algo.ts:249
     // i -= LIMB
     intc_0 // 64
     -
     dup
-    // src/rsa.algo.ts:233
+    // src/rsa.algo.ts:250
     // const r = mac(BigUint(op.extract(rModN, i, LIMB)), q, BigUint(op.extract(n, i, LIMB)), carry)
     dig 3
     dig 1
@@ -1032,16 +1036,16 @@ main_while_top@47:
     swap
     uncover 4
     callsub mac
-    // src/rsa.algo.ts:320
+    // src/rsa.algo.ts:337
     // return BigUint(op.extract(r, 0, LIMB))
     dup
     extract 0 64
-    // src/rsa.algo.ts:234
-    // assert(lo(r) === BigUint(0), 'Montgomery hint is wrong')
+    // src/rsa.algo.ts:251
+    // assert(lo(r) === BigUint(0), errHint)
     bytec_0 // 0x
     b==
-    assert // Montgomery hint is wrong
-    // src/rsa.algo.ts:325
+    assert // ERR:BADHINT
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     extract 64 0
     swap
@@ -1052,11 +1056,11 @@ main_after_while@49:
     bury 1
     uncover 5
     pop
-    // src/rsa.algo.ts:237
-    // assert(carry === BigUint(1), 'Montgomery hint is wrong')
+    // src/rsa.algo.ts:254
+    // assert(carry === BigUint(1), errHint)
     bytec_1 // 0x01
     b==
-    assert // Montgomery hint is wrong
+    assert // ERR:BADHINT
     b main_ternary_merge@26
 
 main_bool_false@45:
@@ -1082,41 +1086,41 @@ main_bool_false@6:
 
 // src/rsa.algo.ts::monMul(a: bytes, b: bytes, n: bytes, nInv: bytes) -> bytes:
 monMul:
-    // src/rsa.algo.ts:269
+    // src/rsa.algo.ts:286
     // function monMul(a: bytes, b: bytes, n: bytes, nInv: biguint): bytes {
     proto 4 1
-    // src/rsa.algo.ts:270
+    // src/rsa.algo.ts:287
     // const len = n.length
     frame_dig -2
     len
-    // src/rsa.algo.ts:271
+    // src/rsa.algo.ts:288
     // const bottom: uint64 = len - LIMB
     dup
     intc_0 // 64
     -
     swap
-    // src/rsa.algo.ts:272
+    // src/rsa.algo.ts:289
     // let t = op.bzero(len)
     dup
     bzero
     cover 2
-    // src/rsa.algo.ts:273
+    // src/rsa.algo.ts:290
     // let top = BigUint(0)
     bytec_0 // 0x
 
 monMul_while_top@1:
-    // src/rsa.algo.ts:275
+    // src/rsa.algo.ts:292
     // for (let i = len; i > 0; ) {
     dig 1
     bz monMul_after_while@6
-    // src/rsa.algo.ts:276
+    // src/rsa.algo.ts:293
     // i -= LIMB
     swap
     intc_0 // 64
     -
     dup
     cover 2
-    // src/rsa.algo.ts:277
+    // src/rsa.algo.ts:294
     // const bi = BigUint(op.extract(b, i, LIMB))
     frame_dig -3
     swap
@@ -1124,7 +1128,7 @@ monMul_while_top@1:
     extract3
     dup
     cover 4
-    // src/rsa.algo.ts:278
+    // src/rsa.algo.ts:295
     // let r = mac(BigUint(op.extract(t, bottom, LIMB)), BigUint(op.extract(a, bottom, LIMB)), bi, BigUint(0))
     frame_dig 0
     dig 4
@@ -1139,26 +1143,26 @@ monMul_while_top@1:
     uncover 3
     bytec_0 // 0x
     callsub mac
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     dup
     extract 64 0
     cover 4
-    // src/rsa.algo.ts:320
+    // src/rsa.algo.ts:337
     // return BigUint(op.extract(r, 0, LIMB))
     extract 0 64
-    // src/rsa.algo.ts:281
+    // src/rsa.algo.ts:298
     // const m = low(s * nInv)
     dup
     frame_dig -1
     b*
-    // src/rsa.algo.ts:330
+    // src/rsa.algo.ts:347
     // return BigUint(op.extract(pad128(x), LIMB, LIMB))
     callsub pad128
     extract 64 64
     dup
     cover 7
-    // src/rsa.algo.ts:283
+    // src/rsa.algo.ts:300
     // let c2 = hi(mac(s, m, BigUint(op.extract(n, bottom, LIMB)), BigUint(0)))
     frame_dig -2
     dig 3
@@ -1166,29 +1170,29 @@ monMul_while_top@1:
     extract3
     bytec_0 // 0x
     callsub mac
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     extract 64 0
     cover 4
-    // src/rsa.algo.ts:284
+    // src/rsa.algo.ts:301
     // let next = Bytes()
     bytec_0 // 0x
     cover 4
     swap
 
 monMul_while_top@3:
-    // src/rsa.algo.ts:285
+    // src/rsa.algo.ts:302
     // for (let j = bottom; j > 0; ) {
     dig 1
     bz monMul_after_while@5
-    // src/rsa.algo.ts:286
+    // src/rsa.algo.ts:303
     // j -= LIMB
     swap
     intc_0 // 64
     -
     dup
     cover 2
-    // src/rsa.algo.ts:287
+    // src/rsa.algo.ts:304
     // r = mac(BigUint(op.extract(t, j, LIMB)), BigUint(op.extract(a, j, LIMB)), bi, c1)
     frame_dig 0
     dig 1
@@ -1201,15 +1205,15 @@ monMul_while_top@3:
     dig 11
     uncover 7
     callsub mac
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     dup
     extract 64 0
     cover 5
-    // src/rsa.algo.ts:320
+    // src/rsa.algo.ts:337
     // return BigUint(op.extract(r, 0, LIMB))
     extract 0 64
-    // src/rsa.algo.ts:289
+    // src/rsa.algo.ts:306
     // r = mac(lo(r), m, BigUint(op.extract(n, j, LIMB)), c2)
     frame_dig -2
     uncover 2
@@ -1219,12 +1223,12 @@ monMul_while_top@3:
     swap
     uncover 8
     callsub mac
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     dup
     extract 64 0
     cover 6
-    // src/rsa.algo.ts:291
+    // src/rsa.algo.ts:308
     // next = op.extract(r, 0, LIMB).concat(next)
     extract 0 64
     uncover 5
@@ -1238,21 +1242,21 @@ monMul_after_while@5:
     pop
     uncover 6
     pop
-    // src/rsa.algo.ts:293
+    // src/rsa.algo.ts:310
     // r = mac(c1, top, BigUint(1), c2)
     uncover 2
     swap
     bytec_1 // 0x01
     uncover 5
     callsub mac
-    // src/rsa.algo.ts:294
+    // src/rsa.algo.ts:311
     // t = op.extract(r, 0, LIMB).concat(next)
     dup
     extract 0 64
     uncover 3
     concat
     frame_bury 0
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     extract 64 0
     b monMul_while_top@1
@@ -1260,7 +1264,7 @@ monMul_after_while@5:
 monMul_after_while@6:
     bury 1
     bury 1
-    // src/rsa.algo.ts:297
+    // src/rsa.algo.ts:314
     // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
     bytec_0 // 0x
     b>
@@ -1271,14 +1275,14 @@ monMul_after_while@6:
     bz monMul_ternary_false@9
 
 monMul_ternary_true@8:
-    // src/rsa.algo.ts:297
+    // src/rsa.algo.ts:314
     // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
     frame_dig 0
     frame_dig -2
     callsub sub
 
 monMul_ternary_merge@10:
-    // src/rsa.algo.ts:297
+    // src/rsa.algo.ts:314
     // return top > BigUint(0) || gte(t, n) ? sub(t, n) : t
     swap
     retsub
@@ -1290,22 +1294,22 @@ monMul_ternary_false@9:
 
 // src/rsa.algo.ts::mac(t: bytes, x: bytes, y: bytes, c: bytes) -> bytes:
 mac:
-    // src/rsa.algo.ts:307
+    // src/rsa.algo.ts:324
     // function mac(t: biguint, x: biguint, y: biguint, c: biguint): bytes {
     proto 4 1
-    // src/rsa.algo.ts:308
+    // src/rsa.algo.ts:325
     // const p = pad128(x * y)
     frame_dig -3
     frame_dig -2
     b*
     callsub pad128
-    // src/rsa.algo.ts:309
+    // src/rsa.algo.ts:326
     // let u = Bytes(BigUint(op.extract(p, LIMB, LIMB)) + t)
     dup
     extract 64 64
     frame_dig -4
     b+
-    // src/rsa.algo.ts:310
+    // src/rsa.algo.ts:327
     // u = op.bzero(LIMB + 1 - u.length).concat(u)
     dup
     len
@@ -1315,13 +1319,13 @@ mac:
     bzero
     swap
     concat
-    // src/rsa.algo.ts:311
+    // src/rsa.algo.ts:328
     // let v = Bytes(BigUint(op.extract(u, 1, LIMB)) + c)
     dup
     extract 1 64
     frame_dig -1
     b+
-    // src/rsa.algo.ts:312
+    // src/rsa.algo.ts:329
     // v = op.bzero(LIMB + 1 - v.length).concat(v)
     dup
     len
@@ -1331,12 +1335,12 @@ mac:
     bzero
     swap
     concat
-    // src/rsa.algo.ts:313-314
+    // src/rsa.algo.ts:330-331
     // return op
     //   .extract(v, 1, LIMB)
     dup
     extract 1 64
-    // src/rsa.algo.ts:315
+    // src/rsa.algo.ts:332
     // .concat(Bytes(BigUint(op.extract(p, 0, LIMB)) + BigUint(op.getByte(u, 0) + op.getByte(v, 0))))
     uncover 3
     extract 0 64
@@ -1349,7 +1353,7 @@ mac:
     +
     itob
     b+
-    // src/rsa.algo.ts:313-315
+    // src/rsa.algo.ts:330-332
     // return op
     //   .extract(v, 1, LIMB)
     //   .concat(Bytes(BigUint(op.extract(p, 0, LIMB)) + BigUint(op.getByte(u, 0) + op.getByte(v, 0))))
@@ -1359,10 +1363,10 @@ mac:
 
 // src/rsa.algo.ts::pad128(x: bytes) -> bytes:
 pad128:
-    // src/rsa.algo.ts:334
+    // src/rsa.algo.ts:351
     // function pad128(x: biguint): bytes {
     proto 1 1
-    // src/rsa.algo.ts:336
+    // src/rsa.algo.ts:353
     // return op.bzero(2 * LIMB - b.length).concat(b)
     frame_dig -1
     len
@@ -1377,21 +1381,21 @@ pad128:
 
 // src/rsa.algo.ts::add(x: bytes, y: bytes) -> bytes:
 add:
-    // src/rsa.algo.ts:349
+    // src/rsa.algo.ts:366
     // function add(x: bytes, y: bytes): [biguint, bytes] {
     proto 2 1
-    // src/rsa.algo.ts:350
+    // src/rsa.algo.ts:367
     // let carry = BigUint(0)
     bytec_0 // 0x
-    // src/rsa.algo.ts:351
+    // src/rsa.algo.ts:368
     // let sum = Bytes()
     dup
-    // src/rsa.algo.ts:352
+    // src/rsa.algo.ts:369
     // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
     intc_2 // 0
 
 add_while_top@1:
-    // src/rsa.algo.ts:352
+    // src/rsa.algo.ts:369
     // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
     frame_dig -2
     len
@@ -1400,7 +1404,7 @@ add_while_top@1:
     dig 1
     >
     bz add_after_while@3
-    // src/rsa.algo.ts:353
+    // src/rsa.algo.ts:370
     // const r = mac(limb(x, j), limb(y, j), BigUint(1), carry)
     frame_dig -2
     dig 1
@@ -1411,18 +1415,18 @@ add_while_top@1:
     bytec_1 // 0x01
     uncover 5
     callsub mac
-    // src/rsa.algo.ts:325
+    // src/rsa.algo.ts:342
     // return BigUint(op.extract(r, LIMB))
     dup
     extract 64 0
     cover 3
-    // src/rsa.algo.ts:355
+    // src/rsa.algo.ts:372
     // sum = op.extract(r, 0, LIMB).concat(sum)
     extract 0 64
     uncover 2
     concat
     swap
-    // src/rsa.algo.ts:352
+    // src/rsa.algo.ts:369
     // for (let j: uint64 = 0; j < x.length / LIMB; j++) {
     intc_1 // 1
     +
@@ -1430,7 +1434,7 @@ add_while_top@1:
 
 add_after_while@3:
     pop
-    // src/rsa.algo.ts:357
+    // src/rsa.algo.ts:374
     // return [carry, sum]
     swap
     dup
@@ -1458,16 +1462,16 @@ add_after_while@3:
 
 // src/rsa.algo.ts::sub(x: bytes, n: bytes) -> bytes:
 sub:
-    // src/rsa.algo.ts:361
+    // src/rsa.algo.ts:378
     // function sub(x: bytes, n: bytes): bytes {
     proto 2 1
-    // src/rsa.algo.ts:368
+    // src/rsa.algo.ts:385
     // return n.bitwiseInvert().bitwiseOr(Bytes.fromHex('01'))
     frame_dig -1
     b~
     bytec_1 // 0x01
     b|
-    // src/rsa.algo.ts:362
+    // src/rsa.algo.ts:379
     // const [, difference] = add(x, negate(n))
     frame_dig -2
     swap
@@ -1479,29 +1483,29 @@ sub:
     len
     substring3
     extract 2 0
-    // src/rsa.algo.ts:363
+    // src/rsa.algo.ts:380
     // return difference
     retsub
 
 
 // src/rsa.algo.ts::gte(x: bytes, y: bytes) -> uint64:
 gte:
-    // src/rsa.algo.ts:372
+    // src/rsa.algo.ts:389
     // function gte(x: bytes, y: bytes): boolean {
     proto 2 1
-    // src/rsa.algo.ts:373
+    // src/rsa.algo.ts:390
     // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
     intc_2 // 0
 
 gte_while_top@1:
-    // src/rsa.algo.ts:373
+    // src/rsa.algo.ts:390
     // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
     frame_dig -2
     len
     dig 1
     >
     bz gte_after_while@5
-    // src/rsa.algo.ts:374
+    // src/rsa.algo.ts:391
     // const xl = BigUint(op.extract(x, offset, LIMB))
     frame_dig -2
     dig 1
@@ -1512,7 +1516,7 @@ gte_while_top@1:
     dup
     cover 2
     cover 3
-    // src/rsa.algo.ts:375
+    // src/rsa.algo.ts:392
     // const yl = BigUint(op.extract(y, offset, LIMB))
     frame_dig -1
     swap
@@ -1520,12 +1524,12 @@ gte_while_top@1:
     extract3
     dup
     cover 2
-    // src/rsa.algo.ts:376
+    // src/rsa.algo.ts:393
     // if (xl !== yl) {
     b!=
     bz gte_after_if_else@4
     bury 1
-    // src/rsa.algo.ts:377
+    // src/rsa.algo.ts:394
     // return xl > yl
     b>
     retsub
@@ -1533,14 +1537,14 @@ gte_while_top@1:
 gte_after_if_else@4:
     pop
     bury 1
-    // src/rsa.algo.ts:373
+    // src/rsa.algo.ts:390
     // for (let offset: uint64 = 0; offset < x.length; offset += LIMB) {
     intc_0 // 64
     +
     b gte_while_top@1
 
 gte_after_while@5:
-    // src/rsa.algo.ts:380
+    // src/rsa.algo.ts:397
     // return true
     intc_1 // 1
     swap
@@ -1549,10 +1553,10 @@ gte_after_while@5:
 
 // src/rsa.algo.ts::limb(x: bytes, i: uint64) -> bytes:
 limb:
-    // src/rsa.algo.ts:384
+    // src/rsa.algo.ts:401
     // function limb(x: bytes, i: uint64): biguint {
     proto 2 1
-    // src/rsa.algo.ts:385
+    // src/rsa.algo.ts:402
     // return BigUint(op.extract(x, x.length - (i + 1) * LIMB, LIMB))
     frame_dig -2
     len

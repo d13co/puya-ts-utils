@@ -1,12 +1,12 @@
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
 import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount'
-import { generateAccount } from 'algosdk'
+import { generateAccount, TransactionWithSigner } from 'algosdk'
 import { createHash } from 'node:crypto'
-import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { RsaConsumerFactory } from '../artifacts/rsa/RsaConsumerClient'
-import { RsaSplitConsumerComposer, RsaSplitConsumerFactory } from '../artifacts/rsa/RsaSplitConsumerClient'
+import { RsaSplitConsumerFactory } from '../artifacts/rsa/RsaSplitConsumerClient'
+import { RsaSplitSDK, RsaVerifierSDK } from '../../src/rsaSdk'
+import { sendMutated } from '../test-helpers'
 import { PL_DNSKEY, ROOT_DNSKEY } from './dnskey-fixtures'
 import { montgomeryHint, signWithNewKey } from './test-keys'
 
@@ -111,111 +111,100 @@ describe('RSA verification on the AVM', () => {
   })
 
   describe('hosted in a logic signature', () => {
-    const createAsset = async () => {
+    const publicKey = hex(ROOT_DNSKEY.publicKey)
+    const digest = createHash('sha256').update(hex(ROOT_DNSKEY.signedData)).digest()
+
+    const verifierSdk = () => {
       const { algorand, testAccount } = localnet.context
-      return (await algorand.send.assetCreate({ sender: testAccount, total: 1n })).assetId
+      return new RsaVerifierSDK({ algorand, writerAccount: { sender: testAccount.addr, signer: testAccount.signer } })
     }
 
-    /** The verifier's program, and a group that pools enough budget to run it. */
-    const verifyInLsig = async (
-      signature: Uint8Array,
-      groupSize: number,
-      hint: Uint8Array = NO_HINT,
-      tamper: {
-        note?: Uint8Array
-        rekeyTo?: string
-        closeRemainderTo?: string
-        amount?: number
-        fee?: number
-        asAssetOptIn?: boolean
-      } = {},
-    ) => {
-      const { algorand, testAccount } = localnet.context
-      const teal = readFileSync(join(__dirname, '../artifacts/rsa/RsaSha256Verifier.teal'), 'utf8')
-      const { compiledBase64ToBytes: program } = await algorand.app.compileTeal(teal)
-      const publicKey = hex(ROOT_DNSKEY.publicKey)
-      const digest = createHash('sha256').update(hex(ROOT_DNSKEY.signedData)).digest()
-      const verifier = algorand.account.logicsig(
-        program,
-        [digest, signature, publicKey, hint].map((a) => new Uint8Array(a)),
-      )
-      const note = Buffer.concat([createHash('sha256').update(publicKey).digest(), digest])
-
-      // The verifier sends nothing and pays no fee, and its note says what it
-      // checked; the rest of the group is there for the budget it pools, and one
-      // of them covers every fee.
-      const common = { sender: verifier, staticFee: AlgoAmount.MicroAlgo(tamper.fee ?? 0), note: new Uint8Array(tamper.note ?? note) }
-      const group = tamper.asAssetOptIn
-        ? algorand.newGroup().addAssetOptIn({ ...common, assetId: await createAsset() })
-        : algorand.newGroup().addPayment({
-            ...common,
-            receiver: verifier,
-            amount: AlgoAmount.MicroAlgo(tamper.amount ?? 0),
-            rekeyTo: tamper.rekeyTo,
-            closeRemainderTo: tamper.closeRemainderTo,
-          })
-      for (let i = 1; i < groupSize; i++) {
-        group.addPayment({
-          sender: testAccount,
-          receiver: testAccount,
-          amount: AlgoAmount.MicroAlgo(0),
-          note: `pool ${i}`,
-          staticFee: AlgoAmount.MicroAlgo(i === 1 ? 1000 * groupSize : 0),
-        })
-      }
-      return { program, send: () => group.send() }
-    }
+    /** The verifier's group with the hint, 5 transactions, as the SDK builds it. */
+    const verifierGroup = (sdk: RsaVerifierSDK, signature = hex(ROOT_DNSKEY.signature)) =>
+      sdk['makeVerifyTxns']({ digest, signature, publicKey, hint: ROOT_HINT, groupSize: 5 })
 
     test('verifies the root KSK signature, pooling budget across 7 transactions', async () => {
-      const { program, send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 7)
+      const sdk = verifierSdk()
 
-      console.log(`RsaSha256Verifier program: ${program.length} bytes`)
-      await expect(send()).resolves.toBeDefined()
+      const result = await sdk.verify({ digest, signature: hex(ROOT_DNSKEY.signature), publicKey })
+
+      console.log(`RsaSha256Verifier program: ${sdk.program.length} bytes`)
+      expect(result.transactions).toHaveLength(7)
     })
 
     test('verifies it across 5 transactions given the Montgomery hint', async () => {
-      const { send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 5, ROOT_HINT)
+      const result = await verifierSdk().verify({ digest, signature: hex(ROOT_DNSKEY.signature), publicKey, hint: ROOT_HINT })
 
-      await expect(send()).resolves.toBeDefined()
+      expect(result.transactions).toHaveLength(5)
     })
 
     test('rejects the signature with one byte flipped', async () => {
       const signature = hex(ROOT_DNSKEY.signature)
       signature[100] ^= 0x01
-      const { send } = await verifyInLsig(signature, 5, ROOT_HINT)
 
-      await expect(send()).rejects.toThrow(/rejected by logic/)
+      await expect(verifierSdk().verify({ digest, signature, publicKey, hint: ROOT_HINT })).rejects.toThrow(
+        'Error BADSIG: RSA signature does not verify',
+      )
     })
 
-    test('refuses to rekey the verifier', async () => {
-      const { send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 5, ROOT_HINT, {
-        rekeyTo: localnet.context.testAccount.addr.toString(),
-      })
+    test('maps a failure inside the RSA subroutines to its code', async () => {
+      const wrongHint = Buffer.from(ROOT_HINT)
+      wrongHint[100] ^= 0x01
 
-      await expect(send()).rejects.toThrow(/rejected by logic/)
+      await expect(
+        verifierSdk().verify({ digest, signature: hex(ROOT_DNSKEY.signature), publicKey, hint: wrongHint, groupSize: 5 }),
+      ).rejects.toThrow('Error BADHINT: Montgomery hint is wrong')
     })
 
-    test.each<[string, Parameters<typeof verifyInLsig>[3]]>([
-      ['send an amount', { amount: 1 }],
-      ['pay a fee', { fee: 1000 }],
-      ['close out', { closeRemainderTo: generateAccount().addr.toString() }],
-      ['sign anything but a payment', { asAssetOptIn: true }],
-    ])('refuses to let the verifier %s', async (_, tamper) => {
-      const { send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 5, ROOT_HINT, tamper)
+    test('refuses a key with no modulus', async () => {
+      await expect(
+        verifierSdk().verify({ digest, signature: hex(ROOT_DNSKEY.signature), publicKey: hex('03010001'), groupSize: 2 }),
+      ).rejects.toThrow('Error NOMOD: RSA key has no modulus')
+    })
 
-      await expect(send()).rejects.toThrow(/rejected by logic/)
+    test.each<[string, (txns: TransactionWithSigner[]) => void]>([
+      // @ts-expect-error readonly
+      ['rekey the verifier', ([v]) => (v.txn.rekeyTo = localnet.context.testAccount.addr)],
+      // @ts-expect-error readonly
+      ['let the verifier send an amount', ([v]) => (v.txn.payment!.amount = 1n)],
+      ['let the verifier pay a fee', ([v]) => (v.txn.fee = 1000n)],
+      // @ts-expect-error readonly
+      ['let the verifier close out', ([v]) => (v.txn.payment!.closeRemainderTo = generateAccount().addr)],
+    ])('refuses to %s', async (_, mutate) => {
+      const sdk = verifierSdk()
+
+      await expect(sendMutated(sdk, verifierGroup(sdk), mutate)).rejects.toThrow('Error INERT')
+    })
+
+    test('refuses to let the verifier sign anything but a payment', async () => {
+      const sdk = verifierSdk()
+      const { algorand, testAccount } = localnet.context
+      const { assetId } = await algorand.send.assetCreate({ sender: testAccount, total: 1n })
+
+      await expect(
+        sendMutated(sdk, verifierGroup(sdk), async (txns) => {
+          const [{ txn, signer }] = txns
+          const optIn = await algorand.createTransaction.assetOptIn({ sender: txn.sender, assetId, staticFee: AlgoAmount.MicroAlgo(0), note: txn.note })
+          txns[0] = { txn: optIn, signer }
+        }),
+      ).rejects.toThrow('Error INERT')
     })
 
     test('refuses a note that does not name the key and digest it checked', async () => {
-      const { send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 5, ROOT_HINT, { note: new Uint8Array(64) })
+      const sdk = verifierSdk()
 
-      await expect(send()).rejects.toThrow(/rejected by logic/)
+      await expect(
+        sendMutated(sdk, verifierGroup(sdk), ([v]) => {
+          // @ts-expect-error readonly
+          v.txn.note = new Uint8Array(64)
+        }),
+      ).rejects.toThrow('Error NOTE: Verifier note must be sha256(key) ‖ digest')
     })
 
     test('runs out of budget in too small a group', async () => {
-      const { send } = await verifyInLsig(hex(ROOT_DNSKEY.signature), 6)
-
-      await expect(send()).rejects.toThrow(/budget/)
+      await expect(verifierSdk().verify({ digest, signature: hex(ROOT_DNSKEY.signature), publicKey, groupSize: 6 })).rejects.toThrow(
+        /budget/,
+      )
     })
   })
 })
@@ -224,72 +213,38 @@ describe('RSA-4096 split over several groups', () => {
   const localnet = algorandFixture()
   beforeEach(localnet.newScope)
 
-  /** A group can hold 16 transactions, and pool 16 inner transaction slots for each app call among them. */
-  const GROUP_SIZE = 16
-  const MAX_INNER = 256
+  const plKey = hex(PL_DNSKEY.publicKey)
+  const plHint = montgomeryHint(plKey.subarray(4))
 
-  const deploySplitConsumer = async () => {
+  const deploySdk = async () => {
     const { algorand, testAccount } = localnet.context
     const factory = algorand.client.getTypedAppFactory(RsaSplitConsumerFactory, { defaultSender: testAccount.addr })
     const { appClient } = await factory.deploy({ onUpdate: 'append', onSchemaBreak: 'append' })
     // The app account's own minimum balance.
     await algorand.send.payment({ sender: testAccount.addr, receiver: appClient.appAddress, amount: AlgoAmount.Algo(0.1) })
-    return appClient
+    return new RsaSplitSDK({ algorand, appId: appClient.appId, writerAccount: { sender: testAccount.addr, signer: testAccount.signer } })
   }
 
-  /** Deposit MBR credits for the sender: enough for the state box, and the credit box itself. */
-  const deposit = async (consumer: Consumer, amount = AlgoAmount.Algo(1)) => {
-    const { algorand, testAccount } = localnet.context
-    const txn = await algorand.createTransaction.payment({ sender: testAccount.addr, receiver: consumer.appAddress, amount })
-    await consumer.send.depositCredits({ args: { creditor: testAccount.addr.toString(), txn }, populateAppCallResources: true })
-  }
-
-  const credits = async (consumer: Consumer) =>
-    (await consumer.state.box.userCredits.getMap()).get(localnet.context.testAccount.addr.toString())
-
-  type Consumer = Awaited<ReturnType<typeof deploySplitConsumer>>
-  type Group = RsaSplitConsumerComposer<unknown[]>
-
-  /**
-   * Send `calls` padded out to a full group with `pool` calls. The first call
-   * raises the pooled budget, and its fee covers every inner OpUp it may need.
-   */
-  const sendGroup = (consumer: Consumer, calls: (group: Group, first: { staticFee: AlgoAmount }) => Group, count: number) => {
-    let group = calls(consumer.newGroup() as Group, { staticFee: AlgoAmount.MicroAlgo(1000 * (GROUP_SIZE + MAX_INNER)) })
-    for (let i = count; i < GROUP_SIZE; i++) {
-      group = group.pool({ args: [], note: `pool ${i}`, staticFee: AlgoAmount.MicroAlgo(0) })
-    }
-    return group.send({ populateAppCallResources: true })
-  }
+  const credits = async (sdk: RsaSplitSDK) => (await sdk.credits([localnet.context.testAccount.addr]))[0]
 
   /** Verify the .pl KSK signature in two groups of 8 exponent bits each. */
   const verifyPl = async (signature: Uint8Array) => {
-    const consumer = await deploySplitConsumer()
-    await deposit(consumer)
-    const creditsBefore = await credits(consumer)
-    const hint = montgomeryHint(hex(PL_DNSKEY.publicKey).subarray(4))
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+    const creditsBefore = await credits(sdk)
 
-    const first = await sendGroup(
-      consumer,
-      (g, fee) =>
-        g
-          .start({ args: { signature, publicKey: hex(PL_DNSKEY.publicKey), hint, budget: 180_000 }, ...fee })
-          .step({ args: { bits: 8, budget: 0 }, staticFee: AlgoAmount.MicroAlgo(0) }),
-      2,
-    )
-    const second = await sendGroup(
-      consumer,
-      (g, fee) =>
-        g.step({ args: { bits: 8, budget: 170_000 }, ...fee }).finish({
-          args: { signedData: hex(PL_DNSKEY.signedData), publicKey: hex(PL_DNSKEY.publicKey) },
-          staticFee: AlgoAmount.MicroAlgo(0),
-        }),
-      2,
-    )
+    const first = await sdk.run([
+      { start: { signature, publicKey: plKey, hint: plHint, budget: 180_000 } },
+      { step: { bits: 8, budget: 0 } },
+    ])
+    const second = await sdk.run([
+      { step: { bits: 8, budget: 170_000 } },
+      { finish: { signedData: hex(PL_DNSKEY.signedData), publicKey: plKey } },
+    ])
     return {
-      bitsLeft: [first.returns[1], second.returns[0]],
-      valid: second.returns[1],
-      refunded: (await credits(consumer)) === creditsBefore,
+      bitsLeft: [first[1], second[0]],
+      valid: second[1],
+      refunded: (await credits(sdk)) === creditsBefore,
     }
   }
 
@@ -311,17 +266,50 @@ describe('RSA-4096 split over several groups', () => {
   })
 
   test('refuses to start without MBR credits for the state box', async () => {
-    const consumer = await deploySplitConsumer()
-    await deposit(consumer, AlgoAmount.MicroAlgo(100_000))
-    const hint = montgomeryHint(hex(PL_DNSKEY.publicKey).subarray(4))
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.MicroAlgo(100_000) })
 
     await expect(
-      sendGroup(
-        consumer,
-        (g, fee) =>
-          g.start({ args: { signature: hex(PL_DNSKEY.signature), publicKey: hex(PL_DNSKEY.publicKey), hint, budget: 40_000 }, ...fee }),
-        1,
-      ),
-    ).rejects.toThrow(/CRD/)
+      sdk.run([{ start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } }]),
+    ).rejects.toThrow('Error CRD: Insufficient credits')
+  })
+
+  test('refuses to finish with exponent bits left', async () => {
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+
+    await expect(
+      sdk.run([
+        { start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } },
+        { finish: { signedData: hex(PL_DNSKEY.signedData), publicKey: plKey } },
+      ]),
+    ).rejects.toThrow('Error UNFINISHED: RSA verification is not finished')
+  })
+
+  test('maps app errors to their code with a verifier SDK on the same client, built first', async () => {
+    const { algorand, testAccount } = localnet.context
+    new RsaVerifierSDK({ algorand, writerAccount: { sender: testAccount.addr, signer: testAccount.signer } })
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+
+    // A plain assert's code, which only the app client's own transformer puts in the message.
+    await expect(
+      sdk.run([
+        { start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } },
+        { finish: { signedData: hex(PL_DNSKEY.signedData), publicKey: plKey } },
+      ]),
+    ).rejects.toThrow('Error UNFINISHED: RSA verification is not finished')
+  })
+
+  test('reads the credits of more accounts than a transaction can name boxes for', async () => {
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.MicroAlgo(500_000) })
+    const others = Array.from({ length: 9 }, () => generateAccount().addr)
+
+    const [mine, ...theirs] = await sdk.credits([localnet.context.testAccount.addr, ...others])
+
+    // Less the credit box's own MBR: 2,500 plus 400 per byte of its 33-byte name and 8-byte value.
+    expect(mine).toBe(500_000n - 2_500n - 400n * (33n + 8n))
+    expect(theirs).toEqual(Array(9).fill(undefined))
   })
 })

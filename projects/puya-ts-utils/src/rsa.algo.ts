@@ -1,4 +1,21 @@
 import { assert, BigUint, biguint, bytes, Bytes, op, uint64 } from '@algorandfoundation/algorand-typescript'
+import {
+  errDigestLength,
+  errExponent,
+  errExponentLength,
+  errHint,
+  errHintLength,
+  errHintRange,
+  errKeyMismatch,
+  errModulusEven,
+  errModulusLong,
+  errModulusShort,
+  errModulusZero,
+  errNoModulus,
+  errSignatureLength,
+  errSignatureRange,
+  errUnfinished,
+} from './rsaErrors.algo'
 
 /**
  * Bytes per limb. Byte math takes operands of up to 64 bytes, and every opcode
@@ -37,7 +54,7 @@ export function parseRsaDnskey(publicKey: bytes): [bytes, bytes] {
     exponentLength = op.extractUint16(publicKey, 1)
     offset = 3
   }
-  assert(publicKey.length > offset + exponentLength, 'RSA key has no modulus')
+  assert(publicKey.length > offset + exponentLength, errNoModulus)
   return [op.extract(publicKey, offset, exponentLength), publicKey.slice(offset + exponentLength)]
 }
 
@@ -49,7 +66,7 @@ export function verifyRsaSha256(
   exponent: bytes,
   hint: bytes,
 ): boolean {
-  assert(digest.length === 32, 'SHA-256 digest must be 32 bytes')
+  assert(digest.length === 32, errDigestLength)
   return rsaPkcs1v15Verify(digest, signature, modulus, exponent, SHA256_DIGEST_INFO, hint)
 }
 
@@ -66,7 +83,7 @@ export function verifyRsaSha512(
   exponent: bytes,
   hint: bytes,
 ): boolean {
-  assert(digest.length === 64, 'SHA-512 digest must be 64 bytes')
+  assert(digest.length === 64, errDigestLength)
   return rsaPkcs1v15Verify(digest, signature, modulus, exponent, SHA512_DIGEST_INFO, hint)
 }
 
@@ -95,7 +112,7 @@ export function rsaPkcs1v15Verify(
   hint: bytes,
 ): boolean {
   // Checked up front too, so a bad digest fails before the expensive part.
-  assert(modulus.length >= digestInfo.length + digest.length + 11, 'RSA modulus too short for the digest')
+  assert(modulus.length >= digestInfo.length + digest.length + 11, errModulusShort)
   return rsaFinish(rsaStep(rsaStart(signature, modulus, exponent, hint), ALL_BITS), digest, modulus, exponent, digestInfo)
 }
 
@@ -122,19 +139,19 @@ export function rsaPkcs1v15Verify(
  */
 export function rsaStart(signature: bytes, modulus: bytes, exponent: bytes, hint: bytes): bytes {
   const length = modulus.length
-  assert(length <= MAX_MODULUS, 'RSA modulus over 512 bytes')
-  assert(length > 0 && op.getByte(modulus, 0) !== 0, 'RSA modulus has a leading zero')
-  assert(signature.length === length, 'RSA signature length differs from the modulus')
-  assert(exponent.length > 0 && exponent.length <= 4, 'RSA exponent must be 1 to 4 bytes')
+  assert(length <= MAX_MODULUS, errModulusLong)
+  assert(length > 0 && op.getByte(modulus, 0) !== 0, errModulusZero)
+  assert(signature.length === length, errSignatureLength)
+  assert(exponent.length > 0 && exponent.length <= 4, errExponentLength)
   const e = op.btoi(exponent)
-  assert(e >= 3 && e % 2 === 1, 'RSA exponent must be odd and at least 3')
+  assert(e >= 3 && e % 2 === 1, errExponent)
 
   // Work in whole limbs: left-pad everything to a multiple of LIMB bytes.
   const width: uint64 = ((length + LIMB - 1) / LIMB) * LIMB
   const n = pad(modulus, width)
   const s = pad(signature, width)
-  assert(op.getBit(n, width * 8 - 1), 'RSA modulus is even')
-  assert(!gte(s, n), 'RSA signature is not below the modulus')
+  assert(op.getBit(n, width * 8 - 1), errModulusEven)
+  assert(!gte(s, n), errSignatureRange)
 
   const nInv = negInverse(limb(n, 0))
   const base = monMul(s, hint.length === 0 ? computeRSquared(n, nInv) : checkHint(hint, n, nInv), n, nInv)
@@ -193,7 +210,7 @@ export function rsaBitsLeft(state: bytes): uint64 {
  * modulus is too short to hold the block.
  */
 export function rsaFinish(state: bytes, digest: bytes, modulus: bytes, exponent: bytes, digestInfo: bytes): boolean {
-  assert(op.extractUint64(state, 0) === 0, 'RSA verification is not finished')
+  assert(op.extractUint64(state, 0) === 0, errUnfinished)
   const length = op.extractUint64(state, 16)
   const width: uint64 = (state.length - HEADER) / 4
   assert(
@@ -201,10 +218,10 @@ export function rsaFinish(state: bytes, digest: bytes, modulus: bytes, exponent:
       op.extract(state, HEADER, width) === pad(modulus, width) &&
       exponent.length <= 8 &&
       op.btoi(exponent) === op.extractUint64(state, 8),
-    'RSA state is for a different key',
+    errKeyMismatch,
   )
   const tail = digestInfo.concat(digest)
-  assert(length >= tail.length + 11, 'RSA modulus too short for the digest')
+  assert(length >= tail.length + 11, errModulusShort)
   const block = Bytes.fromHex('0001')
     .concat(op.bzero<uint64>(length - 3 - tail.length).bitwiseInvert())
     .concat(Bytes.fromHex('00'))
@@ -220,10 +237,10 @@ export function rsaFinish(state: bytes, digest: bytes, modulus: bytes, exponent:
  * is below `R / 2^(512·(k-1)) = 2^512`, so `q` is a single limb.
  */
 function checkHint(hint: bytes, n: bytes, nInv: biguint): bytes {
-  assert(hint.length > n.length && hint.length <= n.length + LIMB, 'Montgomery hint is the wrong length')
+  assert(hint.length > n.length && hint.length <= n.length + LIMB, errHintLength)
   const h = op.extract(hint, 0, n.length)
   const q = BigUint(op.extract(hint, n.length))
-  assert(!gte(h, n), 'Montgomery hint is not below the modulus')
+  assert(!gte(h, n), errHintRange)
   const one = op.setBit(op.bzero(n.length), n.length * 8 - 1, 1)
   const rModN = monMul(h, one, n, nInv)
   // q·n + R mod n, limb by limb: every limb must come out zero, carrying exactly 1 out.
@@ -231,10 +248,10 @@ function checkHint(hint: bytes, n: bytes, nInv: biguint): bytes {
   for (let i = n.length; i > 0; ) {
     i -= LIMB
     const r = mac(BigUint(op.extract(rModN, i, LIMB)), q, BigUint(op.extract(n, i, LIMB)), carry)
-    assert(lo(r) === BigUint(0), 'Montgomery hint is wrong')
+    assert(lo(r) === BigUint(0), errHint)
     carry = hi(r)
   }
-  assert(carry === BigUint(1), 'Montgomery hint is wrong')
+  assert(carry === BigUint(1), errHint)
   return h
 }
 

@@ -24,6 +24,7 @@ import {
   verifyRsaSha512,
 } from '../../src/rsa.algo'
 import { MbrManager } from '../../src/mbrManager.algo'
+import { errNote, errNotInert, errSignature } from './errors.algo'
 
 /**
  * Exercises the RSA subroutines the way a DNSSEC verifier would.
@@ -84,11 +85,13 @@ export class RsaSha256Verifier extends LogicSig {
         Txn.fee === 0 &&
         Txn.rekeyTo === Global.zeroAddress &&
         Txn.closeRemainderTo === Global.zeroAddress,
-      'verifier transaction must be an inert payment',
+      errNotInert,
     )
-    assert(Txn.note === op.sha256(op.arg(2)).concat(op.arg(0)), 'note must be sha256(key) ‖ digest')
+    assert(Txn.note === op.sha256(op.arg(2)).concat(op.arg(0)), errNote)
     const [exponent, modulus] = parseRsaDnskey(op.arg(2))
-    return verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3))
+    // Asserted rather than returned, so a bad signature fails with a code of its own.
+    assert(verifyRsaSha256(op.arg(0), op.arg(1), modulus, exponent, op.arg(3)), errSignature)
+    return true
   }
 }
 

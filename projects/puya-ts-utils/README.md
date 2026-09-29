@@ -466,11 +466,37 @@ All three return `false` for a well-formed signature that does not match.
 - a Montgomery hint that is wrong, the wrong length, or whose `R² mod n` is not
   below the modulus
 
+Each assert's message is an error code, such as `ERR:BADHINT`, listed with its
+meaning in `src/rsaErrors.algo.ts`. They are plain asserts, not `loggedAssert`,
+because a logic signature cannot log. In an app, algokit reports the code from
+the ARC-56 source info. For a logic signature, the SDK below maps the failing
+pc back to it.
+
 
 ### `rsaMontgomeryHint(modulus: Uint8Array): Uint8Array` — off chain
 
 From `@d13co/puya-ts-utils/rsaHint`: the `hint` for `modulus`. It's plain
 TypeScript with no AVM types, for your client or prover.
+
+### RSA SDK — off chain
+
+`@d13co/puya-ts-utils/rsaSdk` drives the example verifiers in
+`smart_contracts/rsa`. It needs `algosdk` and `@algorandfoundation/algokit-utils`.
+
+- `RsaVerifierSDK` runs the `RsaSha256Verifier` logic signature, with its
+  bytecode built in. `verify({ digest, signature, publicKey, hint? })` simulates
+  once to find the smallest group that pools enough budget, then sends it. The
+  writer pays every fee.
+- `RsaSplitSDK` drives an `RsaSplitConsumer` app. It provides
+  `depositCredits({ amount })` and `run([{ start }, { step }, { finish }])`. Each
+  `run` sends one group, padded with `pool` calls, and returns each call's
+  result. `credits(accounts)` reads MBR credits by simulating, with no signer.
+
+Both register `errorTransformer`, which rewrites any rejection carrying a code as
+`Error BADHINT: Montgomery hint is wrong`, and sets `code` and `description`. A
+logic signature rejection only reports a pc, so the transformer first looks that
+pc up in the verifier's assembly. `npm run build` regenerates the bytecode, the
+pc map, the error messages and the client in `src/generated`.
 
 ---
 

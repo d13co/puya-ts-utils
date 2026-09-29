@@ -4,7 +4,7 @@
     "../../rsa/consumer.algo.ts",
     "../../../src/rsa.algo.ts"
   ],
-  "mappings": "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",
+  "mappings": "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",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -352,7 +352,7 @@
       ]
     },
     "51": {
-      "error": "verifier transaction must be an inert payment",
+      "error": "ERR:INERT",
       "block": "main_bool_merge@7",
       "stack_in": [
         "digest#0",
@@ -366,7 +366,7 @@
         "tmp%7#2",
         "and_result%0#0"
       ],
-      "op": "assert // verifier transaction must be an inert payment",
+      "op": "assert // ERR:INERT",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -499,8 +499,8 @@
       ]
     },
     "59": {
-      "error": "note must be sha256(key) \u2016 digest",
-      "op": "assert // note must be sha256(key) \u2016 digest",
+      "error": "ERR:NOTE",
+      "op": "assert // ERR:NOTE",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -1039,8 +1039,8 @@
       ]
     },
     "97": {
-      "error": "RSA key has no modulus",
-      "op": "assert // RSA key has no modulus",
+      "error": "ERR:NOMOD",
+      "op": "assert // ERR:NOMOD",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -2687,8 +2687,8 @@
       ]
     },
     "209": {
-      "error": "SHA-256 digest must be 32 bytes",
-      "op": "assert // SHA-256 digest must be 32 bytes",
+      "error": "ERR:DIGLEN",
+      "op": "assert // ERR:DIGLEN",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -2918,8 +2918,8 @@
       ]
     },
     "222": {
-      "error": "RSA modulus too short for the digest",
-      "op": "assert // RSA modulus too short for the digest",
+      "error": "ERR:MODSHORT",
+      "op": "assert // ERR:MODSHORT",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -3008,8 +3008,8 @@
       ]
     },
     "228": {
-      "error": "RSA modulus over 512 bytes",
-      "op": "assert // RSA modulus over 512 bytes",
+      "error": "ERR:MODLONG",
+      "op": "assert // ERR:MODLONG",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -3146,7 +3146,7 @@
       ]
     },
     "240": {
-      "error": "RSA modulus has a leading zero",
+      "error": "ERR:MODZERO",
       "block": "main_bool_merge@15",
       "stack_in": [
         "digest#0",
@@ -3163,7 +3163,7 @@
         "hint#0",
         "and_result%0#0"
       ],
-      "op": "assert // RSA modulus has a leading zero",
+      "op": "assert // ERR:MODZERO",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -3312,8 +3312,8 @@
       ]
     },
     "250": {
-      "error": "RSA signature length differs from the modulus",
-      "op": "assert // RSA signature length differs from the modulus",
+      "error": "ERR:SIGLEN",
+      "op": "assert // ERR:SIGLEN",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -3554,7 +3554,7 @@
       ]
     },
     "269": {
-      "error": "RSA exponent must be 1 to 4 bytes",
+      "error": "ERR:EXPLEN",
       "block": "main_bool_merge@19",
       "stack_in": [
         "digest#0",
@@ -3572,7 +3572,7 @@
         "hint#0",
         "and_result%1#0"
       ],
-      "op": "assert // RSA exponent must be 1 to 4 bytes",
+      "op": "assert // ERR:EXPLEN",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -3883,7 +3883,7 @@
       ]
     },
     "293": {
-      "error": "RSA exponent must be odd and at least 3",
+      "error": "ERR:EXPVAL",
       "block": "main_bool_merge@23",
       "stack_in": [
         "digest#0",
@@ -3900,7 +3900,7 @@
         "hint#0",
         "and_result%2#0"
       ],
-      "op": "assert // RSA exponent must be odd and at least 3",
+      "op": "assert // ERR:EXPVAL",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -4759,8 +4759,8 @@
       ]
     },
     "340": {
-      "error": "RSA modulus is even",
-      "op": "assert // RSA modulus is even",
+      "error": "ERR:MODEVEN",
+      "op": "assert // ERR:MODEVEN",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -4854,8 +4854,8 @@
       ]
     },
     "347": {
-      "error": "RSA signature is not below the modulus",
-      "op": "assert // RSA signature is not below the modulus",
+      "error": "ERR:SIGRANGE",
+      "op": "assert // ERR:SIGRANGE",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -11437,8 +11437,8 @@
       ]
     },
     "762": {
-      "error": "RSA verification is not finished",
-      "op": "assert // RSA verification is not finished",
+      "error": "ERR:UNFINISHED",
+      "op": "assert // ERR:UNFINISHED",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -12384,7 +12384,7 @@
       ]
     },
     "824": {
-      "error": "RSA state is for a different key",
+      "error": "ERR:KEY",
       "block": "main_bool_merge@41",
       "stack_in": [
         "digest#0",
@@ -12401,7 +12401,7 @@
         "width#0",
         "and_result%0#0"
       ],
-      "op": "assert // RSA state is for a different key",
+      "op": "assert // ERR:KEY",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -12699,8 +12699,8 @@
       ]
     },
     "861": {
-      "error": "RSA modulus too short for the digest",
-      "op": "assert // RSA modulus too short for the digest",
+      "error": "ERR:MODSHORT",
+      "op": "assert // ERR:MODSHORT",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -13450,7 +13450,8 @@
       ]
     },
     "909": {
-      "op": "return",
+      "error": "ERR:BADSIG",
+      "op": "assert // ERR:BADSIG",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -13464,6 +13465,40 @@
       ]
     },
     "910": {
+      "op": "intc_1 // 1",
+      "defined_out": [
+        "1",
+        "digest#0",
+        "tmp%1#7"
+      ],
+      "stack_out": [
+        "digest#0",
+        "modulus#0",
+        "e#0",
+        "exponentLength#0",
+        "length#0",
+        "offset#0",
+        "tmp%1#7",
+        "tmp%4#0",
+        "tmp%7#2",
+        "1"
+      ]
+    },
+    "911": {
+      "op": "return",
+      "stack_out": [
+        "digest#0",
+        "modulus#0",
+        "e#0",
+        "exponentLength#0",
+        "length#0",
+        "offset#0",
+        "tmp%1#7",
+        "tmp%4#0",
+        "tmp%7#2"
+      ]
+    },
+    "912": {
       "block": "main_bool_false@40",
       "stack_in": [
         "digest#0",
@@ -13499,10 +13534,10 @@
         "and_result%0#0"
       ]
     },
-    "911": {
+    "913": {
       "op": "b main_bool_merge@41"
     },
-    "914": {
+    "916": {
       "block": "main_ternary_false@25",
       "stack_in": [
         "digest#0",
@@ -13542,7 +13577,7 @@
         "n#0 (copy)"
       ]
     },
-    "916": {
+    "918": {
       "op": "len",
       "defined_out": [
         "i#0"
@@ -13565,7 +13600,7 @@
         "i#0"
       ]
     },
-    "917": {
+    "919": {
       "op": "dup",
       "defined_out": [
         "i#0"
@@ -13589,7 +13624,7 @@
         "i#0"
       ]
     },
-    "918": {
+    "920": {
       "op": "dig 3",
       "defined_out": [
         "i#0",
@@ -13615,7 +13650,7 @@
         "tmp%28#0 (copy)"
       ]
     },
-    "920": {
+    "922": {
       "op": "<",
       "defined_out": [
         "i#0",
@@ -13640,7 +13675,7 @@
         "tmp%2#1"
       ]
     },
-    "921": {
+    "923": {
       "op": "bz main_bool_false@45",
       "stack_out": [
         "digest#0",
@@ -13660,7 +13695,7 @@
         "i#0"
       ]
     },
-    "924": {
+    "926": {
       "op": "dup",
       "defined_out": [
         "i#0",
@@ -13685,7 +13720,7 @@
         "i#0 (copy)"
       ]
     },
-    "925": {
+    "927": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -13712,7 +13747,7 @@
         "64"
       ]
     },
-    "926": {
+    "928": {
       "op": "+",
       "defined_out": [
         "i#0",
@@ -13737,7 +13772,7 @@
         "tmp%5#3"
       ]
     },
-    "927": {
+    "929": {
       "op": "dig 3",
       "stack_out": [
         "digest#0",
@@ -13759,7 +13794,7 @@
         "tmp%28#0 (copy)"
       ]
     },
-    "929": {
+    "931": {
       "op": ">=",
       "defined_out": [
         "i#0",
@@ -13784,7 +13819,7 @@
         "tmp%6#3"
       ]
     },
-    "930": {
+    "932": {
       "op": "bz main_bool_false@45",
       "stack_out": [
         "digest#0",
@@ -13804,7 +13839,7 @@
         "i#0"
       ]
     },
-    "933": {
+    "935": {
       "op": "intc_1 // 1",
       "defined_out": [
         "and_result%0#0",
@@ -13829,8 +13864,8 @@
         "and_result%0#0"
       ]
     },
-    "934": {
-      "error": "Montgomery hint is the wrong length",
+    "936": {
+      "error": "ERR:HINTLEN",
       "block": "main_bool_merge@46",
       "stack_in": [
         "digest#0",
@@ -13850,7 +13885,7 @@
         "i#0",
         "and_result%0#0"
       ],
-      "op": "assert // Montgomery hint is the wrong length",
+      "op": "assert // ERR:HINTLEN",
       "defined_out": [],
       "stack_out": [
         "digest#0",
@@ -13870,7 +13905,7 @@
         "i#0"
       ]
     },
-    "935": {
+    "937": {
       "op": "swap",
       "defined_out": [
         "hint#0"
@@ -13893,7 +13928,7 @@
         "hint#0"
       ]
     },
-    "936": {
+    "938": {
       "op": "dup",
       "defined_out": [
         "hint#0",
@@ -13918,7 +13953,7 @@
         "hint#0 (copy)"
       ]
     },
-    "937": {
+    "939": {
       "op": "intc_2 // 0",
       "defined_out": [
         "0",
@@ -13945,7 +13980,7 @@
         "0"
       ]
     },
-    "938": {
+    "940": {
       "op": "dig 3",
       "defined_out": [
         "0",
@@ -13974,7 +14009,7 @@
         "i#0"
       ]
     },
-    "940": {
+    "942": {
       "op": "dup",
       "defined_out": [
         "0",
@@ -14005,7 +14040,7 @@
         "i#0 (copy)"
       ]
     },
-    "941": {
+    "943": {
       "op": "cover 3",
       "stack_out": [
         "digest#0",
@@ -14029,7 +14064,7 @@
         "i#0 (copy)"
       ]
     },
-    "943": {
+    "945": {
       "op": "extract3",
       "defined_out": [
         "h#0",
@@ -14056,7 +14091,7 @@
         "h#0"
       ]
     },
-    "944": {
+    "946": {
       "op": "dup",
       "stack_out": [
         "digest#0",
@@ -14079,7 +14114,7 @@
         "h#0 (copy)"
       ]
     },
-    "945": {
+    "947": {
       "op": "cover 3",
       "stack_out": [
         "digest#0",
@@ -14102,7 +14137,7 @@
         "h#0"
       ]
     },
-    "947": {
+    "949": {
       "op": "cover 4",
       "defined_out": [
         "h#0",
@@ -14130,7 +14165,7 @@
         "i#0"
       ]
     },
-    "949": {
+    "951": {
       "op": "uncover 5",
       "defined_out": [
         "h#0",
@@ -14159,7 +14194,7 @@
         "tmp%28#0"
       ]
     },
-    "951": {
+    "953": {
       "op": "dig 1",
       "stack_out": [
         "digest#0",
@@ -14183,7 +14218,7 @@
         "i#0 (copy)"
       ]
     },
-    "953": {
+    "955": {
       "op": "-",
       "defined_out": [
         "h#0",
@@ -14212,7 +14247,7 @@
         "tmp%10#2"
       ]
     },
-    "954": {
+    "956": {
       "op": "uncover 2",
       "stack_out": [
         "digest#0",
@@ -14235,7 +14270,7 @@
         "hint#0"
       ]
     },
-    "956": {
+    "958": {
       "op": "dig 2",
       "stack_out": [
         "digest#0",
@@ -14259,7 +14294,7 @@
         "i#0 (copy)"
       ]
     },
-    "958": {
+    "960": {
       "op": "uncover 2",
       "stack_out": [
         "digest#0",
@@ -14283,7 +14318,7 @@
         "tmp%10#2"
       ]
     },
-    "960": {
+    "962": {
       "op": "extract3",
       "defined_out": [
         "h#0",
@@ -14310,7 +14345,7 @@
         "q#0"
       ]
     },
-    "961": {
+    "963": {
       "op": "cover 7",
       "defined_out": [
         "h#0",
@@ -14337,7 +14372,7 @@
         "i#0"
       ]
     },
-    "963": {
+    "965": {
       "op": "dig 1",
       "defined_out": [
         "h#0",
@@ -14366,7 +14401,7 @@
         "h#0 (copy)"
       ]
     },
-    "965": {
+    "967": {
       "op": "dig 6",
       "defined_out": [
         "h#0",
@@ -14397,7 +14432,7 @@
         "n#0"
       ]
     },
-    "967": {
+    "969": {
       "op": "dup",
       "defined_out": [
         "h#0",
@@ -14430,7 +14465,7 @@
         "n#0 (copy)"
       ]
     },
-    "968": {
+    "970": {
       "op": "cover 4",
       "stack_out": [
         "digest#0",
@@ -14455,7 +14490,7 @@
         "n#0 (copy)"
       ]
     },
-    "970": {
+    "972": {
       "callsub": "src/rsa.algo.ts::gte",
       "op": "callsub gte",
       "defined_out": [
@@ -14487,7 +14522,7 @@
         "tmp%12#1"
       ]
     },
-    "973": {
+    "975": {
       "op": "!",
       "defined_out": [
         "h#0",
@@ -14518,9 +14553,9 @@
         "tmp%13#3"
       ]
     },
-    "974": {
-      "error": "Montgomery hint is not below the modulus",
-      "op": "assert // Montgomery hint is not below the modulus",
+    "976": {
+      "error": "ERR:HINTRANGE",
+      "op": "assert // ERR:HINTRANGE",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -14542,7 +14577,7 @@
         "i#0"
       ]
     },
-    "975": {
+    "977": {
       "op": "dup",
       "stack_out": [
         "digest#0",
@@ -14566,7 +14601,7 @@
         "i#0 (copy)"
       ]
     },
-    "976": {
+    "978": {
       "op": "bzero",
       "defined_out": [
         "h#0",
@@ -14597,7 +14632,7 @@
         "tmp%15#0"
       ]
     },
-    "977": {
+    "979": {
       "op": "swap",
       "stack_out": [
         "digest#0",
@@ -14621,7 +14656,7 @@
         "i#0"
       ]
     },
-    "978": {
+    "980": {
       "op": "pushint 8",
       "defined_out": [
         "8",
@@ -14654,7 +14689,7 @@
         "8"
       ]
     },
-    "980": {
+    "982": {
       "op": "*",
       "defined_out": [
         "h#0",
@@ -14686,7 +14721,7 @@
         "tmp%17#1"
       ]
     },
-    "981": {
+    "983": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
@@ -14720,7 +14755,7 @@
         "1"
       ]
     },
-    "982": {
+    "984": {
       "op": "-",
       "defined_out": [
         "h#0",
@@ -14752,7 +14787,7 @@
         "tmp%18#2"
       ]
     },
-    "983": {
+    "985": {
       "op": "intc_1 // 1",
       "stack_out": [
         "digest#0",
@@ -14777,7 +14812,7 @@
         "1"
       ]
     },
-    "984": {
+    "986": {
       "op": "setbit",
       "defined_out": [
         "h#0",
@@ -14807,7 +14842,7 @@
         "one#0"
       ]
     },
-    "985": {
+    "987": {
       "op": "uncover 2",
       "stack_out": [
         "digest#0",
@@ -14830,7 +14865,7 @@
         "n#0"
       ]
     },
-    "987": {
+    "989": {
       "op": "dig 7",
       "defined_out": [
         "h#0",
@@ -14862,7 +14897,7 @@
         "m#0 (copy)"
       ]
     },
-    "989": {
+    "991": {
       "callsub": "src/rsa.algo.ts::monMul",
       "op": "callsub monMul",
       "defined_out": [
@@ -14891,7 +14926,7 @@
         "rModN#0"
       ]
     },
-    "992": {
+    "994": {
       "op": "swap",
       "defined_out": [
         "h#0",
@@ -14919,7 +14954,7 @@
         "i#0"
       ]
     },
-    "993": {
+    "995": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "carry#0",
@@ -14949,7 +14984,7 @@
         "carry#0"
       ]
     },
-    "994": {
+    "996": {
       "op": "swap",
       "defined_out": [
         "carry#0",
@@ -14979,7 +15014,7 @@
         "i#0"
       ]
     },
-    "995": {
+    "997": {
       "block": "main_while_top@47",
       "stack_in": [
         "digest#0",
@@ -15025,7 +15060,7 @@
         "i#0 (copy)"
       ]
     },
-    "996": {
+    "998": {
       "op": "bz main_after_while@49",
       "stack_out": [
         "digest#0",
@@ -15047,7 +15082,7 @@
         "i#0"
       ]
     },
-    "999": {
+    "1001": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -15074,7 +15109,7 @@
         "64"
       ]
     },
-    "1000": {
+    "1002": {
       "op": "-",
       "stack_out": [
         "digest#0",
@@ -15096,7 +15131,7 @@
         "i#0"
       ]
     },
-    "1001": {
+    "1003": {
       "op": "dup",
       "defined_out": [
         "i#0"
@@ -15122,7 +15157,7 @@
         "i#0"
       ]
     },
-    "1002": {
+    "1004": {
       "op": "dig 3",
       "defined_out": [
         "i#0",
@@ -15150,7 +15185,7 @@
         "rModN#0 (copy)"
       ]
     },
-    "1004": {
+    "1006": {
       "op": "dig 1",
       "stack_out": [
         "digest#0",
@@ -15175,7 +15210,7 @@
         "i#0 (copy)"
       ]
     },
-    "1006": {
+    "1008": {
       "op": "intc_0 // 64",
       "stack_out": [
         "digest#0",
@@ -15201,7 +15236,7 @@
         "64"
       ]
     },
-    "1007": {
+    "1009": {
       "op": "extract3",
       "defined_out": [
         "i#0",
@@ -15229,7 +15264,7 @@
         "tmp%24#1"
       ]
     },
-    "1008": {
+    "1010": {
       "op": "dig 7",
       "defined_out": [
         "i#0",
@@ -15259,7 +15294,7 @@
         "n#0 (copy)"
       ]
     },
-    "1010": {
+    "1012": {
       "op": "uncover 2",
       "stack_out": [
         "digest#0",
@@ -15284,7 +15319,7 @@
         "i#0"
       ]
     },
-    "1012": {
+    "1014": {
       "op": "intc_0 // 64",
       "stack_out": [
         "digest#0",
@@ -15310,7 +15345,7 @@
         "64"
       ]
     },
-    "1013": {
+    "1015": {
       "op": "extract3",
       "defined_out": [
         "i#0",
@@ -15339,10 +15374,10 @@
         "tmp%25#1"
       ]
     },
-    "1014": {
+    "1016": {
       "op": "dig 9"
     },
-    "1016": {
+    "1018": {
       "op": "swap",
       "defined_out": [
         "i#0",
@@ -15373,7 +15408,7 @@
         "tmp%25#1"
       ]
     },
-    "1017": {
+    "1019": {
       "op": "uncover 4",
       "defined_out": [
         "carry#0",
@@ -15405,7 +15440,7 @@
         "carry#0"
       ]
     },
-    "1019": {
+    "1021": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "defined_out": [
@@ -15432,7 +15467,7 @@
         "r#0"
       ]
     },
-    "1022": {
+    "1024": {
       "op": "dup",
       "defined_out": [
         "i#0",
@@ -15460,7 +15495,7 @@
         "r#0 (copy)"
       ]
     },
-    "1023": {
+    "1025": {
       "op": "extract 0 64",
       "defined_out": [
         "i#0",
@@ -15488,7 +15523,7 @@
         "tmp%0#12"
       ]
     },
-    "1026": {
+    "1028": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "0x",
@@ -15518,7 +15553,7 @@
         "0x"
       ]
     },
-    "1027": {
+    "1029": {
       "op": "b==",
       "defined_out": [
         "i#0",
@@ -15546,9 +15581,9 @@
         "tmp%28#3"
       ]
     },
-    "1028": {
-      "error": "Montgomery hint is wrong",
-      "op": "assert // Montgomery hint is wrong",
+    "1030": {
+      "error": "ERR:BADHINT",
+      "op": "assert // ERR:BADHINT",
       "stack_out": [
         "digest#0",
         "modulus#0",
@@ -15569,7 +15604,7 @@
         "r#0"
       ]
     },
-    "1029": {
+    "1031": {
       "op": "extract 64 0",
       "stack_out": [
         "digest#0",
@@ -15591,7 +15626,7 @@
         "carry#0"
       ]
     },
-    "1032": {
+    "1034": {
       "op": "swap",
       "defined_out": [
         "carry#0",
@@ -15617,10 +15652,10 @@
         "i#0"
       ]
     },
-    "1033": {
+    "1035": {
       "op": "b main_while_top@47"
     },
-    "1036": {
+    "1038": {
       "block": "main_after_while@49",
       "stack_in": [
         "digest#0",
@@ -15662,7 +15697,7 @@
         "carry#0"
       ]
     },
-    "1037": {
+    "1039": {
       "op": "bury 1",
       "defined_out": [],
       "stack_out": [
@@ -15683,7 +15718,7 @@
         "carry#0"
       ]
     },
-    "1039": {
+    "1041": {
       "op": "uncover 5",
       "defined_out": [
         "q#0"
@@ -15706,7 +15741,7 @@
         "q#0"
       ]
     },
-    "1041": {
+    "1043": {
       "op": "pop",
       "defined_out": [
         "carry#0"
@@ -15728,7 +15763,7 @@
         "carry#0"
       ]
     },
-    "1042": {
+    "1044": {
       "op": "bytec_1 // 0x01",
       "defined_out": [
         "0x01",
@@ -15752,7 +15787,7 @@
         "0x01"
       ]
     },
-    "1043": {
+    "1045": {
       "op": "b==",
       "defined_out": [
         "tmp%30#2"
@@ -15774,9 +15809,9 @@
         "tmp%30#2"
       ]
     },
-    "1044": {
-      "error": "Montgomery hint is wrong",
-      "op": "assert // Montgomery hint is wrong",
+    "1046": {
+      "error": "ERR:BADHINT",
+      "op": "assert // ERR:BADHINT",
       "defined_out": [
         "ternary_result%0#2"
       ],
@@ -15796,10 +15831,10 @@
         "ternary_result%0#2"
       ]
     },
-    "1045": {
+    "1047": {
       "op": "b main_ternary_merge@26"
     },
-    "1048": {
+    "1050": {
       "block": "main_bool_false@45",
       "stack_in": [
         "digest#0",
@@ -15841,10 +15876,10 @@
         "and_result%0#0"
       ]
     },
-    "1049": {
+    "1051": {
       "op": "b main_bool_merge@46"
     },
-    "1052": {
+    "1054": {
       "block": "main_bool_false@22",
       "stack_in": [
         "digest#0",
@@ -15880,10 +15915,10 @@
         "and_result%2#0"
       ]
     },
-    "1053": {
+    "1055": {
       "op": "b main_bool_merge@23"
     },
-    "1056": {
+    "1058": {
       "block": "main_bool_false@18",
       "stack_in": [
         "digest#0",
@@ -15921,10 +15956,10 @@
         "and_result%1#0"
       ]
     },
-    "1057": {
+    "1059": {
       "op": "b main_bool_merge@19"
     },
-    "1060": {
+    "1062": {
       "block": "main_bool_false@14",
       "stack_in": [
         "digest#0",
@@ -15960,10 +15995,10 @@
         "and_result%0#0"
       ]
     },
-    "1061": {
+    "1063": {
       "op": "b main_bool_merge@15"
     },
-    "1064": {
+    "1066": {
       "block": "main_bool_false@6",
       "stack_in": [
         "digest#0",
@@ -15993,10 +16028,10 @@
         "and_result%0#0"
       ]
     },
-    "1065": {
+    "1067": {
       "op": "b main_bool_merge@7"
     },
-    "1068": {
+    "1070": {
       "subroutine": "src/rsa.algo.ts::monMul",
       "params": {
         "a#0": "bytes",
@@ -16008,7 +16043,7 @@
       "stack_in": [],
       "op": "proto 4 1"
     },
-    "1071": {
+    "1073": {
       "op": "frame_dig -2",
       "defined_out": [
         "n#0 (copy)"
@@ -16017,7 +16052,7 @@
         "n#0 (copy)"
       ]
     },
-    "1073": {
+    "1075": {
       "op": "len",
       "defined_out": [
         "len#0"
@@ -16026,7 +16061,7 @@
         "len#0"
       ]
     },
-    "1074": {
+    "1076": {
       "op": "dup",
       "defined_out": [
         "len#0",
@@ -16037,7 +16072,7 @@
         "len#0 (copy)"
       ]
     },
-    "1075": {
+    "1077": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -16050,7 +16085,7 @@
         "64"
       ]
     },
-    "1076": {
+    "1078": {
       "op": "-",
       "defined_out": [
         "bottom#0",
@@ -16061,7 +16096,7 @@
         "bottom#0"
       ]
     },
-    "1077": {
+    "1079": {
       "op": "swap",
       "defined_out": [
         "bottom#0",
@@ -16072,7 +16107,7 @@
         "len#0"
       ]
     },
-    "1078": {
+    "1080": {
       "op": "dup",
       "stack_out": [
         "bottom#0",
@@ -16080,7 +16115,7 @@
         "len#0 (copy)"
       ]
     },
-    "1079": {
+    "1081": {
       "op": "bzero",
       "defined_out": [
         "bottom#0",
@@ -16093,7 +16128,7 @@
         "t#0"
       ]
     },
-    "1080": {
+    "1082": {
       "op": "cover 2",
       "stack_out": [
         "t#0",
@@ -16101,7 +16136,7 @@
         "len#0"
       ]
     },
-    "1082": {
+    "1084": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "bottom#0",
@@ -16116,7 +16151,7 @@
         "top#0"
       ]
     },
-    "1083": {
+    "1085": {
       "block": "monMul_while_top@1",
       "stack_in": [
         "t#0",
@@ -16136,7 +16171,7 @@
         "i#1 (copy)"
       ]
     },
-    "1085": {
+    "1087": {
       "op": "bz monMul_after_while@6",
       "stack_out": [
         "t#0",
@@ -16145,7 +16180,7 @@
         "top#0"
       ]
     },
-    "1088": {
+    "1090": {
       "op": "swap",
       "defined_out": [
         "i#1"
@@ -16157,7 +16192,7 @@
         "i#1"
       ]
     },
-    "1089": {
+    "1091": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -16171,7 +16206,7 @@
         "64"
       ]
     },
-    "1090": {
+    "1092": {
       "op": "-",
       "stack_out": [
         "t#0",
@@ -16180,7 +16215,7 @@
         "i#1"
       ]
     },
-    "1091": {
+    "1093": {
       "op": "dup",
       "stack_out": [
         "t#0",
@@ -16190,7 +16225,7 @@
         "i#1"
       ]
     },
-    "1092": {
+    "1094": {
       "op": "cover 2",
       "defined_out": [
         "i#1"
@@ -16203,7 +16238,7 @@
         "i#1"
       ]
     },
-    "1094": {
+    "1096": {
       "op": "frame_dig -3",
       "defined_out": [
         "b#0 (copy)",
@@ -16218,7 +16253,7 @@
         "b#0 (copy)"
       ]
     },
-    "1096": {
+    "1098": {
       "op": "swap",
       "stack_out": [
         "t#0",
@@ -16229,7 +16264,7 @@
         "i#1"
       ]
     },
-    "1097": {
+    "1099": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -16241,7 +16276,7 @@
         "64"
       ]
     },
-    "1098": {
+    "1100": {
       "op": "extract3",
       "defined_out": [
         "bi#0",
@@ -16255,7 +16290,7 @@
         "bi#0"
       ]
     },
-    "1099": {
+    "1101": {
       "op": "dup",
       "stack_out": [
         "t#0",
@@ -16266,7 +16301,7 @@
         "bi#0"
       ]
     },
-    "1100": {
+    "1102": {
       "op": "cover 4",
       "defined_out": [
         "bi#0",
@@ -16281,7 +16316,7 @@
         "bi#0"
       ]
     },
-    "1102": {
+    "1104": {
       "op": "frame_dig 0",
       "defined_out": [
         "bi#0",
@@ -16298,7 +16333,7 @@
         "t#0"
       ]
     },
-    "1104": {
+    "1106": {
       "op": "dig 4",
       "defined_out": [
         "bi#0",
@@ -16317,7 +16352,7 @@
         "bottom#0"
       ]
     },
-    "1106": {
+    "1108": {
       "op": "dup",
       "defined_out": [
         "bi#0",
@@ -16338,7 +16373,7 @@
         "bottom#0 (copy)"
       ]
     },
-    "1107": {
+    "1109": {
       "op": "cover 2",
       "stack_out": [
         "t#0",
@@ -16352,7 +16387,7 @@
         "bottom#0 (copy)"
       ]
     },
-    "1109": {
+    "1111": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -16367,7 +16402,7 @@
         "64"
       ]
     },
-    "1110": {
+    "1112": {
       "op": "extract3",
       "defined_out": [
         "bi#0",
@@ -16387,7 +16422,7 @@
         "tmp%6#0"
       ]
     },
-    "1111": {
+    "1113": {
       "op": "frame_dig -4",
       "defined_out": [
         "a#0 (copy)",
@@ -16409,7 +16444,7 @@
         "a#0 (copy)"
       ]
     },
-    "1113": {
+    "1115": {
       "op": "dig 2",
       "stack_out": [
         "t#0",
@@ -16424,7 +16459,7 @@
         "bottom#0 (copy)"
       ]
     },
-    "1115": {
+    "1117": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -16440,7 +16475,7 @@
         "64"
       ]
     },
-    "1116": {
+    "1118": {
       "op": "extract3",
       "defined_out": [
         "bi#0",
@@ -16462,7 +16497,7 @@
         "tmp%7#0"
       ]
     },
-    "1117": {
+    "1119": {
       "op": "uncover 3",
       "stack_out": [
         "t#0",
@@ -16476,7 +16511,7 @@
         "bi#0"
       ]
     },
-    "1119": {
+    "1121": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "0x",
@@ -16500,7 +16535,7 @@
         "0x"
       ]
     },
-    "1120": {
+    "1122": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "defined_out": [
@@ -16520,7 +16555,7 @@
         "r#0"
       ]
     },
-    "1123": {
+    "1125": {
       "op": "dup",
       "defined_out": [
         "bi#0",
@@ -16541,7 +16576,7 @@
         "r#0 (copy)"
       ]
     },
-    "1124": {
+    "1126": {
       "op": "extract 64 0",
       "defined_out": [
         "bi#0",
@@ -16562,7 +16597,7 @@
         "c1#0"
       ]
     },
-    "1127": {
+    "1129": {
       "op": "cover 4",
       "defined_out": [
         "bi#0",
@@ -16583,7 +16618,7 @@
         "r#0"
       ]
     },
-    "1129": {
+    "1131": {
       "op": "extract 0 64",
       "defined_out": [
         "bi#0",
@@ -16604,7 +16639,7 @@
         "s#0"
       ]
     },
-    "1132": {
+    "1134": {
       "op": "dup",
       "defined_out": [
         "bi#0",
@@ -16627,7 +16662,7 @@
         "s#0 (copy)"
       ]
     },
-    "1133": {
+    "1135": {
       "op": "frame_dig -1",
       "defined_out": [
         "bi#0",
@@ -16652,7 +16687,7 @@
         "nInv#0 (copy)"
       ]
     },
-    "1135": {
+    "1137": {
       "op": "b*",
       "defined_out": [
         "bi#0",
@@ -16675,7 +16710,7 @@
         "x#0"
       ]
     },
-    "1136": {
+    "1138": {
       "callsub": "src/rsa.algo.ts::pad128",
       "op": "callsub pad128",
       "defined_out": [
@@ -16699,7 +16734,7 @@
         "tmp%0#2"
       ]
     },
-    "1139": {
+    "1141": {
       "op": "extract 64 64",
       "defined_out": [
         "bi#0",
@@ -16722,7 +16757,7 @@
         "m#0"
       ]
     },
-    "1142": {
+    "1144": {
       "op": "dup",
       "stack_out": [
         "t#0",
@@ -16737,7 +16772,7 @@
         "m#0"
       ]
     },
-    "1143": {
+    "1145": {
       "op": "cover 7",
       "defined_out": [
         "bi#0",
@@ -16761,7 +16796,7 @@
         "m#0"
       ]
     },
-    "1145": {
+    "1147": {
       "op": "frame_dig -2",
       "defined_out": [
         "bi#0",
@@ -16787,7 +16822,7 @@
         "n#0 (copy)"
       ]
     },
-    "1147": {
+    "1149": {
       "op": "dig 3",
       "stack_out": [
         "t#0",
@@ -16804,7 +16839,7 @@
         "bottom#0 (copy)"
       ]
     },
-    "1149": {
+    "1151": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -16822,7 +16857,7 @@
         "64"
       ]
     },
-    "1150": {
+    "1152": {
       "op": "extract3",
       "defined_out": [
         "bi#0",
@@ -16848,7 +16883,7 @@
         "tmp%13#0"
       ]
     },
-    "1151": {
+    "1153": {
       "op": "bytec_0 // 0x",
       "stack_out": [
         "t#0",
@@ -16865,7 +16900,7 @@
         "0x"
       ]
     },
-    "1152": {
+    "1154": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "stack_out": [
@@ -16880,7 +16915,7 @@
         "r#0"
       ]
     },
-    "1155": {
+    "1157": {
       "op": "extract 64 0",
       "defined_out": [
         "bi#0",
@@ -16903,7 +16938,7 @@
         "c2#0"
       ]
     },
-    "1158": {
+    "1160": {
       "op": "cover 4",
       "defined_out": [
         "bi#0",
@@ -16926,7 +16961,7 @@
         "bottom#0"
       ]
     },
-    "1160": {
+    "1162": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "bi#0",
@@ -16951,7 +16986,7 @@
         "next#0"
       ]
     },
-    "1161": {
+    "1163": {
       "op": "cover 4",
       "defined_out": [
         "bi#0",
@@ -16977,7 +17012,7 @@
         "j#1"
       ]
     },
-    "1163": {
+    "1165": {
       "op": "swap",
       "defined_out": [
         "bi#0",
@@ -17003,7 +17038,7 @@
         "top#0"
       ]
     },
-    "1164": {
+    "1166": {
       "block": "monMul_while_top@3",
       "stack_in": [
         "t#0",
@@ -17035,7 +17070,7 @@
         "j#1 (copy)"
       ]
     },
-    "1166": {
+    "1168": {
       "op": "bz monMul_after_while@5",
       "stack_out": [
         "t#0",
@@ -17050,7 +17085,7 @@
         "top#0"
       ]
     },
-    "1169": {
+    "1171": {
       "op": "swap",
       "defined_out": [
         "j#1"
@@ -17068,7 +17103,7 @@
         "j#1"
       ]
     },
-    "1170": {
+    "1172": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -17088,7 +17123,7 @@
         "64"
       ]
     },
-    "1171": {
+    "1173": {
       "op": "-",
       "stack_out": [
         "t#0",
@@ -17103,7 +17138,7 @@
         "j#1"
       ]
     },
-    "1172": {
+    "1174": {
       "op": "dup",
       "stack_out": [
         "t#0",
@@ -17119,7 +17154,7 @@
         "j#1"
       ]
     },
-    "1173": {
+    "1175": {
       "op": "cover 2",
       "defined_out": [
         "j#1"
@@ -17138,7 +17173,7 @@
         "j#1"
       ]
     },
-    "1175": {
+    "1177": {
       "op": "frame_dig 0",
       "defined_out": [
         "j#1",
@@ -17159,7 +17194,7 @@
         "t#0"
       ]
     },
-    "1177": {
+    "1179": {
       "op": "dig 1",
       "stack_out": [
         "t#0",
@@ -17177,7 +17212,7 @@
         "j#1 (copy)"
       ]
     },
-    "1179": {
+    "1181": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -17196,7 +17231,7 @@
         "64"
       ]
     },
-    "1180": {
+    "1182": {
       "op": "extract3",
       "defined_out": [
         "j#1",
@@ -17218,7 +17253,7 @@
         "tmp%18#0"
       ]
     },
-    "1181": {
+    "1183": {
       "op": "frame_dig -4",
       "defined_out": [
         "a#0 (copy)",
@@ -17242,7 +17277,7 @@
         "a#0 (copy)"
       ]
     },
-    "1183": {
+    "1185": {
       "op": "dig 2",
       "stack_out": [
         "t#0",
@@ -17261,7 +17296,7 @@
         "j#1 (copy)"
       ]
     },
-    "1185": {
+    "1187": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -17281,7 +17316,7 @@
         "64"
       ]
     },
-    "1186": {
+    "1188": {
       "op": "extract3",
       "defined_out": [
         "j#1",
@@ -17305,7 +17340,7 @@
         "tmp%19#0"
       ]
     },
-    "1187": {
+    "1189": {
       "op": "dig 11",
       "defined_out": [
         "bi#0 (copy)",
@@ -17331,7 +17366,7 @@
         "bi#0 (copy)"
       ]
     },
-    "1189": {
+    "1191": {
       "op": "uncover 7",
       "defined_out": [
         "bi#0 (copy)",
@@ -17358,7 +17393,7 @@
         "c1#0"
       ]
     },
-    "1191": {
+    "1193": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "defined_out": [
@@ -17380,7 +17415,7 @@
         "r#0"
       ]
     },
-    "1194": {
+    "1196": {
       "op": "dup",
       "defined_out": [
         "j#1",
@@ -17403,7 +17438,7 @@
         "r#0 (copy)"
       ]
     },
-    "1195": {
+    "1197": {
       "op": "extract 64 0",
       "stack_out": [
         "t#0",
@@ -17420,7 +17455,7 @@
         "c1#0"
       ]
     },
-    "1198": {
+    "1200": {
       "op": "cover 5",
       "defined_out": [
         "c1#0",
@@ -17443,7 +17478,7 @@
         "r#0"
       ]
     },
-    "1200": {
+    "1202": {
       "op": "extract 0 64",
       "defined_out": [
         "c1#0",
@@ -17466,7 +17501,7 @@
         "tmp%0#2"
       ]
     },
-    "1203": {
+    "1205": {
       "op": "frame_dig -2",
       "defined_out": [
         "c1#0",
@@ -17491,7 +17526,7 @@
         "n#0 (copy)"
       ]
     },
-    "1205": {
+    "1207": {
       "op": "uncover 2",
       "stack_out": [
         "t#0",
@@ -17509,7 +17544,7 @@
         "j#1"
       ]
     },
-    "1207": {
+    "1209": {
       "op": "intc_0 // 64",
       "stack_out": [
         "t#0",
@@ -17528,7 +17563,7 @@
         "64"
       ]
     },
-    "1208": {
+    "1210": {
       "op": "extract3",
       "defined_out": [
         "c1#0",
@@ -17552,10 +17587,10 @@
         "tmp%23#0"
       ]
     },
-    "1209": {
+    "1211": {
       "op": "dig 9"
     },
-    "1211": {
+    "1213": {
       "op": "swap",
       "defined_out": [
         "c1#0",
@@ -17581,7 +17616,7 @@
         "tmp%23#0"
       ]
     },
-    "1212": {
+    "1214": {
       "op": "uncover 8",
       "defined_out": [
         "c1#0",
@@ -17608,7 +17643,7 @@
         "c2#0"
       ]
     },
-    "1214": {
+    "1216": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "stack_out": [
@@ -17624,7 +17659,7 @@
         "r#0"
       ]
     },
-    "1217": {
+    "1219": {
       "op": "dup",
       "stack_out": [
         "t#0",
@@ -17640,7 +17675,7 @@
         "r#0 (copy)"
       ]
     },
-    "1218": {
+    "1220": {
       "op": "extract 64 0",
       "stack_out": [
         "t#0",
@@ -17656,7 +17691,7 @@
         "c2#0"
       ]
     },
-    "1221": {
+    "1223": {
       "op": "cover 6",
       "defined_out": [
         "c1#0",
@@ -17679,7 +17714,7 @@
         "r#0"
       ]
     },
-    "1223": {
+    "1225": {
       "op": "extract 0 64",
       "defined_out": [
         "c1#0",
@@ -17702,7 +17737,7 @@
         "tmp%26#0"
       ]
     },
-    "1226": {
+    "1228": {
       "op": "uncover 5",
       "defined_out": [
         "c1#0",
@@ -17726,7 +17761,7 @@
         "next#0"
       ]
     },
-    "1228": {
+    "1230": {
       "op": "concat",
       "stack_out": [
         "t#0",
@@ -17741,7 +17776,7 @@
         "next#0"
       ]
     },
-    "1229": {
+    "1231": {
       "op": "cover 4",
       "defined_out": [
         "c1#0",
@@ -17763,10 +17798,10 @@
         "top#0"
       ]
     },
-    "1231": {
+    "1233": {
       "op": "b monMul_while_top@3"
     },
-    "1234": {
+    "1236": {
       "block": "monMul_after_while@5",
       "stack_in": [
         "t#0",
@@ -17794,7 +17829,7 @@
         "top#0"
       ]
     },
-    "1236": {
+    "1238": {
       "op": "uncover 6",
       "defined_out": [
         "m#0"
@@ -17811,7 +17846,7 @@
         "m#0"
       ]
     },
-    "1238": {
+    "1240": {
       "op": "pop",
       "stack_out": [
         "t#0",
@@ -17822,25 +17857,25 @@
         "c1#0",
         "i#1",
         "top#0"
-      ]
-    },
-    "1239": {
-      "op": "uncover 6",
-      "defined_out": [
-        "bi#0"
-      ],
-      "stack_out": [
-        "t#0",
-        "bottom#0",
-        "c2#0",
-        "next#0",
-        "c1#0",
-        "i#1",
-        "top#0",
-        "bi#0"
       ]
     },
     "1241": {
+      "op": "uncover 6",
+      "defined_out": [
+        "bi#0"
+      ],
+      "stack_out": [
+        "t#0",
+        "bottom#0",
+        "c2#0",
+        "next#0",
+        "c1#0",
+        "i#1",
+        "top#0",
+        "bi#0"
+      ]
+    },
+    "1243": {
       "op": "pop",
       "stack_out": [
         "t#0",
@@ -17852,7 +17887,7 @@
         "top#0"
       ]
     },
-    "1242": {
+    "1244": {
       "op": "uncover 2",
       "defined_out": [
         "c1#0"
@@ -17867,7 +17902,7 @@
         "c1#0"
       ]
     },
-    "1244": {
+    "1246": {
       "op": "swap",
       "defined_out": [
         "c1#0",
@@ -17883,7 +17918,7 @@
         "top#0"
       ]
     },
-    "1245": {
+    "1247": {
       "op": "bytec_1 // 0x01",
       "defined_out": [
         "0x01",
@@ -17901,7 +17936,7 @@
         "0x01"
       ]
     },
-    "1246": {
+    "1248": {
       "op": "uncover 5",
       "defined_out": [
         "0x01",
@@ -17920,7 +17955,7 @@
         "c2#0"
       ]
     },
-    "1248": {
+    "1250": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "defined_out": [
@@ -17934,7 +17969,7 @@
         "r#0"
       ]
     },
-    "1251": {
+    "1253": {
       "op": "dup",
       "defined_out": [
         "r#0",
@@ -17949,7 +17984,7 @@
         "r#0 (copy)"
       ]
     },
-    "1252": {
+    "1254": {
       "op": "extract 0 64",
       "defined_out": [
         "r#0",
@@ -17964,7 +17999,7 @@
         "tmp%29#0"
       ]
     },
-    "1255": {
+    "1257": {
       "op": "uncover 3",
       "defined_out": [
         "next#0",
@@ -17980,7 +18015,7 @@
         "next#0"
       ]
     },
-    "1257": {
+    "1259": {
       "op": "concat",
       "defined_out": [
         "r#0",
@@ -17994,7 +18029,7 @@
         "t#0"
       ]
     },
-    "1258": {
+    "1260": {
       "op": "frame_bury 0",
       "defined_out": [
         "r#0",
@@ -18007,7 +18042,7 @@
         "r#0"
       ]
     },
-    "1260": {
+    "1262": {
       "op": "extract 64 0",
       "defined_out": [
         "t#0",
@@ -18020,10 +18055,10 @@
         "top#0"
       ]
     },
-    "1263": {
+    "1265": {
       "op": "b monMul_while_top@1"
     },
-    "1266": {
+    "1268": {
       "block": "monMul_after_while@6",
       "stack_in": [
         "t#0",
@@ -18039,7 +18074,7 @@
         "top#0"
       ]
     },
-    "1268": {
+    "1270": {
       "op": "bury 1",
       "defined_out": [
         "top#0"
@@ -18049,7 +18084,7 @@
         "top#0"
       ]
     },
-    "1270": {
+    "1272": {
       "op": "bytec_0 // 0x",
       "defined_out": [
         "0x",
@@ -18061,7 +18096,7 @@
         "0x"
       ]
     },
-    "1271": {
+    "1273": {
       "op": "b>",
       "defined_out": [
         "tmp%32#0"
@@ -18071,13 +18106,13 @@
         "tmp%32#0"
       ]
     },
-    "1272": {
+    "1274": {
       "op": "bnz monMul_ternary_true@8",
       "stack_out": [
         "t#0"
       ]
     },
-    "1275": {
+    "1277": {
       "op": "frame_dig 0",
       "defined_out": [
         "t#0"
@@ -18087,7 +18122,7 @@
         "t#0"
       ]
     },
-    "1277": {
+    "1279": {
       "op": "frame_dig -2",
       "defined_out": [
         "n#0 (copy)",
@@ -18099,7 +18134,7 @@
         "n#0 (copy)"
       ]
     },
-    "1279": {
+    "1281": {
       "callsub": "src/rsa.algo.ts::gte",
       "op": "callsub gte",
       "defined_out": [
@@ -18111,13 +18146,13 @@
         "tmp%33#0"
       ]
     },
-    "1282": {
+    "1284": {
       "op": "bz monMul_ternary_false@9",
       "stack_out": [
         "t#0"
       ]
     },
-    "1285": {
+    "1287": {
       "block": "monMul_ternary_true@8",
       "stack_in": [
         "t#0"
@@ -18131,7 +18166,7 @@
         "t#0"
       ]
     },
-    "1287": {
+    "1289": {
       "op": "frame_dig -2",
       "defined_out": [
         "n#0 (copy)",
@@ -18143,7 +18178,7 @@
         "n#0 (copy)"
       ]
     },
-    "1289": {
+    "1291": {
       "callsub": "src/rsa.algo.ts::sub",
       "op": "callsub sub",
       "defined_out": [
@@ -18155,7 +18190,7 @@
         "ternary_result%0#0"
       ]
     },
-    "1292": {
+    "1294": {
       "block": "monMul_ternary_merge@10",
       "stack_in": [
         "t#0",
@@ -18166,11 +18201,11 @@
         "ternary_result%0#0"
       ]
     },
-    "1293": {
+    "1295": {
       "retsub": true,
       "op": "retsub"
     },
-    "1294": {
+    "1296": {
       "block": "monMul_ternary_false@9",
       "stack_in": [
         "t#0"
@@ -18184,10 +18219,10 @@
         "ternary_result%0#0"
       ]
     },
-    "1296": {
+    "1298": {
       "op": "b monMul_ternary_merge@10"
     },
-    "1299": {
+    "1301": {
       "subroutine": "src/rsa.algo.ts::mac",
       "params": {
         "t#0": "bytes",
@@ -18199,7 +18234,7 @@
       "stack_in": [],
       "op": "proto 4 1"
     },
-    "1302": {
+    "1304": {
       "op": "frame_dig -3",
       "defined_out": [
         "x#0 (copy)"
@@ -18208,7 +18243,7 @@
         "x#0 (copy)"
       ]
     },
-    "1304": {
+    "1306": {
       "op": "frame_dig -2",
       "defined_out": [
         "x#0 (copy)",
@@ -18219,7 +18254,7 @@
         "y#0 (copy)"
       ]
     },
-    "1306": {
+    "1308": {
       "op": "b*",
       "defined_out": [
         "tmp%0#0"
@@ -18228,7 +18263,7 @@
         "tmp%0#0"
       ]
     },
-    "1307": {
+    "1309": {
       "callsub": "src/rsa.algo.ts::pad128",
       "op": "callsub pad128",
       "defined_out": [
@@ -18238,7 +18273,7 @@
         "p#0"
       ]
     },
-    "1310": {
+    "1312": {
       "op": "dup",
       "defined_out": [
         "p#0",
@@ -18249,7 +18284,7 @@
         "p#0 (copy)"
       ]
     },
-    "1311": {
+    "1313": {
       "op": "extract 64 64",
       "defined_out": [
         "p#0",
@@ -18260,7 +18295,7 @@
         "tmp%2#0"
       ]
     },
-    "1314": {
+    "1316": {
       "op": "frame_dig -4",
       "defined_out": [
         "p#0",
@@ -18273,7 +18308,7 @@
         "t#0 (copy)"
       ]
     },
-    "1316": {
+    "1318": {
       "op": "b+",
       "defined_out": [
         "p#0",
@@ -18284,7 +18319,7 @@
         "u#0"
       ]
     },
-    "1317": {
+    "1319": {
       "op": "dup",
       "defined_out": [
         "p#0",
@@ -18297,7 +18332,7 @@
         "u#0 (copy)"
       ]
     },
-    "1318": {
+    "1320": {
       "op": "len",
       "defined_out": [
         "p#0",
@@ -18310,7 +18345,7 @@
         "tmp%4#0"
       ]
     },
-    "1319": {
+    "1321": {
       "op": "pushint 65",
       "defined_out": [
         "65",
@@ -18325,7 +18360,7 @@
         "65"
       ]
     },
-    "1321": {
+    "1323": {
       "op": "swap",
       "stack_out": [
         "p#0",
@@ -18334,7 +18369,7 @@
         "tmp%4#0"
       ]
     },
-    "1322": {
+    "1324": {
       "op": "-",
       "defined_out": [
         "p#0",
@@ -18347,7 +18382,7 @@
         "tmp%5#0"
       ]
     },
-    "1323": {
+    "1325": {
       "op": "bzero",
       "defined_out": [
         "p#0",
@@ -18360,7 +18395,7 @@
         "tmp%6#0"
       ]
     },
-    "1324": {
+    "1326": {
       "op": "swap",
       "stack_out": [
         "p#0",
@@ -18368,14 +18403,14 @@
         "u#0"
       ]
     },
-    "1325": {
+    "1327": {
       "op": "concat",
       "stack_out": [
         "p#0",
         "u#0"
       ]
     },
-    "1326": {
+    "1328": {
       "op": "dup",
       "stack_out": [
         "p#0",
@@ -18383,7 +18418,7 @@
         "u#0 (copy)"
       ]
     },
-    "1327": {
+    "1329": {
       "op": "extract 1 64",
       "defined_out": [
         "p#0",
@@ -18396,7 +18431,7 @@
         "tmp%8#0"
       ]
     },
-    "1330": {
+    "1332": {
       "op": "frame_dig -1",
       "defined_out": [
         "c#0 (copy)",
@@ -18411,7 +18446,7 @@
         "c#0 (copy)"
       ]
     },
-    "1332": {
+    "1334": {
       "op": "b+",
       "defined_out": [
         "p#0",
@@ -18424,7 +18459,7 @@
         "v#0"
       ]
     },
-    "1333": {
+    "1335": {
       "op": "dup",
       "defined_out": [
         "p#0",
@@ -18439,7 +18474,7 @@
         "v#0 (copy)"
       ]
     },
-    "1334": {
+    "1336": {
       "op": "len",
       "defined_out": [
         "p#0",
@@ -18454,7 +18489,7 @@
         "tmp%10#0"
       ]
     },
-    "1335": {
+    "1337": {
       "op": "pushint 65",
       "stack_out": [
         "p#0",
@@ -18464,7 +18499,7 @@
         "65"
       ]
     },
-    "1337": {
+    "1339": {
       "op": "swap",
       "stack_out": [
         "p#0",
@@ -18474,7 +18509,7 @@
         "tmp%10#0"
       ]
     },
-    "1338": {
+    "1340": {
       "op": "-",
       "defined_out": [
         "p#0",
@@ -18489,7 +18524,7 @@
         "tmp%11#0"
       ]
     },
-    "1339": {
+    "1341": {
       "op": "bzero",
       "defined_out": [
         "p#0",
@@ -18504,7 +18539,7 @@
         "tmp%12#0"
       ]
     },
-    "1340": {
+    "1342": {
       "op": "swap",
       "stack_out": [
         "p#0",
@@ -18513,7 +18548,7 @@
         "v#0"
       ]
     },
-    "1341": {
+    "1343": {
       "op": "concat",
       "stack_out": [
         "p#0",
@@ -18521,7 +18556,7 @@
         "v#0"
       ]
     },
-    "1342": {
+    "1344": {
       "op": "dup",
       "stack_out": [
         "p#0",
@@ -18530,7 +18565,7 @@
         "v#0 (copy)"
       ]
     },
-    "1343": {
+    "1345": {
       "op": "extract 1 64",
       "defined_out": [
         "p#0",
@@ -18545,7 +18580,7 @@
         "tmp%14#0"
       ]
     },
-    "1346": {
+    "1348": {
       "op": "uncover 3",
       "stack_out": [
         "u#0",
@@ -18554,7 +18589,7 @@
         "p#0"
       ]
     },
-    "1348": {
+    "1350": {
       "op": "extract 0 64",
       "defined_out": [
         "tmp%14#0",
@@ -18569,7 +18604,7 @@
         "tmp%15#0"
       ]
     },
-    "1351": {
+    "1353": {
       "op": "uncover 3",
       "stack_out": [
         "v#0",
@@ -18578,7 +18613,7 @@
         "u#0"
       ]
     },
-    "1353": {
+    "1355": {
       "op": "intc_2 // 0",
       "defined_out": [
         "0",
@@ -18595,7 +18630,7 @@
         "0"
       ]
     },
-    "1354": {
+    "1356": {
       "op": "getbyte",
       "defined_out": [
         "tmp%14#0",
@@ -18610,7 +18645,7 @@
         "tmp%16#0"
       ]
     },
-    "1355": {
+    "1357": {
       "op": "uncover 3",
       "stack_out": [
         "tmp%14#0",
@@ -18619,7 +18654,7 @@
         "v#0"
       ]
     },
-    "1357": {
+    "1359": {
       "op": "intc_2 // 0",
       "stack_out": [
         "tmp%14#0",
@@ -18629,7 +18664,7 @@
         "0"
       ]
     },
-    "1358": {
+    "1360": {
       "op": "getbyte",
       "defined_out": [
         "tmp%14#0",
@@ -18644,7 +18679,7 @@
         "tmp%17#0"
       ]
     },
-    "1359": {
+    "1361": {
       "op": "+",
       "defined_out": [
         "tmp%14#0",
@@ -18657,7 +18692,7 @@
         "tmp%18#0"
       ]
     },
-    "1360": {
+    "1362": {
       "op": "itob",
       "defined_out": [
         "tmp%14#0",
@@ -18670,7 +18705,7 @@
         "tmp%19#0"
       ]
     },
-    "1361": {
+    "1363": {
       "op": "b+",
       "defined_out": [
         "tmp%14#0",
@@ -18681,7 +18716,7 @@
         "tmp%20#0"
       ]
     },
-    "1362": {
+    "1364": {
       "op": "concat",
       "defined_out": [
         "tmp%21#0"
@@ -18690,11 +18725,11 @@
         "tmp%21#0"
       ]
     },
-    "1363": {
+    "1365": {
       "retsub": true,
       "op": "retsub"
     },
-    "1364": {
+    "1366": {
       "subroutine": "src/rsa.algo.ts::pad128",
       "params": {
         "x#0": "bytes"
@@ -18703,7 +18738,7 @@
       "stack_in": [],
       "op": "proto 1 1"
     },
-    "1367": {
+    "1369": {
       "op": "frame_dig -1",
       "defined_out": [
         "x#0 (copy)"
@@ -18712,7 +18747,7 @@
         "x#0 (copy)"
       ]
     },
-    "1369": {
+    "1371": {
       "op": "len",
       "defined_out": [
         "tmp%0#0"
@@ -18721,7 +18756,7 @@
         "tmp%0#0"
       ]
     },
-    "1370": {
+    "1372": {
       "op": "pushint 128",
       "defined_out": [
         "128",
@@ -18732,14 +18767,14 @@
         "128"
       ]
     },
-    "1373": {
+    "1375": {
       "op": "swap",
       "stack_out": [
         "128",
         "tmp%0#0"
       ]
     },
-    "1374": {
+    "1376": {
       "op": "-",
       "defined_out": [
         "tmp%1#0"
@@ -18748,7 +18783,7 @@
         "tmp%1#0"
       ]
     },
-    "1375": {
+    "1377": {
       "op": "bzero",
       "defined_out": [
         "tmp%2#0"
@@ -18757,14 +18792,14 @@
         "tmp%2#0"
       ]
     },
-    "1376": {
+    "1378": {
       "op": "frame_dig -1",
       "stack_out": [
         "tmp%2#0",
         "x#0 (copy)"
       ]
     },
-    "1378": {
+    "1380": {
       "op": "concat",
       "defined_out": [
         "tmp%3#0"
@@ -18773,11 +18808,11 @@
         "tmp%3#0"
       ]
     },
-    "1379": {
+    "1381": {
       "retsub": true,
       "op": "retsub"
     },
-    "1380": {
+    "1382": {
       "subroutine": "src/rsa.algo.ts::add",
       "params": {
         "x#0": "bytes",
@@ -18787,13 +18822,13 @@
       "stack_in": [],
       "op": "proto 2 1"
     },
-    "1383": {
+    "1385": {
       "op": "bytec_0 // 0x"
     },
-    "1384": {
+    "1386": {
       "op": "dup"
     },
-    "1385": {
+    "1387": {
       "op": "intc_2 // 0",
       "defined_out": [
         "carry#0",
@@ -18806,7 +18841,7 @@
         "j#0"
       ]
     },
-    "1386": {
+    "1388": {
       "block": "add_while_top@1",
       "stack_in": [
         "carry#0",
@@ -18824,7 +18859,7 @@
         "x#0 (copy)"
       ]
     },
-    "1388": {
+    "1390": {
       "op": "len",
       "defined_out": [
         "tmp%0#0"
@@ -18836,7 +18871,7 @@
         "tmp%0#0"
       ]
     },
-    "1389": {
+    "1391": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -18850,7 +18885,7 @@
         "64"
       ]
     },
-    "1390": {
+    "1392": {
       "op": "/",
       "defined_out": [
         "tmp%1#0"
@@ -18862,7 +18897,7 @@
         "tmp%1#0"
       ]
     },
-    "1391": {
+    "1393": {
       "op": "dig 1",
       "defined_out": [
         "j#0 (copy)",
@@ -18876,7 +18911,7 @@
         "j#0 (copy)"
       ]
     },
-    "1393": {
+    "1395": {
       "op": ">",
       "defined_out": [
         "tmp%2#0"
@@ -18888,7 +18923,7 @@
         "tmp%2#0"
       ]
     },
-    "1394": {
+    "1396": {
       "op": "bz add_after_while@3",
       "stack_out": [
         "carry#0",
@@ -18896,7 +18931,7 @@
         "j#0"
       ]
     },
-    "1397": {
+    "1399": {
       "op": "frame_dig -2",
       "stack_out": [
         "carry#0",
@@ -18905,7 +18940,7 @@
         "x#0 (copy)"
       ]
     },
-    "1399": {
+    "1401": {
       "op": "dig 1",
       "defined_out": [
         "j#0",
@@ -18920,7 +18955,7 @@
         "j#0 (copy)"
       ]
     },
-    "1401": {
+    "1403": {
       "callsub": "src/rsa.algo.ts::limb",
       "op": "callsub limb",
       "defined_out": [
@@ -18934,7 +18969,7 @@
         "tmp%3#0"
       ]
     },
-    "1404": {
+    "1406": {
       "op": "frame_dig -1",
       "defined_out": [
         "j#0",
@@ -18949,7 +18984,7 @@
         "y#0 (copy)"
       ]
     },
-    "1406": {
+    "1408": {
       "op": "dig 2",
       "stack_out": [
         "carry#0",
@@ -18960,7 +18995,7 @@
         "j#0 (copy)"
       ]
     },
-    "1408": {
+    "1410": {
       "callsub": "src/rsa.algo.ts::limb",
       "op": "callsub limb",
       "defined_out": [
@@ -18976,7 +19011,7 @@
         "tmp%4#0"
       ]
     },
-    "1411": {
+    "1413": {
       "op": "bytec_1 // 0x01",
       "defined_out": [
         "0x01",
@@ -18993,7 +19028,7 @@
         "0x01"
       ]
     },
-    "1412": {
+    "1414": {
       "op": "uncover 5",
       "defined_out": [
         "0x01",
@@ -19011,7 +19046,7 @@
         "carry#0"
       ]
     },
-    "1414": {
+    "1416": {
       "callsub": "src/rsa.algo.ts::mac",
       "op": "callsub mac",
       "defined_out": [
@@ -19024,7 +19059,7 @@
         "r#0"
       ]
     },
-    "1417": {
+    "1419": {
       "op": "dup",
       "defined_out": [
         "j#0",
@@ -19038,7 +19073,7 @@
         "r#0 (copy)"
       ]
     },
-    "1418": {
+    "1420": {
       "op": "extract 64 0",
       "stack_out": [
         "sum#0",
@@ -19047,7 +19082,7 @@
         "carry#0"
       ]
     },
-    "1421": {
+    "1423": {
       "op": "cover 3",
       "defined_out": [
         "carry#0",
@@ -19061,7 +19096,7 @@
         "r#0"
       ]
     },
-    "1423": {
+    "1425": {
       "op": "extract 0 64",
       "defined_out": [
         "carry#0",
@@ -19075,7 +19110,7 @@
         "tmp%7#0"
       ]
     },
-    "1426": {
+    "1428": {
       "op": "uncover 2",
       "defined_out": [
         "carry#0",
@@ -19090,7 +19125,7 @@
         "sum#0"
       ]
     },
-    "1428": {
+    "1430": {
       "op": "concat",
       "stack_out": [
         "carry#0",
@@ -19098,7 +19133,7 @@
         "sum#0"
       ]
     },
-    "1429": {
+    "1431": {
       "op": "swap",
       "defined_out": [
         "carry#0",
@@ -19111,7 +19146,7 @@
         "j#0"
       ]
     },
-    "1430": {
+    "1432": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
@@ -19126,7 +19161,7 @@
         "1"
       ]
     },
-    "1431": {
+    "1433": {
       "op": "+",
       "defined_out": [
         "carry#0",
@@ -19139,10 +19174,10 @@
         "j#0"
       ]
     },
-    "1432": {
+    "1434": {
       "op": "b add_while_top@1"
     },
-    "1435": {
+    "1437": {
       "block": "add_after_while@3",
       "stack_in": [
         "carry#0",
@@ -19156,7 +19191,7 @@
         "sum#0"
       ]
     },
-    "1436": {
+    "1438": {
       "op": "swap",
       "defined_out": [
         "carry#0"
@@ -19166,7 +19201,7 @@
         "carry#0"
       ]
     },
-    "1437": {
+    "1439": {
       "op": "dup",
       "defined_out": [
         "carry#0",
@@ -19178,7 +19213,7 @@
         "carry#0 (copy)"
       ]
     },
-    "1438": {
+    "1440": {
       "op": "len",
       "defined_out": [
         "aggregate%value_len%0#0",
@@ -19190,7 +19225,7 @@
         "aggregate%value_len%0#0"
       ]
     },
-    "1439": {
+    "1441": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -19204,7 +19239,7 @@
         "64"
       ]
     },
-    "1440": {
+    "1442": {
       "op": "<=",
       "defined_out": [
         "aggregate%len_ok%0#0",
@@ -19216,7 +19251,7 @@
         "aggregate%len_ok%0#0"
       ]
     },
-    "1441": {
+    "1443": {
       "error": "overflow",
       "op": "assert // overflow",
       "stack_out": [
@@ -19224,7 +19259,7 @@
         "carry#0"
       ]
     },
-    "1442": {
+    "1444": {
       "op": "intc_0 // 64",
       "stack_out": [
         "sum#0",
@@ -19232,7 +19267,7 @@
         "64"
       ]
     },
-    "1443": {
+    "1445": {
       "op": "bzero",
       "defined_out": [
         "aggregate%bzero%0#0",
@@ -19244,7 +19279,7 @@
         "aggregate%bzero%0#0"
       ]
     },
-    "1444": {
+    "1446": {
       "op": "b|",
       "defined_out": [
         "aggregate%arc4_encoded%0#0"
@@ -19254,7 +19289,7 @@
         "aggregate%arc4_encoded%0#0"
       ]
     },
-    "1445": {
+    "1447": {
       "op": "swap",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19265,7 +19300,7 @@
         "sum#0"
       ]
     },
-    "1446": {
+    "1448": {
       "op": "dup",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19278,7 +19313,7 @@
         "sum#0 (copy)"
       ]
     },
-    "1447": {
+    "1449": {
       "op": "len",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19291,7 +19326,7 @@
         "aggregate%length%0#0"
       ]
     },
-    "1448": {
+    "1450": {
       "op": "itob",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19304,7 +19339,7 @@
         "aggregate%as_bytes%0#0"
       ]
     },
-    "1449": {
+    "1451": {
       "op": "extract 6 2",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19317,7 +19352,7 @@
         "aggregate%length_uint16%0#0"
       ]
     },
-    "1452": {
+    "1454": {
       "op": "swap",
       "stack_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19325,7 +19360,7 @@
         "sum#0"
       ]
     },
-    "1453": {
+    "1455": {
       "op": "concat",
       "defined_out": [
         "aggregate%arc4_encoded%0#0",
@@ -19336,14 +19371,14 @@
         "aggregate%encoded_value%0#0"
       ]
     },
-    "1454": {
+    "1456": {
       "op": "swap",
       "stack_out": [
         "aggregate%encoded_value%0#0",
         "aggregate%arc4_encoded%0#0"
       ]
     },
-    "1455": {
+    "1457": {
       "op": "pushbytes 0x0042",
       "defined_out": [
         "0x0042",
@@ -19356,7 +19391,7 @@
         "0x0042"
       ]
     },
-    "1459": {
+    "1461": {
       "op": "concat",
       "defined_out": [
         "aggregate%encoded_value%0#0",
@@ -19367,14 +19402,14 @@
         "aggregate%head%1#0"
       ]
     },
-    "1460": {
+    "1462": {
       "op": "swap",
       "stack_out": [
         "aggregate%head%1#0",
         "aggregate%encoded_value%0#0"
       ]
     },
-    "1461": {
+    "1463": {
       "op": "concat",
       "defined_out": [
         "aggregate%concat%0#0"
@@ -19383,11 +19418,11 @@
         "aggregate%concat%0#0"
       ]
     },
-    "1462": {
+    "1464": {
       "retsub": true,
       "op": "retsub"
     },
-    "1463": {
+    "1465": {
       "subroutine": "src/rsa.algo.ts::sub",
       "params": {
         "x#0": "bytes",
@@ -19397,7 +19432,7 @@
       "stack_in": [],
       "op": "proto 2 1"
     },
-    "1466": {
+    "1468": {
       "op": "frame_dig -1",
       "defined_out": [
         "n#0 (copy)"
@@ -19406,7 +19441,7 @@
         "n#0 (copy)"
       ]
     },
-    "1468": {
+    "1470": {
       "op": "b~",
       "defined_out": [
         "tmp%0#1"
@@ -19415,7 +19450,7 @@
         "tmp%0#1"
       ]
     },
-    "1469": {
+    "1471": {
       "op": "bytec_1 // 0x01",
       "defined_out": [
         "0x01",
@@ -19426,7 +19461,7 @@
         "0x01"
       ]
     },
-    "1470": {
+    "1472": {
       "op": "b|",
       "defined_out": [
         "tmp%1#1"
@@ -19435,7 +19470,7 @@
         "tmp%1#1"
       ]
     },
-    "1471": {
+    "1473": {
       "op": "frame_dig -2",
       "defined_out": [
         "tmp%1#1",
@@ -19446,14 +19481,14 @@
         "x#0 (copy)"
       ]
     },
-    "1473": {
+    "1475": {
       "op": "swap",
       "stack_out": [
         "x#0 (copy)",
         "tmp%1#1"
       ]
     },
-    "1474": {
+    "1476": {
       "callsub": "src/rsa.algo.ts::add",
       "op": "callsub add",
       "defined_out": [
@@ -19463,7 +19498,7 @@
         "awst_tmp%0#0"
       ]
     },
-    "1477": {
+    "1479": {
       "op": "dup",
       "defined_out": [
         "awst_tmp%0#0",
@@ -19474,7 +19509,7 @@
         "awst_tmp%0#0 (copy)"
       ]
     },
-    "1478": {
+    "1480": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -19487,7 +19522,7 @@
         "64"
       ]
     },
-    "1479": {
+    "1481": {
       "op": "extract_uint16",
       "defined_out": [
         "aggregate%extract_uint16%0#0",
@@ -19498,7 +19533,7 @@
         "aggregate%extract_uint16%0#0"
       ]
     },
-    "1480": {
+    "1482": {
       "op": "dig 1",
       "stack_out": [
         "awst_tmp%0#0",
@@ -19506,7 +19541,7 @@
         "awst_tmp%0#0 (copy)"
       ]
     },
-    "1482": {
+    "1484": {
       "op": "len",
       "defined_out": [
         "aggregate%extract_uint16%0#0",
@@ -19519,7 +19554,7 @@
         "aggregate%len%0#0"
       ]
     },
-    "1483": {
+    "1485": {
       "op": "substring3",
       "defined_out": [
         "aggregate%substring3%0#0"
@@ -19528,7 +19563,7 @@
         "aggregate%substring3%0#0"
       ]
     },
-    "1484": {
+    "1486": {
       "op": "extract 2 0",
       "defined_out": [
         "difference#0"
@@ -19537,11 +19572,11 @@
         "difference#0"
       ]
     },
-    "1487": {
+    "1489": {
       "retsub": true,
       "op": "retsub"
     },
-    "1488": {
+    "1490": {
       "subroutine": "src/rsa.algo.ts::gte",
       "params": {
         "x#0": "bytes",
@@ -19551,7 +19586,7 @@
       "stack_in": [],
       "op": "proto 2 1"
     },
-    "1491": {
+    "1493": {
       "op": "intc_2 // 0",
       "defined_out": [
         "offset#0"
@@ -19560,7 +19595,7 @@
         "offset#0"
       ]
     },
-    "1492": {
+    "1494": {
       "block": "gte_while_top@1",
       "stack_in": [
         "offset#0"
@@ -19574,7 +19609,7 @@
         "x#0 (copy)"
       ]
     },
-    "1494": {
+    "1496": {
       "op": "len",
       "defined_out": [
         "tmp%0#0"
@@ -19584,7 +19619,7 @@
         "tmp%0#0"
       ]
     },
-    "1495": {
+    "1497": {
       "op": "dig 1",
       "defined_out": [
         "offset#0 (copy)",
@@ -19596,7 +19631,7 @@
         "offset#0 (copy)"
       ]
     },
-    "1497": {
+    "1499": {
       "op": ">",
       "defined_out": [
         "tmp%1#0"
@@ -19606,20 +19641,20 @@
         "tmp%1#0"
       ]
     },
-    "1498": {
+    "1500": {
       "op": "bz gte_after_while@5",
       "stack_out": [
         "offset#0"
       ]
     },
-    "1501": {
+    "1503": {
       "op": "frame_dig -2",
       "stack_out": [
         "offset#0",
         "x#0 (copy)"
       ]
     },
-    "1503": {
+    "1505": {
       "op": "dig 1",
       "defined_out": [
         "offset#0",
@@ -19631,7 +19666,7 @@
         "offset#0"
       ]
     },
-    "1505": {
+    "1507": {
       "op": "dup",
       "stack_out": [
         "offset#0",
@@ -19640,7 +19675,7 @@
         "offset#0 (copy)"
       ]
     },
-    "1506": {
+    "1508": {
       "op": "cover 2",
       "stack_out": [
         "offset#0",
@@ -19649,7 +19684,7 @@
         "offset#0 (copy)"
       ]
     },
-    "1508": {
+    "1510": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -19665,7 +19700,7 @@
         "64"
       ]
     },
-    "1509": {
+    "1511": {
       "op": "extract3",
       "defined_out": [
         "offset#0",
@@ -19677,7 +19712,7 @@
         "xl#0"
       ]
     },
-    "1510": {
+    "1512": {
       "op": "dup",
       "stack_out": [
         "offset#0",
@@ -19686,7 +19721,7 @@
         "xl#0 (copy)"
       ]
     },
-    "1511": {
+    "1513": {
       "op": "cover 2",
       "stack_out": [
         "offset#0",
@@ -19695,7 +19730,7 @@
         "xl#0"
       ]
     },
-    "1513": {
+    "1515": {
       "op": "cover 3",
       "defined_out": [
         "offset#0",
@@ -19708,7 +19743,7 @@
         "offset#0"
       ]
     },
-    "1515": {
+    "1517": {
       "op": "frame_dig -1",
       "defined_out": [
         "offset#0",
@@ -19723,7 +19758,7 @@
         "y#0 (copy)"
       ]
     },
-    "1517": {
+    "1519": {
       "op": "swap",
       "stack_out": [
         "xl#0",
@@ -19733,7 +19768,7 @@
         "offset#0"
       ]
     },
-    "1518": {
+    "1520": {
       "op": "intc_0 // 64",
       "stack_out": [
         "xl#0",
@@ -19744,7 +19779,7 @@
         "64"
       ]
     },
-    "1519": {
+    "1521": {
       "op": "extract3",
       "defined_out": [
         "offset#0",
@@ -19758,7 +19793,7 @@
         "yl#0"
       ]
     },
-    "1520": {
+    "1522": {
       "op": "dup",
       "stack_out": [
         "xl#0",
@@ -19768,7 +19803,7 @@
         "yl#0"
       ]
     },
-    "1521": {
+    "1523": {
       "op": "cover 2",
       "defined_out": [
         "offset#0",
@@ -19783,7 +19818,7 @@
         "yl#0"
       ]
     },
-    "1523": {
+    "1525": {
       "op": "b!=",
       "defined_out": [
         "offset#0",
@@ -19798,7 +19833,7 @@
         "tmp%4#0"
       ]
     },
-    "1524": {
+    "1526": {
       "op": "bz gte_after_if_else@4",
       "stack_out": [
         "xl#0",
@@ -19806,14 +19841,14 @@
         "yl#0"
       ]
     },
-    "1527": {
+    "1529": {
       "op": "bury 1",
       "stack_out": [
         "xl#0",
         "yl#0"
       ]
     },
-    "1529": {
+    "1531": {
       "op": "b>",
       "defined_out": [
         "tmp%5#0"
@@ -19822,11 +19857,11 @@
         "tmp%5#0"
       ]
     },
-    "1530": {
+    "1532": {
       "retsub": true,
       "op": "retsub"
     },
-    "1531": {
+    "1533": {
       "block": "gte_after_if_else@4",
       "stack_in": [
         "xl#0",
@@ -19840,7 +19875,7 @@
         "offset#0"
       ]
     },
-    "1532": {
+    "1534": {
       "op": "bury 1",
       "defined_out": [
         "offset#0"
@@ -19849,7 +19884,7 @@
         "offset#0"
       ]
     },
-    "1534": {
+    "1536": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -19860,7 +19895,7 @@
         "64"
       ]
     },
-    "1535": {
+    "1537": {
       "op": "+",
       "defined_out": [
         "offset#0"
@@ -19869,10 +19904,10 @@
         "offset#0"
       ]
     },
-    "1536": {
+    "1538": {
       "op": "b gte_while_top@1"
     },
-    "1539": {
+    "1541": {
       "block": "gte_after_while@5",
       "stack_in": [
         "offset#0"
@@ -19886,14 +19921,14 @@
         "1"
       ]
     },
-    "1540": {
+    "1542": {
       "op": "swap"
     },
-    "1541": {
+    "1543": {
       "retsub": true,
       "op": "retsub"
     },
-    "1542": {
+    "1544": {
       "subroutine": "src/rsa.algo.ts::limb",
       "params": {
         "x#0": "bytes",
@@ -19903,7 +19938,7 @@
       "stack_in": [],
       "op": "proto 2 1"
     },
-    "1545": {
+    "1547": {
       "op": "frame_dig -2",
       "defined_out": [
         "x#0 (copy)"
@@ -19912,7 +19947,7 @@
         "x#0 (copy)"
       ]
     },
-    "1547": {
+    "1549": {
       "op": "len",
       "defined_out": [
         "tmp%0#0"
@@ -19921,7 +19956,7 @@
         "tmp%0#0"
       ]
     },
-    "1548": {
+    "1550": {
       "op": "frame_dig -1",
       "defined_out": [
         "i#0 (copy)",
@@ -19932,7 +19967,7 @@
         "i#0 (copy)"
       ]
     },
-    "1550": {
+    "1552": {
       "op": "intc_1 // 1",
       "defined_out": [
         "1",
@@ -19945,7 +19980,7 @@
         "1"
       ]
     },
-    "1551": {
+    "1553": {
       "op": "+",
       "defined_out": [
         "tmp%0#0",
@@ -19956,7 +19991,7 @@
         "tmp%1#0"
       ]
     },
-    "1552": {
+    "1554": {
       "op": "intc_0 // 64",
       "defined_out": [
         "64",
@@ -19969,7 +20004,7 @@
         "64"
       ]
     },
-    "1553": {
+    "1555": {
       "op": "*",
       "defined_out": [
         "tmp%0#0",
@@ -19980,7 +20015,7 @@
         "tmp%2#0"
       ]
     },
-    "1554": {
+    "1556": {
       "op": "-",
       "defined_out": [
         "tmp%3#0"
@@ -19989,21 +20024,21 @@
         "tmp%3#0"
       ]
     },
-    "1555": {
+    "1557": {
       "op": "frame_dig -2",
       "stack_out": [
         "tmp%3#0",
         "x#0 (copy)"
       ]
     },
-    "1557": {
+    "1559": {
       "op": "swap",
       "stack_out": [
         "x#0 (copy)",
         "tmp%3#0"
       ]
     },
-    "1558": {
+    "1560": {
       "op": "intc_0 // 64",
       "stack_out": [
         "x#0 (copy)",
@@ -20011,7 +20046,7 @@
         "64"
       ]
     },
-    "1559": {
+    "1561": {
       "op": "extract3",
       "defined_out": [
         "tmp%4#0"
@@ -20020,7 +20055,7 @@
         "tmp%4#0"
       ]
     },
-    "1560": {
+    "1562": {
       "retsub": true,
       "op": "retsub"
     }
