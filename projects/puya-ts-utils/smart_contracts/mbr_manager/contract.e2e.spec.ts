@@ -1,8 +1,16 @@
-import { Config } from '@algorandfoundation/algokit-utils'
+import { AlgorandClient, Config } from '@algorandfoundation/algokit-utils'
 import { algorandFixture } from '@algorandfoundation/algokit-utils/testing'
 import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount'
-import { Address } from 'algosdk'
+import { Address, generateAccount, makeEmptyTransactionSigner } from 'algosdk'
 import { beforeAll, beforeEach, describe, expect, test } from 'vitest'
+import {
+  addDepositCredits,
+  addWithdrawCredits,
+  CREDIT_BOX_MBR_MICROALGOS,
+  creditBoxName,
+  getAllCredits,
+  getCredits,
+} from '../../src/mbrManagerSdk'
 import { MbrManagerConsumerClient, MbrManagerConsumerFactory } from '../artifacts/mbr_manager/MbrManagerConsumerClient'
 
 /** 2500 + 400 * (33-byte 'c' + pubkey name + 8-byte value) */
@@ -203,6 +211,102 @@ describe('MbrManager', () => {
       await expect(
         client.send.withdrawCredits({ args: {}, boxReferences: [creditBox(testAccount)], extraFee: AlgoAmount.MicroAlgo(1000) }),
       ).rejects.toThrow(/AMT/)
+    })
+  })
+
+  describe('mbrManagerSdk', () => {
+    test('names the credit box and prices it', async () => {
+      const { testAccount } = localnet.context
+
+      expect(creditBoxName(testAccount)).toEqual(creditBox(testAccount))
+      expect(creditBoxName(testAccount.publicKey)).toEqual(creditBox(testAccount))
+      expect(BigInt(CREDIT_BOX_MBR_MICROALGOS)).toBe(CREDIT_BOX_MBR)
+    })
+
+    test('deposits, reads and withdraws through any MbrManager app', async () => {
+      const { testAccount } = localnet.context
+      const { algorand } = localnet
+      const client = await deploy(testAccount)
+      const app = { algorand, appId: client.appId }
+      const other = await algorand.account.random()
+
+      const group = algorand.newGroup()
+      await addDepositCredits(group, { ...app, sender: testAccount, amount: AlgoAmount.MicroAlgo(100_000) })
+      await addDepositCredits(group, { ...app, sender: testAccount, amount: AlgoAmount.MicroAlgo(50_000), creditor: other.addr })
+      await group.send()
+
+      expect(await getCredits(app, [testAccount, other.addr, generateAccount().addr])).toEqual([
+        100_000n - CREDIT_BOX_MBR,
+        50_000n - CREDIT_BOX_MBR,
+        undefined,
+      ])
+      expect(await getAllCredits(app)).toEqual(
+        new Map([
+          [testAccount.toString(), 100_000n - CREDIT_BOX_MBR],
+          [other.addr.toString(), 50_000n - CREDIT_BOX_MBR],
+        ]),
+      )
+
+      await addWithdrawCredits(algorand.newGroup(), { ...app, sender: testAccount }).send()
+
+      expect(await getAllCredits(app)).toEqual(new Map([[other.addr.toString(), 50_000n - CREDIT_BOX_MBR]]))
+    })
+
+    test('reads more accounts than one call or group holds, in order', async () => {
+      const { testAccount } = localnet.context
+      const client = await deploy(testAccount)
+      const app = { algorand: localnet.algorand, appId: client.appId }
+      const accounts = Array.from({ length: 130 }, () => generateAccount().addr)
+      accounts[129] = testAccount
+      await deposit(client, testAccount, 100_000n)
+
+      const credits = await getCredits(app, accounts)
+
+      expect(credits.length).toBe(130)
+      expect(credits[129]).toBe(100_000n - CREDIT_BOX_MBR)
+      expect(credits.slice(0, 129).every((c) => c === undefined)).toBe(true)
+      expect(await getCredits({ ...app, concurrency: 1 }, accounts)).toEqual(credits)
+    })
+
+    test('rejects a deposit when algod is down, without an unhandled rejection', async () => {
+      const algorand = AlgorandClient.fromConfig({ algodConfig: { server: 'http://127.0.0.1', port: 1, token: '' } })
+      const unhandled: unknown[] = []
+      const onUnhandled = (reason: unknown) => unhandled.push(reason)
+      process.on('unhandledRejection', onUnhandled)
+      try {
+        const deposit = async () =>
+          (
+            await addDepositCredits(algorand.newGroup(), {
+              algorand,
+              appId: 1n,
+              sender: generateAccount().addr,
+              signer: makeEmptyTransactionSigner(),
+              amount: AlgoAmount.MicroAlgo(100_000),
+            })
+          ).build()
+
+        await expect(deposit()).rejects.toThrow()
+        // Give a stray rejection time to surface.
+        await new Promise((resolve) => setTimeout(resolve, 100))
+      } finally {
+        process.off('unhandledRejection', onUnhandled)
+      }
+
+      expect(unhandled).toEqual([])
+    })
+
+    test('reverts a first deposit below the credit box MBR (CRD)', async () => {
+      const { testAccount } = localnet.context
+      const client = await deploy(testAccount)
+      const app = { algorand: localnet.algorand, appId: client.appId }
+
+      const group = await addDepositCredits(localnet.algorand.newGroup(), {
+        ...app,
+        sender: testAccount,
+        amount: AlgoAmount.MicroAlgo(CREDIT_BOX_MBR_MICROALGOS - 1),
+      })
+
+      await expect(group.send()).rejects.toThrow(/CRD/)
     })
   })
 })

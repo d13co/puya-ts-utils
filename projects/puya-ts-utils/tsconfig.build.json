@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "rootDir": "src",
+    "outDir": "dist/cjs",
+    "declarationMap": false,
+    "sourceMap": false
+  },
+  "include": [],
+  "files": ["src/rsaSdk.ts", "src/rsaHint.ts", "src/mbrManagerSdk.ts"]
+}

@@ -21,14 +21,15 @@ than one of them.
 - [Install](#install) · [Unit testing](#unit-testing)
 - [createAccount](#createaccount) — keyless accounts
 - [getTxnCounter](#gettxncounter) — the network transaction counter
-- [rsa](#rsa) — PKCS#1 v1.5 signature verification
+- [rsa](#rsa) — PKCS#1 v1.5 signature verification (experimental)
   - [Program size](#program-size) · [The Montgomery hint](#the-montgomery-hint) ·
     [Opcode budget](#opcode-budget) ·
     [RSA-4096](#rsa-4096-across-several-groups) ·
     [RSA SDK](#rsa-sdk--off-chain)
 - [mbrManager](#mbrmanager) — MBR credit accounting
-  - [Warning: users own their boxes](#warning-users-own-their-boxes)
-- [base32](#base32) — unpadded RFC 4648 encoding
+  - [Warning: users own their boxes](#warning-users-own-their-boxes) ·
+    [Off chain](#off-chain-mbrmanagersdk)
+- [base32](#base32) — unpadded RFC 4648 encoding (experimental)
 - [Fees](#fees) · [Development](#development) · [License](#license)
 
 ## Install
@@ -37,12 +38,19 @@ than one of them.
 npm install @d13co/puya-ts-utils
 ```
 
-`@algorandfoundation/algorand-typescript` `>=1.3.0 <2` is a peer dependency, and
-you need `@algorandfoundation/puya-ts` `1.3.0` or later to compile.
+For the contract subpaths, `@algorandfoundation/algorand-typescript` `>=1.3.0 <2`
+is a peer dependency, and you need `@algorandfoundation/puya-ts` `1.3.0` or later
+to compile. The peer is optional, so an off-chain project that only uses the SDK
+subpaths does not need it.
 
-This package ships **TypeScript source only**. There is no JavaScript build: the
-Puya compiler consumes the source and turns it into TEAL along with your own
-contract, so `require()`-ing it from Node will not work and is not meant to.
+The contract subpaths (`createAccount`, `getTxnCounter`, `rsa`, `mbrManager`,
+`base32`) ship as **TypeScript source only**: the Puya compiler consumes the
+source and turns it into TEAL along with your own contract, so `require()`-ing
+them from Node will not work and is not meant to.
+
+The off-chain subpaths (`rsaHint`, `rsaSdk`, `mbrManagerSdk`) are ordinary
+compiled JavaScript, CommonJS and ESM, with type declarations. They need
+`algosdk` and `@algorandfoundation/algokit-utils`, and `rsaSdk` needs Node.
 
 ### Unit testing
 
@@ -63,8 +71,46 @@ the version down to one copy:
 }
 ```
 
-Nothing else is needed — the stock AlgoKit `vitest.config.mts` transforms this
-package's source along with your own.
+In a pnpm workspace, the override goes under `overrides:` in
+`pnpm-workspace.yaml` instead.
+
+The testing transformer also has to reach this package's source, which the
+stock AlgoKit `vitest.config.mts` does not guarantee. `@rollup/plugin-typescript`
+only transforms files under your project directory by default, and Vite
+resolves symlinks to real paths. In a pnpm workspace the package's real path is
+in `<workspace root>/node_modules/.pnpm/…`, outside your project, so the source
+is compiled without the transformer, and the test fails to load with `This
+method is intentionally not implemented … check the configuration of your test
+transformer`. Add the three lines marked below to the template's config: they
+widen the filter to take in this package, and nothing else from `node_modules`.
+
+<!-- vitest-config -->
+```ts
+import { puyaTsTransformer } from '@algorandfoundation/algorand-typescript-testing/vitest-transformer'
+import typescript from '@rollup/plugin-typescript'
+import { defineConfig } from 'vitest/config'
+
+export default defineConfig({
+  esbuild: {},
+  test: {
+    setupFiles: ['vitest.setup.ts'],
+  },
+  plugins: [
+    typescript({
+      tsconfig: './tsconfig.test.json',
+      include: ['**/*.ts', '**/*.mts'], // added
+      exclude: [/^(?!.*\/node_modules\/@d13co\/puya-ts-utils\/).*\/node_modules\//], // added
+      filterRoot: false, // added
+      transformers: {
+        before: [puyaTsTransformer],
+      },
+    }),
+  ],
+})
+```
+
+`pnpm run test:pack` checks this: it installs the packed package into a scratch
+pnpm workspace and runs a unit test there with the config above.
 
 ---
 
@@ -170,7 +216,8 @@ application created right now is handed the counter's current value.
 
 `getTxnCounter` creates a throwaway application and deletes it in the same
 inner transaction, purely to see which id it was given, and returns the value
-one past it. Nothing is left behind on the ledger.
+one past it. No application is left behind; the only trace is the counter
+itself, one further on.
 
 The application it creates is just a three-byte always-approve program `0x0a8101`
 (`#pragma version 10`, `pushint 1`.) It never runs anything; it only needs to exist
@@ -241,6 +288,9 @@ plain `.ts` file rather than in your `.algo.spec.ts`. See
 ---
 
 # rsa
+
+> **Experimental.** RSA verification is new and has not been audited, and its API
+> may change in a minor release. Review it yourself before it guards real value.
 
 Verifies **RSASSA-PKCS1-v1_5 signatures** — DNSSEC algorithms 8 (RSASHA256)
 and 10 (RSASHA512) — for keys up to 512 bytes, with exponents up to 4 bytes.
@@ -395,6 +445,7 @@ and `finish` refunds them.
 ```ts
 import { rsaBitsLeft, rsaFinish, rsaStart, rsaStep, SHA256_DIGEST_INFO } from '@d13co/puya-ts-utils/rsa'
 import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
+import { Account, BoxMap, bytes, Global, Txn, uint64 } from '@algorandfoundation/algorand-typescript'
 
 export class Verifier extends MbrManager {
   state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
@@ -503,16 +554,33 @@ TypeScript with no AVM types, for your client or prover.
   bytecode built in. `verify({ digest, signature, publicKey, hint? })` simulates
   once to find the smallest group that pools enough budget, then sends it. The
   writer pays every fee.
-- `RsaSplitSDK` drives an `RsaSplitConsumer` app. It provides
-  `depositCredits({ amount })` and `run([{ start }, { step }, { finish }])`. Each
-  `run` sends one group, padded with `pool` calls, and returns each call's
-  result. `credits(accounts)` reads MBR credits by simulating, with no signer.
+- `RsaSplitSDK` drives an `RsaSplitConsumer` app, the RSA-4096 verifier above.
+  It provides `depositCredits({ amount })` and
+  `run([{ start }, { step }, { finish }])`. Each `run` sends one group, padded
+  with `pool` calls, and returns each call's result. `credits(accounts)` reads
+  MBR credits by simulating, with no signer.
+
+`RsaSplitConsumerFactory` is exported too, with the app's compiled programs
+built in, so you can deploy your own `RsaSplitConsumer` without its source:
+
+```ts
+import { RsaSplitConsumerFactory, RsaSplitSDK } from '@d13co/puya-ts-utils/rsaSdk'
+
+const factory = algorand.client.getTypedAppFactory(RsaSplitConsumerFactory, { defaultSender: sender })
+const { appClient } = await factory.deploy()
+// The app account's own minimum balance.
+await algorand.send.payment({ sender, receiver: appClient.appAddress, amount: AlgoAmount.Algo(0.1) })
+
+const sdk = new RsaSplitSDK({ algorand, appId: appClient.appId, writerAccount: { sender, signer } })
+```
 
 Both register `errorTransformer`, which rewrites any rejection carrying a code as
 `Error BADHINT: Montgomery hint is wrong`, and sets `code` and `description`. A
 logic signature rejection only reports a pc, so the transformer first looks that
 pc up in the verifier's assembly. `npm run build` regenerates the bytecode, the
-pc map, the error messages and the client in `src/generated`.
+pc map, the error messages and the client in `src/generated`, and
+`npm run build:sdk` compiles the off-chain subpaths to `dist` (packing runs it
+too).
 
 ---
 
@@ -608,9 +676,50 @@ the sender.
 Errors are raised with `loggedAssert`, so they show up as `ERR:CRD`, `ERR:RCV`
 and `ERR:AMT`.
 
+## Off chain: `mbrManagerSdk`
+
+`@d13co/puya-ts-utils/mbrManagerSdk` works with any app built on `MbrManager`.
+It builds calls from the ABI signatures above rather than a typed client, so it
+does not care what else the app does. It needs `algosdk` and
+`@algorandfoundation/algokit-utils`.
+
+```ts
+import { addDepositCredits, addWithdrawCredits, getAllCredits, getCredits } from '@d13co/puya-ts-utils/mbrManagerSdk'
+
+const app = { algorand, appId }
+const group = algorand.newGroup()
+await addDepositCredits(group, { ...app, sender, amount: AlgoAmount.MicroAlgo(100_000) })
+await group.send()
+
+const [credits] = await getCredits(app, [sender]) // bigint, or undefined with no credit box
+```
+
+- `addDepositCredits(composer, { algorand, appId, sender, signer?, amount, creditor? })`
+  adds the payment and the `depositCredits` call to `composer`, with the
+  creditor's credit box referenced. It is async, since building the payment
+  fetches suggested params, so await it. A first deposit below
+  `CREDIT_BOX_MBR_MICROALGOS` (18 900) reverts with `ERR:CRD`.
+- `addWithdrawCredits(composer, { appId, sender, signer? })` adds the
+  `withdrawCredits` call, with the sender's credit box referenced and 1000 µALGO
+  extra fee for the inner refund.
+- `getCredits({ algorand, appId, reader?, concurrency? }, accounts)` simulates
+  `logCredits`, 63 accounts to a call and two calls to a group, up to
+  `concurrency` groups at once (2 by default). It returns each balance in input
+  order, `undefined` for an account with no credit box, and needs no signer.
+- `getAllCredits({ algorand, appId, reader?, concurrency? })` finds every credit box by name
+  and reads them all, as a `Map` of address to balance.
+- `creditBoxName(account)` is `'c'` and the 32-byte public key.
+  `MbrErrorMessages` holds the three codes and their messages.
+
+The `add…` helpers only add to the group you pass in and never send it, so you
+can put your own calls, or an op-up, around them.
+
 ---
 
 # base32
+
+> **Experimental.** base32 encoding is new and has not been audited, and its API
+> may change in a minor release. Review it yourself before it guards real value.
 
 Encodes bytes as **base32** (RFC 4648) without the trailing `=`: the form
 Algorand uses for addresses, transaction ids and block hashes. `encodeAddress`
@@ -714,6 +823,7 @@ algokit project bootstrap all   # install dependencies
 pnpm run build                  # compile contracts to TEAL and generate clients
 pnpm run test:unit              # algorand-typescript-testing suite
 pnpm run test:e2e               # LocalNet suite (needs `algokit localnet start`)
+pnpm run test:pack              # the packed package, installed in a scratch workspace
 pnpm run check-types
 ```
 
@@ -722,8 +832,6 @@ subpath. Each has a worked example under `smart_contracts/` that the suites
 drive — `create_account/consumer.algo.ts`, `txn_counter/consumer.algo.ts`,
 `rsa/consumer.algo.ts` and `base32/consumer.algo.ts` under both,
 `mbr_manager/consumer.algo.ts` under e2e only.
-See [docs/algokit-getting-started.md](./docs/algokit-getting-started.md) for the
-rest of the AlgoKit workflow.
 
 ## License
 

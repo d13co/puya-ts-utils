@@ -3,9 +3,10 @@ import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount'
 import type { TransactionComposer } from '@algorandfoundation/algokit-utils/types/composer'
 import { createHash } from 'node:crypto'
 import { Address, getApplicationAddress, makeEmptyTransactionSigner, modelsv2, TransactionSigner } from 'algosdk'
-import { ErrorMessages } from './generated/errors'
-import { RsaSplitConsumerClient, RsaSplitConsumerComposer } from './generated/RsaSplitConsumerClient'
-import { RSA_SHA256_VERIFIER } from './generated/rsaSha256Verifier'
+import { ErrorMessages } from './generated/errors.js'
+import { RsaSplitConsumerClient, RsaSplitConsumerComposer, RsaSplitConsumerFactory } from './generated/RsaSplitConsumerClient.js'
+import { RSA_SHA256_VERIFIER } from './generated/rsaSha256Verifier.js'
+import { creditBoxName, getCredits, SIMULATE_PARAMS } from './mbrManagerSdk.js'
 
 /*
  * Off chain: an SDK for the RSA verifiers in this package's examples, the
@@ -15,7 +16,9 @@ import { RSA_SHA256_VERIFIER } from './generated/rsaSha256Verifier'
  * are mapped from the failing pc.
  */
 
-export { ErrorMessages }
+export { ErrorMessages, SIMULATE_PARAMS }
+/** Deploys RsaSplitConsumer: its compiled programs are built in, so no source is needed. */
+export { RsaSplitConsumerClient, RsaSplitConsumerFactory }
 
 export type SenderWithSigner = { sender: Address | string; signer: TransactionSigner }
 
@@ -64,10 +67,6 @@ const registerLast = (algorand: AlgorandClient) => {
   algorand.unregisterErrorTransformer(errorTransformer)
   algorand.registerErrorTransformer(errorTransformer)
 }
-
-/** A credit box name: 'c' and the account's public key. */
-const creditBox = (account: Address | string) =>
-  new Uint8Array([0x63, ...Address.fromString(account.toString()).publicKey])
 
 const nonce = () => Math.floor(Math.random() * 1e9)
 
@@ -157,25 +156,19 @@ export class RsaVerifierSDK {
   }
 }
 
-export const SIMULATE_PARAMS = {
-  allowMoreLogging: true,
-  allowUnnamedResources: true,
-  extraOpcodeBudget: 130013,
-  fixSigners: true,
-  allowEmptySignatures: true,
-}
-
 /** Reads from an RsaSplitConsumer app. Needs no signer: reads are simulated from the app address. */
 export class RsaSplitReaderSDK {
   public algorand: AlgorandClient
   public appId: bigint
   public appAddress: Address
   public readClient: RsaSplitConsumerClient
+  public readerAccount?: string
 
   constructor({ algorand, appId, readerAccount }: { algorand: AlgorandClient; appId: bigint; readerAccount?: string }) {
     this.algorand = algorand
     this.appId = appId
     this.appAddress = getApplicationAddress(appId)
+    this.readerAccount = readerAccount
     this.readClient = new RsaSplitConsumerClient({
       algorand,
       appId,
@@ -187,13 +180,7 @@ export class RsaSplitReaderSDK {
 
   /** Each account's MBR credits, `undefined` for one with no credit box. */
   async credits(accounts: (Address | string)[]): Promise<(bigint | undefined)[]> {
-    const { simulateResponse } = await this.readClient
-      .newGroup()
-      // Unnamed box references: a transaction names at most 8, and simulate allows unnamed.
-      .logCredits({ args: { accounts: accounts.map(String) } })
-      .simulate(SIMULATE_PARAMS)
-    const logs = simulateResponse.txnGroups[0].txnResults[0].txnResult.logs ?? []
-    return logs.map((log) => (log.length ? Buffer.from(log).readBigUInt64BE() : undefined))
+    return getCredits({ algorand: this.algorand, appId: this.appId, reader: this.readerAccount }, accounts)
   }
 }
 
@@ -244,7 +231,7 @@ export class RsaSplitSDK extends RsaSplitReaderSDK {
     const txn = this.algorand.createTransaction.payment({ sender, receiver: this.appAddress, amount })
     return (builder ?? this.writeClient.newGroup()).depositCredits({
       args: { creditor: creditor.toString(), txn },
-      boxReferences: [creditBox(creditor)],
+      boxReferences: [creditBoxName(creditor)],
       sender,
       signer,
     })

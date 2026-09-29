@@ -1,7 +1,7 @@
 {
   "name": "@d13co/puya-ts-utils",
-  "version": "0.3.0",
-  "description": "Algorand TypeScript subroutines for things the AVM does not hand you directly: keyless accounts, the network transaction counter, RSA signature verification, MBR credit accounting, base32 encoding",
+  "version": "0.1.0",
+  "description": "Algorand TypeScript subroutines: creating escrow accounts, reading the transaction counter, RSA signature verification, MBR credit accounting, base32 encoding",
   "keywords": [
     "algorand",
     "algorand-typescript",
@@ -39,16 +39,38 @@
       "default": "./src/rsa.algo.ts"
     },
     "./rsaHint": {
-      "types": "./src/rsaHint.ts",
-      "default": "./src/rsaHint.ts"
+      "import": {
+        "types": "./dist/esm/rsaHint.d.ts",
+        "default": "./dist/esm/rsaHint.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rsaHint.d.ts",
+        "default": "./dist/cjs/rsaHint.js"
+      }
     },
     "./rsaSdk": {
-      "types": "./src/rsaSdk.ts",
-      "default": "./src/rsaSdk.ts"
+      "import": {
+        "types": "./dist/esm/rsaSdk.d.ts",
+        "default": "./dist/esm/rsaSdk.js"
+      },
+      "require": {
+        "types": "./dist/cjs/rsaSdk.d.ts",
+        "default": "./dist/cjs/rsaSdk.js"
+      }
     },
     "./mbrManager": {
       "types": "./src/mbrManager.algo.ts",
       "default": "./src/mbrManager.algo.ts"
+    },
+    "./mbrManagerSdk": {
+      "import": {
+        "types": "./dist/esm/mbrManagerSdk.d.ts",
+        "default": "./dist/esm/mbrManagerSdk.js"
+      },
+      "require": {
+        "types": "./dist/cjs/mbrManagerSdk.d.ts",
+        "default": "./dist/cjs/mbrManagerSdk.js"
+      }
     },
     "./base32": {
       "types": "./src/base32.algo.ts",
@@ -68,13 +90,16 @@
         "./src/rsa.algo.ts"
       ],
       "rsaHint": [
-        "./src/rsaHint.ts"
+        "./dist/cjs/rsaHint.d.ts"
       ],
       "rsaSdk": [
-        "./src/rsaSdk.ts"
+        "./dist/cjs/rsaSdk.d.ts"
       ],
       "mbrManager": [
         "./src/mbrManager.algo.ts"
+      ],
+      "mbrManagerSdk": [
+        "./dist/cjs/mbrManagerSdk.d.ts"
       ],
       "base32": [
         "./src/base32.algo.ts"
@@ -83,6 +108,7 @@
   },
   "files": [
     "src",
+    "dist",
     "README.md",
     "LICENSE"
   ],
@@ -91,11 +117,14 @@
   },
   "scripts": {
     "build": "algokit compile ts smart_contracts --output-source-map --out-dir artifacts && algokit generate client smart_contracts/artifacts --output {app_spec_dir}/{contract_name}Client.ts && node scripts/generate-sdk.mjs",
+    "build:sdk": "rm -rf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.build.json --module esnext --moduleResolution bundler --outDir dist/esm && echo '{\"type\":\"module\"}' > dist/esm/package.json",
+    "prepack": "npm run build:sdk",
     "deploy": "ts-node-dev --transpile-only --watch .env -r dotenv/config smart_contracts/index.ts",
     "deploy:ci": "ts-node --transpile-only -r dotenv/config smart_contracts/index.ts",
     "test": "vitest run",
     "test:unit": "vitest run algo.spec",
     "test:e2e": "vitest run e2e.spec",
+    "test:pack": "node scripts/test-pack.mjs",
     "check-types": "tsc --noEmit"
   },
   "engines": {
@@ -103,11 +132,14 @@
     "npm": ">=9.0"
   },
   "peerDependencies": {
-    "@algorandfoundation/algorand-typescript": ">=1.3.0 <2.0.0",
     "@algorandfoundation/algokit-utils": "^9.0.0",
+    "@algorandfoundation/algorand-typescript": ">=1.3.0 <2.0.0",
     "algosdk": "^3.0.0"
   },
   "peerDependenciesMeta": {
+    "@algorandfoundation/algorand-typescript": {
+      "optional": true
+    },
     "@algorandfoundation/algokit-utils": {
       "optional": true
     },
@@ -124,6 +156,7 @@
     "@algorandfoundation/puya-ts": "^1.3.0",
     "@rollup/plugin-typescript": "^12.1.2",
     "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.20.4",
     "algosdk": "^3.0.0",
     "dotenv": "^16.4.7",
     "ts-node-dev": "^2.0.0",
