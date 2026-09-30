@@ -460,12 +460,14 @@ result pass for yours.
 Each box costs about 0.87 ALGO in minimum balance. If the app paid for it, anyone
 could drain it by starting verifications and never finishing them. The example
 extends [`MbrManager`](#mbrmanager) so the sender pays out of their MBR credits,
-and `finish` refunds them.
+and `finish` refunds them. `RsaSplitConsumer` also provides `cancel` to refund an
+unfinished check, and refuses `withdrawCredits` while the sender has a state box.
+Finish or cancel before withdrawing so the refund still has a credit box to land in.
 
 ```ts
 import { rsaBitsLeft, rsaFinish, rsaStart, rsaStep, SHA256_DIGEST_INFO } from '@d13co/puya-ts-utils/rsa'
 import { MbrManager } from '@d13co/puya-ts-utils/mbrManager'
-import { Account, BoxMap, bytes, Global, Txn, uint64 } from '@algorandfoundation/algorand-typescript'
+import { Account, assert, BoxMap, bytes, Global, Txn, uint64 } from '@algorandfoundation/algorand-typescript'
 
 export class Verifier extends MbrManager {
   state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
@@ -489,6 +491,17 @@ export class Verifier extends MbrManager {
     this.state(Txn.sender).delete()
     this.manageMbrCredits(mbrBefore)
     return valid
+  }
+
+  public cancel(): void {
+    const mbrBefore = Global.currentApplicationAddress.minBalance
+    this.state(Txn.sender).delete()
+    this.manageMbrCredits(mbrBefore)
+  }
+
+  public override withdrawCredits(): void {
+    assert(!this.state(Txn.sender).exists, 'ERR:PENDINGRSA')
+    super.withdrawCredits()
   }
 }
 ```
@@ -579,6 +592,9 @@ TypeScript with no AVM types, for your client or prover.
   `run([{ start }, { step }, { finish }])`. Each `run` sends one group, padded
   with `pool` calls, and returns each call's result. `credits(accounts)` reads
   MBR credits by simulating, with no signer.
+  `cancel()` clears the writer's verification and refunds its state-box MBR,
+  including when exponent bits remain. Withdraw credits after finishing or cancelling;
+  a pending verification makes withdrawal fail with `ERR:PENDINGRSA`.
 
 `RsaSplitConsumerFactory` is exported too, with the app's compiled programs
 built in, so you can deploy your own `RsaSplitConsumer` without its source:

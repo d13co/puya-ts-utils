@@ -21,5 +21,6 @@ export const ErrorMessages: Record<string, string> = {
   "ERR:BADHINT": "Montgomery hint is wrong",
   "ERR:INERT": "Verifier transaction must be an inert payment: no amount, fee, rekey or close",
   "ERR:NOTE": "Verifier note must be sha256(key) ‖ digest",
-  "ERR:BADSIG": "RSA signature does not verify"
+  "ERR:BADSIG": "RSA signature does not verify",
+  "ERR:PENDINGRSA": "Finish or cancel the pending RSA verification before withdrawing credits"
 }

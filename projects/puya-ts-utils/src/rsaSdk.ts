@@ -215,6 +215,11 @@ export class RsaSplitSDK extends RsaSplitReaderSDK {
     return (await this.makeDepositCreditsTxns(args)).send()
   }
 
+  /** Cancel the writer's pending verification and refund its state-box MBR to their credits. */
+  async cancel() {
+    return this.writeClient.send.cancel({ args: [], populateAppCallResources: true })
+  }
+
   /**
    * Send `calls` in one group, padded out with `pool` calls for the budget and
    * inner transaction slots they pool, and return each call's return value
