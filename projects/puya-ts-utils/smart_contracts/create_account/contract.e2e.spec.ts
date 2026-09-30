@@ -5,7 +5,7 @@ import { Address } from 'algosdk'
 import { beforeAll, beforeEach, describe, expect, test } from 'vitest'
 import { CreateAccountConsumerFactory } from '../artifacts/create_account/CreateAccountConsumerClient'
 
-/** The mint call, the inner create/delete, its nested rekey, and the funding payment. */
+/** Extra fee for the three inner transactions: the create/delete, its nested rekey, and the funding payment. */
 const MINT_FEE = AlgoAmount.MicroAlgo(3000)
 
 const MIN_BALANCE = 100_000n

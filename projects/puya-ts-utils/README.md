@@ -137,6 +137,12 @@ balance instead.
 
 Both subroutines are called like any other, from anywhere inside a contract:
 
+> **The example below has no access control.** Anyone can call `spend` to drain
+> the minted account, or call `open`/`openFrom` repeatedly to spend the
+> application's balance on new accounts and overwrite `escrow`, stranding the
+> previous one. Gate these methods (e.g. `assert(Txn.sender === Global.creatorAddress)`)
+> before using this pattern for real.
+
 ```ts
 import { createFundedAccount, createUnfundedAccount } from '@d13co/puya-ts-utils/createAccount'
 import { Account, Contract, Global, GlobalState, itxn, uint64 } from '@algorandfoundation/algorand-typescript'
@@ -240,13 +246,17 @@ export class Ticket extends Contract {
 
   /** Read the counter, and let the caller pay for it out of the fee pool. */
   public issue(): uint64 {
+    // Only "next" until something else runs: any later inner transaction, or
+    // a later transaction in the group, takes this number first.
     this.issued.value = getTxnCounter(Global.zeroAddress)
     return this.issued.value
   }
 
   /** Or charge it to an account this contract can send from. */
   public issuePaidBy(feePayer: Account): uint64 {
-    // feePayer must be rekeyed to this contract's escrow address
+    // feePayer must be rekeyed to this contract's escrow address.
+    // WARNING: as written, anyone can call this and spend feePayer's balance,
+    // one minimum fee per call. Check the caller before trusting feePayer.
     this.issued.value = getTxnCounter(feePayer)
     return this.issued.value
   }
@@ -259,6 +269,10 @@ export class Ticket extends Contract {
 
 Returns the id one past the application it created, which is what the next
 transaction on the network will be numbered.
+
+That only holds until something else runs. Any inner transaction your contract
+sends afterwards, or any later transaction in the same group, takes the number
+first. Read the counter last if you need it to match what comes next.
 
 `feePayer` decides who covers the one inner transaction this costs:
 
@@ -750,7 +764,7 @@ import { Account, bytes, Contract, ensureBudget, OpUpFeeSource } from '@algorand
 
 export class Directory extends Contract {
   public encode(data: bytes): string {
-    return base32Encode(data) // 32 bytes -> 52 chars, no checksum
+    return base32Encode(data) // up to 30 bytes on one call's budget
   }
 
   public address(account: Account): string {
@@ -769,7 +783,7 @@ caller covers it with `extraFee`.
 About **94 opcodes per five bytes**. Measured on LocalNet for a whole ABI call
 that takes the bytes and returns the encoding, which spends about 88 on its own:
 
-| Input | Budget |
+| Input | Budget (about) |
 |---|---|
 | 10 bytes | 276 |
 | 20 bytes | 464 |

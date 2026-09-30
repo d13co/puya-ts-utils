@@ -50,7 +50,7 @@ describe('CreateAccount contract', () => {
     expect(ctx.txn.lastGroup.lastItxnGroup().getPaymentInnerTxn().fee).toEqual(0)
   })
 
-  it('hands each caller a different escrow', () => {
+  it('gives each application instance a different escrow', () => {
     const first = ctx.contract.create(CreateAccount)
     const second = ctx.contract.create(CreateAccount)
 

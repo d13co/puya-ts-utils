@@ -25,6 +25,10 @@ export class TxnCounterConsumer extends Contract {
   /**
    * Read the counter, charging the inner transaction to `feePayer` — this
    * application's escrow, or any account rekeyed to it.
+   *
+   * WARNING: this is unguarded, so anyone can call it to spend `feePayer`'s
+   * balance, one minimum fee per call. A real contract should check who is
+   * calling before letting them pick the fee payer.
    */
   public readPaidBy(feePayer: Account): uint64 {
     const counter = getTxnCounter(feePayer)

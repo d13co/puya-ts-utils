@@ -47,6 +47,22 @@ describe('getTxnCounter', () => {
       expect(result.return).toBe(probe! + 1n)
     })
 
+    test('returns the id the next transaction is given', async () => {
+      const { algorand, testAccount } = localnet.context
+      const consumer = await deployConsumer(testAccount.addr)
+      const alwaysApprove = new Uint8Array([0x0a, 0x81, 0x01])
+
+      // A group runs in order with nothing in between, so the create that
+      // follows the read is the very next transaction.
+      const result = await algorand
+        .newGroup()
+        .addAppCallMethodCall(await consumer.params.read({ args: [], extraFee: READ_FEE }))
+        .addAppCreate({ sender: testAccount.addr, approvalProgram: alwaysApprove, clearStateProgram: alwaysApprove })
+        .send()
+
+      expect(result.returns![0].returnValue).toBe(result.confirmations[1].applicationIndex)
+    })
+
     test('leaves no application behind', async () => {
       const { algorand, testAccount } = localnet.context
       const consumer = await deployConsumer(testAccount.addr)
