@@ -24,6 +24,9 @@ environment_secrets = [
 build = { commands = [
   'pnpm run build',
 ], description = 'Build all smart contracts in the project' }
+test = { commands = [
+  'pnpm run test',
+], description = 'Run unit and e2e tests (e2e needs LocalNet)' }
 audit-teal = { commands = [
   # 🚨 IMPORTANT 🚨: For strict TEAL validation, remove --exclude statements. The default starter contract is not for production. Ensure thorough testing and adherence to best practices in smart contract development. This is not a replacement for a professional audit.
   'algokit task analyze smart_contracts/artifacts --recursive --force --exclude rekey-to --exclude is-updatable --exclude missing-fee-check --exclude is-deletable --exclude can-close-asset --exclude can-close-account --exclude unprotected-deletable --exclude unprotected-updatable',
