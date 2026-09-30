@@ -1,13 +1,13 @@
 import type { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { AlgoAmount } from '@algorandfoundation/algokit-utils/types/amount'
 import type { TransactionComposer } from '@algorandfoundation/algokit-utils/types/composer'
-import { ABIMethod, Address, encodeAddress, getApplicationAddress, makeEmptyTransactionSigner, type TransactionSigner } from 'algosdk'
+import { ABIMethod, Address, encodeAddress, getApplicationAddress, type TransactionSigner } from 'algosdk'
 import { MbrErrorMessages } from './generated/mbrErrors.js'
 
 /*
- * Off chain: helpers for any app built on MbrManager. They build calls from the
- * ABI signatures MbrManager declares, not from a typed client, so they work
- * whatever the app is.
+ * Off chain: helpers for any app built on MbrManager. Deposits and withdrawals
+ * use its ABI signatures without a typed client; credit balances come directly
+ * from its boxes through algod.
  */
 
 export { MbrErrorMessages }
@@ -15,9 +15,9 @@ export { MbrErrorMessages }
 /** A credit box's minimum balance: 2500 + 400 × (33-byte name + 8-byte value). */
 export const CREDIT_BOX_MBR_MICROALGOS = 18_900
 
-/** Accounts per logCredits call: 63 addresses still fit the 2 KB of app args. */
+/** @deprecated Credit reads use box queries now; the former logCredits call limit was 63 accounts. */
 export const ACCOUNTS_PER_CALL = 63
-/** Accounts per simulated group: two logCredits calls. */
+/** @deprecated Credit reads use box queries now; the former simulated group limit was 126 accounts. */
 export const ACCOUNTS_PER_GROUP = 2 * ACCOUNTS_PER_CALL
 
 export const SIMULATE_PARAMS = {
@@ -30,7 +30,6 @@ export const SIMULATE_PARAMS = {
 
 const DEPOSIT_CREDITS = ABIMethod.fromSignature('depositCredits(address,pay)void')
 const WITHDRAW_CREDITS = ABIMethod.fromSignature('withdrawCredits()void')
-const LOG_CREDITS = ABIMethod.fromSignature('logCredits(address[])void')
 
 /** A credit box name: 'c' and the account's 32-byte public key. */
 export function creditBoxName(account: string | Address | Uint8Array): Uint8Array {
@@ -87,44 +86,34 @@ export function addWithdrawCredits(composer: TransactionComposer, { appId, sende
 
 /**
  * Each account's MBR credits, `undefined` for one with no credit box, in the
- * order given. Read by simulating logCredits, so no signer is needed: the calls
- * are sent from `reader`, the app's own address by default. Up to `concurrency`
- * groups of `ACCOUNTS_PER_GROUP` are simulated at once.
+ * order given. Queries algod directly, with up to `concurrency` box reads at once.
+ * No signer or spendable app balance is needed. Each box may be read at a different
+ * round. `reader` is accepted for compatibility but is no longer used.
  */
 export async function getCredits(
-  { algorand, appId, reader, concurrency = 2 }: MbrApp & { reader?: string | Address; concurrency?: number },
+  { algorand, appId, concurrency = 2 }: MbrApp & { reader?: string | Address; concurrency?: number },
   accounts: (string | Address)[],
 ): Promise<(bigint | undefined)[]> {
-  const sender = reader ?? getApplicationAddress(appId)
-  const readGroup = async (start: number) => {
-    const group = algorand.newGroup()
-    for (let i = start; i < Math.min(start + ACCOUNTS_PER_GROUP, accounts.length); i += ACCOUNTS_PER_CALL) {
-      group.addAppCallMethodCall({
-        appId,
-        sender,
-        signer: makeEmptyTransactionSigner(),
-        method: LOG_CREDITS,
-        args: [accounts.slice(i, i + ACCOUNTS_PER_CALL).map(String)],
-      })
-    }
-    const { confirmations } = await group.simulate(SIMULATE_PARAMS)
-    // One log line per account: empty for no credit box, else a big-endian uint64.
-    return confirmations.flatMap(({ logs = [] }) =>
-      logs.map((log) => (log.length ? new DataView(log.buffer, log.byteOffset).getBigUint64(0) : undefined)),
-    )
-  }
-
-  const starts = Array.from({ length: Math.ceil(accounts.length / ACCOUNTS_PER_GROUP) }, (_, g) => g * ACCOUNTS_PER_GROUP)
-  const results: (bigint | undefined)[][] = []
+  const results = new Array<bigint | undefined>(accounts.length)
   let next = 0
   const worker = async () => {
-    while (next < starts.length) {
-      const g = next++
-      results[g] = await readGroup(starts[g])
+    while (next < accounts.length) {
+      const i = next++
+      let value: Uint8Array
+      try {
+        value = await algorand.app.getBoxValue(appId, creditBoxName(accounts[i]))
+      } catch (error) {
+        // Only a missing box means no credit balance. Propagate node/network failures.
+        if ((error as { response?: { status?: number } } | undefined)?.response?.status !== 404) throw error
+        results[i] = undefined
+        continue
+      }
+      if (value.length !== 8) throw new Error(`Invalid credit box length: expected 8 bytes, got ${value.length}`)
+      results[i] = new DataView(value.buffer, value.byteOffset, value.byteLength).getBigUint64(0)
     }
   }
-  await Promise.all(Array.from({ length: Math.max(1, Math.min(concurrency, starts.length)) }, worker))
-  return results.flat()
+  await Promise.all(Array.from({ length: Math.max(1, Math.min(concurrency, accounts.length)) }, worker))
+  return results
 }
 
 /** Every account's MBR credits, by address: the credit boxes are found by name, then read with getCredits. */

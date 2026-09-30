@@ -578,7 +578,7 @@ TypeScript with no AVM types, for your client or prover.
   It provides `depositCredits({ amount })` and
   `run([{ start }, { step }, { finish }])`. Each `run` sends one group, padded
   with `pool` calls, and returns each call's result. `credits(accounts)` reads
-  MBR credits by simulating, with no signer.
+  MBR credits directly from algod, with no signer or spendable app balance.
 
 `RsaSplitConsumerFactory` is exported too, with the app's compiled programs
 built in, so you can deploy your own `RsaSplitConsumer` without its source:
@@ -699,8 +699,8 @@ and `ERR:amt`.
 ## Off chain: `mbrManagerSdk`
 
 `@d13co/puya-ts-utils/mbrManagerSdk` works with any app built on `MbrManager`.
-It builds calls from the ABI signatures above rather than a typed client, so it
-does not care what else the app does. It needs `algosdk` and
+It builds deposit and withdrawal calls from the ABI signatures above, and reads
+credit boxes through algod, without a typed client. It needs `algosdk` and
 `@algorandfoundation/algokit-utils`.
 
 ```ts
@@ -722,10 +722,11 @@ const [credits] = await getCredits(app, [sender]) // bigint, or undefined with n
 - `addWithdrawCredits(composer, { appId, sender, signer? })` adds the
   `withdrawCredits` call, with the sender's credit box referenced and 1000 µALGO
   extra fee for the inner refund.
-- `getCredits({ algorand, appId, reader?, concurrency? }, accounts)` simulates
-  `logCredits`, 63 accounts to a call and two calls to a group, up to
-  `concurrency` groups at once (2 by default). It returns each balance in input
-  order, `undefined` for an account with no credit box, and needs no signer.
+- `getCredits({ algorand, appId, reader?, concurrency? }, accounts)` queries credit
+  boxes through algod, with up to `concurrency` reads at once (2 by default).
+  It returns each balance in input order, `undefined` for an account with no
+  credit box, and needs no signer or spendable app balance. Each box can be read
+  at a different round. The `reader` option is retained for compatibility and ignored.
 - `getAllCredits({ algorand, appId, reader?, concurrency? })` finds every credit box by name
   and reads them all, as a `Map` of address to balance.
 - `creditBoxName(account)` is `'c'` and the 32-byte public key.

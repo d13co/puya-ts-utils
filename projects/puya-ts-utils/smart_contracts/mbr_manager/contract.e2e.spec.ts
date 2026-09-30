@@ -31,13 +31,13 @@ describe('MbrManager', () => {
   })
   beforeEach(localnet.newScope)
 
-  const deploy = async (account: Address) => {
+  const deploy = async (account: Address, funding = AlgoAmount.Algo(1)) => {
     const factory = localnet.algorand.client.getTypedAppFactory(MbrManagerConsumerFactory, {
       defaultSender: account,
     })
     const { appClient } = await factory.deploy({ onUpdate: 'append', onSchemaBreak: 'append' })
     // the app account's own minimum balance
-    await localnet.algorand.send.payment({ sender: account, receiver: appClient.appAddress, amount: AlgoAmount.Algo(1) })
+    await localnet.algorand.send.payment({ sender: account, receiver: appClient.appAddress, amount: funding })
     return appClient
   }
 
@@ -252,7 +252,7 @@ describe('MbrManager', () => {
       expect(await getAllCredits(app)).toEqual(new Map([[other.addr.toString(), 50_000n - CREDIT_BOX_MBR]]))
     })
 
-    test('reads more accounts than one call or group holds, in order', async () => {
+    test('reads large account lists in order', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
       const app = { algorand: localnet.algorand, appId: client.appId }
@@ -266,6 +266,43 @@ describe('MbrManager', () => {
       expect(credits[129]).toBe(100_000n - CREDIT_BOX_MBR)
       expect(credits.slice(0, 129).every((c) => c === undefined)).toBe(true)
       expect(await getCredits({ ...app, concurrency: 1 }, accounts)).toEqual(credits)
+    })
+
+    test('reads zero and missing credits when the app is at its exact minimum balance', async () => {
+      const { testAccount } = localnet.context
+      const client = await deploy(testAccount, AlgoAmount.Algo(0.1))
+      const app = { algorand: localnet.algorand, appId: client.appId }
+      expect(await getCredits(app, [testAccount])).toEqual([undefined])
+
+      await deposit(client, testAccount, CREDIT_BOX_MBR)
+      const info = await localnet.algorand.client.algod.accountInformation(client.appAddress).do()
+      expect(info.amount).toBe(info.minBalance)
+      const accounts = Array.from({ length: 130 }, () => generateAccount().addr)
+      for (const index of [0, 63, 129]) accounts[index] = testAccount
+      const expected = accounts.map((account) => account === testAccount ? 0n : undefined)
+
+      expect(await getCredits(app, accounts)).toEqual(expected)
+      expect(await getCredits({ ...app, concurrency: 1 }, accounts)).toEqual(expected)
+      expect(await getAllCredits(app)).toEqual(new Map([[testAccount.toString(), 0n]]))
+      expect(await getCredits(app, [])).toEqual([])
+    })
+
+    test('reads missing credits after withdrawal leaves the app at minimum balance', async () => {
+      const { testAccount } = localnet.context
+      const client = await deploy(testAccount, AlgoAmount.Algo(0.1))
+      const app = { algorand: localnet.algorand, appId: client.appId }
+      await deposit(client, testAccount, 100_000n)
+      await addWithdrawCredits(localnet.algorand.newGroup(), { ...app, sender: testAccount }).send()
+      const info = await localnet.algorand.client.algod.accountInformation(client.appAddress).do()
+
+      expect(info.amount).toBe(info.minBalance)
+      expect(await getCredits(app, [testAccount])).toEqual([undefined])
+      expect(await getAllCredits(app)).toEqual(new Map())
+    })
+
+    test('propagates a failed box request instead of returning a missing balance', async () => {
+      const algorand = AlgorandClient.fromConfig({ algodConfig: { server: 'http://127.0.0.1', port: 1, token: '' } })
+      await expect(getCredits({ algorand, appId: 1n }, [localnet.context.testAccount])).rejects.toThrow()
     })
 
     test('rejects a deposit when algod is down, without an unhandled rejection', async () => {

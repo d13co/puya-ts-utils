@@ -156,7 +156,7 @@ export class RsaVerifierSDK {
   }
 }
 
-/** Reads from an RsaSplitConsumer app. Needs no signer: reads are simulated from the app address. */
+/** Reads credit boxes from an RsaSplitConsumer app through algod, with no signer or spendable app balance. */
 export class RsaSplitReaderSDK {
   public algorand: AlgorandClient
   public appId: bigint

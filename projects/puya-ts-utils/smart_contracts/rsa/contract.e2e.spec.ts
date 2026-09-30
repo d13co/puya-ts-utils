@@ -311,4 +311,15 @@ describe('RSA-4096 split over several groups', () => {
     expect(mine).toBe(500_000n - 2_500n - 400n * (33n + 8n))
     expect(theirs).toEqual(Array(9).fill(undefined))
   })
+
+  test('reads zero and missing credits through the RSA SDK at minimum balance', async () => {
+    const sdk = await deploySdk()
+    const account = localnet.context.testAccount.addr
+    expect(await sdk.credits([account])).toEqual([undefined])
+
+    await sdk.depositCredits({ amount: AlgoAmount.MicroAlgo(18_900) })
+    expect(await sdk.credits([account])).toEqual([0n])
+    await sdk.writeClient.send.withdrawCredits({ args: [], extraFee: AlgoAmount.MicroAlgo(1000), populateAppCallResources: true })
+    expect(await sdk.credits([account])).toEqual([undefined])
+  })
 })
