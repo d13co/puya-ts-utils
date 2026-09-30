@@ -48,6 +48,8 @@ const ALL_BITS: uint64 = 32
  * the two bytes after it. The exponent follows, and the modulus is the rest.
  */
 export function parseRsaDnskey(publicKey: bytes): [bytes, bytes] {
+  // Any key has at least 3 bytes, and the long form's length needs them.
+  assert(publicKey.length >= 3, errNoModulus)
   let exponentLength = op.getByte(publicKey, 0)
   let offset: uint64 = 1
   if (exponentLength === 0) {

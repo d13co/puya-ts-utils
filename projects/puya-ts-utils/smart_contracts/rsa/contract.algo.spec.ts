@@ -187,6 +187,12 @@ describe('parseRsaDnskey', () => {
 
     expect(() => consumer.parse(hex('03010001'))).toThrow(errNoModulus)
   })
+
+  it.each(['', '00', '0000'])('refuses a key too short to read the exponent length: %j', (key) => {
+    const consumer = ctx.contract.create(RsaConsumer)
+
+    expect(() => consumer.parse(hex(key))).toThrow(errNoModulus)
+  })
 })
 
 describe('malformed input', () => {
@@ -327,6 +333,15 @@ describe('verification split over several calls', () => {
     run(consumer, PL_DNSKEY.signature, [16])
 
     expect(consumer.finish(hex(PL_DNSKEY.signedData), hex(PL_DNSKEY.publicKey))).toBe(true)
+  })
+
+  it('refuses to start with a key too short to ever finish', () => {
+    const consumer = ctx.contract.create(RsaSplitConsumer)
+    const own = signWithNewKey(1024, 65537, 'sha256')
+
+    expect(() =>
+      consumer.start(b(own.signature.subarray(0, 60)), dnskey(own.exponent, own.modulus.subarray(0, 60)), NO_HINT, 0),
+    ).toThrow(errModulusShort)
   })
 
   it('refuses to finish what was never started', () => {

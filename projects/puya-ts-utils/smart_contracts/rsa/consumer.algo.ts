@@ -24,6 +24,7 @@ import {
   verifyRsaSha512,
 } from '../../src/rsa.algo'
 import { MbrManager } from '../../src/mbrManager.algo'
+import { errModulusShort } from '../../src/rsaErrors.algo'
 import { errNote, errNotInert, errSignature } from './errors.algo'
 
 /**
@@ -117,6 +118,8 @@ export class RsaSplitConsumer extends MbrManager {
   public start(signature: bytes, publicKey: bytes, hint: bytes, budget: uint64): void {
     ensureBudget(budget)
     const [exponent, modulus] = parseRsaDnskey(publicKey)
+    // rsaFinish refuses a key too short for the block, and the box would outlive it.
+    assert(modulus.length >= SHA256_DIGEST_INFO.length + 32 + 11, errModulusShort)
     const mbrBefore = Global.currentApplicationAddress.minBalance
     this.state(Txn.sender).delete()
     this.state(Txn.sender).value = rsaStart(signature, modulus, exponent, hint)
