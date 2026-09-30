@@ -127,6 +127,12 @@ its own escrow to your contract. When the call returns, the application is gone
 but its address survives as a plain account — one nobody holds a key for —
 signed over to you.
 
+**Never close the account out.** A payment with `closeRemainderTo` deletes the
+account record, auth address included, and with no key and no application left
+to sign for it, nothing can authorise that address again. Anything sent to it
+afterwards is lost for good. Empty it with a plain payment down to its minimum
+balance instead.
+
 ## Usage
 
 Both subroutines are called like any other, from anywhere inside a contract:
