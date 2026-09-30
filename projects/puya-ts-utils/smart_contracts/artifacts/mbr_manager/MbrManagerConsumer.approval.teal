@@ -4,7 +4,7 @@
 // @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
 main:
     intcblock 1 0 32 2
-    bytecblock "c" "e" "ERR:RCV" "ERR:AMT"
+    bytecblock "c" "e" "ERR:rcv" "ERR:amt"
     // smart_contracts/mbr_manager/consumer.algo.ts:10
     // export class MbrManagerConsumer extends MbrManager {
     txn NumAppArgs
@@ -132,9 +132,9 @@ depositCredits:
     global CurrentApplicationAddress
     ==
     bnz depositCredits_after_assert@3
-    bytec_2 // "ERR:RCV"
+    bytec_2 // "ERR:rcv"
     log
-    err // ERR:RCV
+    err // ERR:rcv
 
 depositCredits_after_assert@3:
     // src/mbrManager.algo.ts:88
@@ -142,9 +142,9 @@ depositCredits_after_assert@3:
     gtxns Amount
     dup
     bnz depositCredits_after_assert@5
-    bytec_3 // "ERR:AMT"
+    bytec_3 // "ERR:amt"
     log
-    err // ERR:AMT
+    err // ERR:amt
 
 depositCredits_after_assert@5:
     // src/mbrManager.algo.ts:51
@@ -283,9 +283,9 @@ withdrawCredits:
     box_len
     bury 1
     bnz withdrawCredits_after_assert@3
-    bytec_3 // "ERR:AMT"
+    bytec_3 // "ERR:amt"
     log
-    err // ERR:AMT
+    err // ERR:amt
 
 withdrawCredits_after_assert@3:
     // src/mbrManager.algo.ts:51
@@ -417,9 +417,9 @@ settleMbrCredits_else_body@2:
     // loggedAssert(userCredit >= creditNeeded, errCredit)
     >=
     bnz settleMbrCredits_after_assert@5
-    pushbytes "ERR:CRD"
+    pushbytes "ERR:crd"
     log
-    err // ERR:CRD
+    err // ERR:crd
 
 settleMbrCredits_after_assert@5:
     // src/mbrManager.algo.ts:71
@@ -447,9 +447,9 @@ settleMbrCredits_else_body@6:
     box_len
     bury 1
     bnz settleMbrCredits_after_assert@8
-    bytec_2 // "ERR:RCV"
+    bytec_2 // "ERR:rcv"
     log
-    err // ERR:RCV
+    err // ERR:rcv
 
 settleMbrCredits_after_assert@8:
     // src/mbrManager.algo.ts:75

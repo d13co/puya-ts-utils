@@ -15,7 +15,7 @@
       "op": "intcblock 1 0 32 2"
     },
     "7": {
-      "op": "bytecblock \"c\" \"e\" \"ERR:RCV\" \"ERR:AMT\""
+      "op": "bytecblock \"c\" \"e\" \"ERR:rcv\" \"ERR:amt\""
     },
     "29": {
       "op": "txn NumAppArgs",
@@ -767,16 +767,16 @@
       ]
     },
     "177": {
-      "op": "bytec_2 // \"ERR:RCV\"",
+      "op": "bytec_2 // \"ERR:rcv\"",
       "defined_out": [
-        "\"ERR:RCV\"",
+        "\"ERR:rcv\"",
         "creditor#0",
         "txn#0"
       ],
       "stack_out": [
         "creditor#0",
         "txn#0",
-        "\"ERR:RCV\""
+        "\"ERR:rcv\""
       ]
     },
     "178": {
@@ -787,8 +787,8 @@
       ]
     },
     "179": {
-      "error": "ERR:RCV",
-      "op": "err // ERR:RCV"
+      "error": "ERR:rcv",
+      "op": "err // ERR:rcv"
     },
     "180": {
       "block": "depositCredits_after_assert@3",
@@ -824,15 +824,15 @@
       ]
     },
     "186": {
-      "op": "bytec_3 // \"ERR:AMT\"",
+      "op": "bytec_3 // \"ERR:amt\"",
       "defined_out": [
-        "\"ERR:AMT\"",
+        "\"ERR:amt\"",
         "tmp%3#0"
       ],
       "stack_out": [
         "creditor#0",
         "tmp%3#0",
-        "\"ERR:AMT\""
+        "\"ERR:amt\""
       ]
     },
     "187": {
@@ -843,8 +843,8 @@
       ]
     },
     "188": {
-      "error": "ERR:AMT",
-      "op": "err // ERR:AMT"
+      "error": "ERR:amt",
+      "op": "err // ERR:amt"
     },
     "189": {
       "block": "depositCredits_after_assert@5",
@@ -1814,14 +1814,14 @@
       ]
     },
     "305": {
-      "op": "bytec_3 // \"ERR:AMT\"",
+      "op": "bytec_3 // \"ERR:amt\"",
       "defined_out": [
-        "\"ERR:AMT\"",
+        "\"ERR:amt\"",
         "mbrBefore#0"
       ],
       "stack_out": [
         "mbrBefore#0",
-        "\"ERR:AMT\""
+        "\"ERR:amt\""
       ]
     },
     "306": {
@@ -1831,8 +1831,8 @@
       ]
     },
     "307": {
-      "error": "ERR:AMT",
-      "op": "err // ERR:AMT"
+      "error": "ERR:amt",
+      "op": "err // ERR:amt"
     },
     "308": {
       "block": "withdrawCredits_after_assert@3",
@@ -2450,9 +2450,9 @@
       ]
     },
     "399": {
-      "op": "pushbytes \"ERR:CRD\"",
+      "op": "pushbytes \"ERR:crd\"",
       "defined_out": [
-        "\"ERR:CRD\"",
+        "\"ERR:crd\"",
         "creditNeeded#0",
         "map_prefixed_key%0#0",
         "userCredit#0"
@@ -2461,7 +2461,7 @@
         "creditNeeded#0",
         "map_prefixed_key%0#0",
         "userCredit#0",
-        "\"ERR:CRD\""
+        "\"ERR:crd\""
       ]
     },
     "408": {
@@ -2473,8 +2473,8 @@
       ]
     },
     "409": {
-      "error": "ERR:CRD",
-      "op": "err // ERR:CRD"
+      "error": "ERR:crd",
+      "op": "err // ERR:crd"
     },
     "410": {
       "block": "settleMbrCredits_after_assert@5",
@@ -2635,16 +2635,16 @@
       ]
     },
     "431": {
-      "op": "bytec_2 // \"ERR:RCV\"",
+      "op": "bytec_2 // \"ERR:rcv\"",
       "defined_out": [
-        "\"ERR:RCV\"",
+        "\"ERR:rcv\"",
         "creditToReturn#0",
         "map_prefixed_key%2#0"
       ],
       "stack_out": [
         "creditToReturn#0",
         "map_prefixed_key%2#0",
-        "\"ERR:RCV\""
+        "\"ERR:rcv\""
       ]
     },
     "432": {
@@ -2655,8 +2655,8 @@
       ]
     },
     "433": {
-      "error": "ERR:RCV",
-      "op": "err // ERR:RCV"
+      "error": "ERR:rcv",
+      "op": "err // ERR:rcv"
     },
     "434": {
       "block": "settleMbrCredits_after_assert@8",

@@ -15,11 +15,11 @@ import {
 } from '@algorandfoundation/algorand-typescript'
 
 /** Insufficient credits to cover MBR increase. Deposit more credits and try again. */
-export const errCredit = 'CRD'
+export const errCredit = 'crd'
 /** Payment receiver must be the contract, or the account being refunded has no credit box. */
-export const errReceiver = 'RCV'
+export const errReceiver = 'rcv'
 /** Amount must be greater than zero, or the sender has no credit box to withdraw. */
-export const errAmt = 'AMT'
+export const errAmt = 'amt'
 
 /**
  * MBR credit accounting: accounts deposit credits up front, and mutating methods settle
