@@ -20,6 +20,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      publish: ${{ steps.check.outputs.publish }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -52,9 +54,24 @@ jobs:
       - name: Test
         run: algokit project run test
 
+      # Decided here, outside the `npm` environment, so pushes that don't bump
+      # the version never ask for a publish approval.
+      - name: Check whether this version needs publishing
+        id: check
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: projects/puya-ts-utils
+        run: |
+          spec=$(node -p "const p = require('./package.json'); p.name + '@' + p.version")
+          if npm view "$spec" version >/dev/null 2>&1; then
+            echo "$spec already on npm, nothing to publish"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
   publish:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: needs.test.outputs.publish == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: npm
@@ -79,25 +96,15 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
-      - name: Skip if this version is already published
-        id: check
-        run: |
-          spec=$(node -p "const p = require('./package.json'); p.name + '@' + p.version")
-          if npm view "$spec" version >/dev/null 2>&1; then
-            echo "$spec already on npm, skipping"
-            echo "publish=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-          fi
+      # `prepublishOnly` runs the full contract build.
+      - name: Install AlgoKit
+        run: pipx install algokit==2.10.2
 
       - name: Install dependencies
-        if: steps.check.outputs.publish == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Test the packed package
-        if: steps.check.outputs.publish == 'true'
         run: pnpm run test:pack
 
       - name: Publish
-        if: steps.check.outputs.publish == 'true'
         run: npm publish
