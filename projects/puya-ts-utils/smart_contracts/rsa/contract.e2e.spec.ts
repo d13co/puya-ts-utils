@@ -300,6 +300,65 @@ describe('RSA-4096 split over several groups', () => {
     ).rejects.toThrow('Error UNFINISHED: RSA verification is not finished')
   })
 
+  const withdraw = (sdk: RsaSplitSDK) => sdk.writeClient.send.withdrawCredits({
+    args: [], extraFee: AlgoAmount.MicroAlgo(1000), populateAppCallResources: true,
+  })
+
+  test.each([true, false])('keeps the refund destination until a finished verification returns %s', async (valid) => {
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+    const creditsBefore = await credits(sdk)
+    const { modulus, exponent, signature } = signWithNewKey(1024, 65537, 'sha256')
+    const publicKey = Buffer.concat([Buffer.from([exponent.length]), exponent, modulus])
+    if (!valid) signature[7] ^= 1
+    await sdk.run([
+      { start: { signature, publicKey, hint: montgomeryHint(modulus), budget: 40_000 } },
+      { step: { bits: 32, budget: 0 } },
+    ])
+    const lockedCredits = await credits(sdk)
+
+    await expect(withdraw(sdk)).rejects.toThrow('Error PENDINGRSA')
+    expect(await credits(sdk)).toBe(lockedCredits)
+    expect(await sdk.run([{ finish: { signedData: Buffer.from('example.'), publicKey } }])).toEqual([valid])
+    expect(await credits(sdk)).toBe(creditsBefore)
+
+    const result = await withdraw(sdk)
+    expect(result.confirmation.innerTxns![0].txn.txn.payment!.amount).toBe(1_000_000n)
+  })
+
+  test('cancels an unfinished RSA-4096 check and withdraws its full deposit without another payment', async () => {
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+    const creditsBefore = await credits(sdk)
+    await sdk.run([{ start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } }])
+
+    await expect(withdraw(sdk)).rejects.toThrow('Error PENDINGRSA')
+    await sdk.cancel()
+    expect(await credits(sdk)).toBe(creditsBefore)
+    await sdk.cancel() // Already cancelled: no extra refund.
+    expect(await credits(sdk)).toBe(creditsBefore)
+
+    const result = await withdraw(sdk)
+    expect(result.confirmation.innerTxns![0].txn.txn.payment!.amount).toBe(1_000_000n)
+  })
+
+  test('cancellation cannot remove another sender\'s verification', async () => {
+    const sdk = await deploySdk()
+    await sdk.depositCredits({ amount: AlgoAmount.Algo(1) })
+    await sdk.run([{ start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } }])
+    const creditsBefore = await credits(sdk)
+    const other = await localnet.algorand.account.random()
+    await localnet.algorand.account.ensureFundedFromEnvironment(other.addr, AlgoAmount.Algo(1))
+    const otherSdk = new RsaSplitSDK({
+      algorand: sdk.algorand, appId: sdk.appId, writerAccount: { sender: other.addr, signer: other.signer },
+    })
+
+    await otherSdk.cancel()
+    expect(await credits(sdk)).toBe(creditsBefore)
+    expect(await sdk.run([{ step: { bits: 1, budget: 25_000 } }])).toEqual([15n])
+    await sdk.cancel()
+  })
+
   test('reads the credits of more accounts than a transaction can name boxes for', async () => {
     const sdk = await deploySdk()
     await sdk.depositCredits({ amount: AlgoAmount.MicroAlgo(500_000) })

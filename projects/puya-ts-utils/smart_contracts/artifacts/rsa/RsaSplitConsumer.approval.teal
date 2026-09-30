@@ -4,28 +4,28 @@
 // @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
 main:
     intcblock 0 1 64 2
-    bytecblock 0x "c" 0x01 "rsa" 0x068101 0x151f7c75 "ERR:rcv" "ERR:amt"
+    bytecblock 0x "rsa" "c" 0x01 0x068101 0x151f7c75 "ERR:amt" "ERR:rcv"
     // smart_contracts/rsa/consumer.algo.ts:114
     // export class RsaSplitConsumer extends MbrManager {
     txn NumAppArgs
-    bz main___algots__.defaultCreate@14
+    bz main___algots__.defaultCreate@15
     txn OnCompletion
     !
     assert
     txn ApplicationID
     assert
-    pushbytess 0x5c06042f 0x377d6611 0x71bed716 0x839fa521 0x3d75f0c4 0x941da4e5 0xeaee7fbd // method "start(byte[],byte[],byte[],uint64)void", method "step(uint64,uint64)uint64", method "finish(byte[],byte[])bool", method "pool()void", method "depositCredits(address,pay)void", method "logCredits(address[])void", method "withdrawCredits()void"
+    pushbytess 0x5c06042f 0x377d6611 0x71bed716 0x31f26a9b 0xeaee7fbd 0x839fa521 0x3d75f0c4 0x941da4e5 // method "start(byte[],byte[],byte[],uint64)void", method "step(uint64,uint64)uint64", method "finish(byte[],byte[])bool", method "cancel()void", method "withdrawCredits()void", method "pool()void", method "depositCredits(address,pay)void", method "logCredits(address[])void"
     txna ApplicationArgs 0
-    match start step finish main_pool_route@7 depositCredits logCredits withdrawCredits
+    match start step finish cancel withdrawCredits main_pool_route@9 depositCredits logCredits
     err
 
-main_pool_route@7:
-    // smart_contracts/rsa/consumer.algo.ts:151
+main_pool_route@9:
+    // smart_contracts/rsa/consumer.algo.ts:164
     // public pool(): void {}
     intc_1 // 1
     return
 
-main___algots__.defaultCreate@14:
+main___algots__.defaultCreate@15:
     // smart_contracts/rsa/consumer.algo.ts:114
     // export class RsaSplitConsumer extends MbrManager {
     txn OnCompletion
@@ -338,7 +338,7 @@ monMul_after_while@5:
     // r = mac(c1, top, BigUint(1), c2)
     uncover 2
     swap
-    bytec_2 // 0x01
+    bytec_3 // 0x01
     uncover 5
     callsub mac
     // src/rsa.algo.ts:313
@@ -504,7 +504,7 @@ add_while_top@1:
     frame_dig -1
     dig 2
     callsub limb
-    bytec_2 // 0x01
+    bytec_3 // 0x01
     uncover 5
     callsub mac
     // src/rsa.algo.ts:344
@@ -561,7 +561,7 @@ sub:
     // return n.bitwiseInvert().bitwiseOr(Bytes.fromHex('01'))
     frame_dig -1
     b~
-    bytec_2 // 0x01
+    bytec_3 // 0x01
     b|
     // src/rsa.algo.ts:381
     // const [, difference] = add(x, negate(n))
@@ -755,7 +755,7 @@ start:
     assert // account funded
     // smart_contracts/rsa/consumer.algo.ts:116
     // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
-    bytec_3 // "rsa"
+    bytec_1 // "rsa"
     // smart_contracts/rsa/consumer.algo.ts:124
     // this.state(Txn.sender).delete()
     txn Sender
@@ -887,7 +887,7 @@ start_bool_merge@13:
     callsub limb
     // src/rsa.algo.ts:360
     // let m = BigUint(1)
-    bytec_2 // 0x01
+    bytec_3 // 0x01
     cover 4
     // src/rsa.algo.ts:361
     // for (let i: uint64 = 0; i < 9; i++) {
@@ -1161,7 +1161,7 @@ start_ternary_merge@36:
     concat
     // smart_contracts/rsa/consumer.algo.ts:116
     // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
-    bytec_3 // "rsa"
+    bytec_1 // "rsa"
     // smart_contracts/rsa/consumer.algo.ts:125
     // this.state(Txn.sender).value = rsaStart(signature, modulus, exponent, hint)
     txn Sender
@@ -1305,7 +1305,7 @@ start_after_while@35:
     pop
     // src/rsa.algo.ts:256
     // assert(carry === BigUint(1), errHint)
-    bytec_2 // 0x01
+    bytec_3 // 0x01
     b==
     assert // ERR:BADHINT
     uncover 2
@@ -1352,7 +1352,7 @@ step:
     callsub ensure_budget
     // smart_contracts/rsa/consumer.algo.ts:116
     // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
-    bytec_3 // "rsa"
+    bytec_1 // "rsa"
     // smart_contracts/rsa/consumer.algo.ts:132
     // const state = this.state(Txn.sender)
     txn Sender
@@ -1592,7 +1592,7 @@ finish:
     cover 2
     // smart_contracts/rsa/consumer.algo.ts:116
     // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
-    bytec_3 // "rsa"
+    bytec_1 // "rsa"
     // smart_contracts/rsa/consumer.algo.ts:143
     // const valid = rsaFinish(this.state(Txn.sender).value, op.sha256(signedData), modulus, exponent, SHA256_DIGEST_INFO)
     txn Sender
@@ -1790,7 +1790,7 @@ finish_bool_merge@7:
     assert // account funded
     // smart_contracts/rsa/consumer.algo.ts:116
     // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
-    bytec_3 // "rsa"
+    bytec_1 // "rsa"
     // smart_contracts/rsa/consumer.algo.ts:145
     // this.state(Txn.sender).delete()
     txn Sender
@@ -1824,6 +1824,153 @@ finish_bool_false@6:
     b finish_bool_merge@7
 
 
+// smart_contracts/rsa/consumer.algo.ts::RsaSplitConsumer.cancel[routing]() -> void:
+cancel:
+    // smart_contracts/rsa/consumer.algo.ts:152
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // smart_contracts/rsa/consumer.algo.ts:116
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_1 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:153
+    // this.state(Txn.sender).delete()
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:116
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:153
+    // this.state(Txn.sender).delete()
+    box_del
+    pop
+    // src/mbrManager.algo.ts:60
+    // this.settleMbrCredits(Txn.sender, mbrBefore)
+    txn Sender
+    swap
+    callsub settleMbrCredits
+    // smart_contracts/rsa/consumer.algo.ts:151
+    // public cancel(): void {
+    intc_1 // 1
+    return
+
+
+// smart_contracts/rsa/consumer.algo.ts::RsaSplitConsumer.withdrawCredits[routing]() -> void:
+withdrawCredits:
+    // smart_contracts/rsa/consumer.algo.ts:116
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    bytec_1 // "rsa"
+    // smart_contracts/rsa/consumer.algo.ts:159
+    // assert(!this.state(Txn.sender).exists, errPendingVerification)
+    txn Sender
+    // smart_contracts/rsa/consumer.algo.ts:116
+    // state = BoxMap<Account, bytes>({ keyPrefix: 'rsa' })
+    concat
+    // smart_contracts/rsa/consumer.algo.ts:159
+    // assert(!this.state(Txn.sender).exists, errPendingVerification)
+    box_len
+    bury 1
+    !
+    assert // ERR:PENDINGRSA
+    // src/mbrManager.algo.ts:120
+    // const mbrBefore = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_2 // "c"
+    // src/mbrManager.algo.ts:122
+    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:122
+    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
+    box_len
+    bury 1
+    bnz withdrawCredits_after_assert@3
+    bytec 6 // "ERR:amt"
+    log
+    err // ERR:amt
+
+withdrawCredits_after_assert@3:
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_2 // "c"
+    // src/mbrManager.algo.ts:123
+    // const credit: uint64 = this.userCredits(Txn.sender).value
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:123
+    // const credit: uint64 = this.userCredits(Txn.sender).value
+    box_get
+    assert // Box must have value
+    btoi
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    bytec_2 // "c"
+    // src/mbrManager.algo.ts:125
+    // this.userCredits(Txn.sender).delete()
+    txn Sender
+    // src/mbrManager.algo.ts:51
+    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
+    concat
+    // src/mbrManager.algo.ts:125
+    // this.userCredits(Txn.sender).delete()
+    box_del
+    pop
+    // src/mbrManager.algo.ts:126
+    // const mbrAfter = Global.currentApplicationAddress.minBalance
+    global CurrentApplicationAddress
+    acct_params_get AcctMinBalance
+    assert // account funded
+    // src/mbrManager.algo.ts:127
+    // const finalCredit: uint64 = credit + (mbrBefore - mbrAfter)
+    uncover 2
+    swap
+    -
+    +
+    // src/mbrManager.algo.ts:129-134
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    //   .submit()
+    itxn_begin
+    // src/mbrManager.algo.ts:131
+    // receiver: Txn.sender,
+    txn Sender
+    itxn_field Receiver
+    itxn_field Amount
+    // src/mbrManager.algo.ts:129-133
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    intc_1 // 1
+    itxn_field TypeEnum
+    intc_0 // 0
+    itxn_field Fee
+    // src/mbrManager.algo.ts:129-134
+    // itxn
+    //   .payment({
+    //     receiver: Txn.sender,
+    //     amount: finalCredit,
+    //   })
+    //   .submit()
+    itxn_submit
+    // smart_contracts/rsa/consumer.algo.ts:158
+    // public override withdrawCredits(): void {
+    intc_1 // 1
+    return
+
+
 // src/mbrManager.algo.ts::MbrManager.depositCredits[routing]() -> void:
 depositCredits:
     // src/mbrManager.algo.ts:86
@@ -1848,7 +1995,7 @@ depositCredits:
     global CurrentApplicationAddress
     ==
     bnz depositCredits_after_assert@3
-    bytec 6 // "ERR:rcv"
+    bytec 7 // "ERR:rcv"
     log
     err // ERR:rcv
 
@@ -1858,14 +2005,14 @@ depositCredits_after_assert@3:
     gtxns Amount
     dup
     bnz depositCredits_after_assert@5
-    bytec 7 // "ERR:amt"
+    bytec 6 // "ERR:amt"
     log
     err // ERR:amt
 
 depositCredits_after_assert@5:
     // src/mbrManager.algo.ts:51
     // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
+    bytec_2 // "c"
     uncover 2
     dup
     cover 2
@@ -1940,7 +2087,7 @@ logCredits_for_header@2:
     extract3 // on error: index access is out of bounds
     // src/mbrManager.algo.ts:51
     // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
+    bytec_2 // "c"
     swap
     concat
     dup
@@ -1974,107 +2121,6 @@ logCredits_after_for@8:
     // src/mbrManager.algo.ts:102-103
     // @readonly
     // public logCredits(accounts: Account[]): void {
-    intc_1 // 1
-    return
-
-
-// src/mbrManager.algo.ts::MbrManager.withdrawCredits[routing]() -> void:
-withdrawCredits:
-    // src/mbrManager.algo.ts:120
-    // const mbrBefore = Global.currentApplicationAddress.minBalance
-    global CurrentApplicationAddress
-    acct_params_get AcctMinBalance
-    assert // account funded
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
-    // src/mbrManager.algo.ts:122
-    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
-    txn Sender
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    concat
-    // src/mbrManager.algo.ts:122
-    // loggedAssert(this.userCredits(Txn.sender).exists, errAmt)
-    box_len
-    bury 1
-    bnz withdrawCredits_after_assert@3
-    bytec 7 // "ERR:amt"
-    log
-    err // ERR:amt
-
-withdrawCredits_after_assert@3:
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
-    // src/mbrManager.algo.ts:123
-    // const credit: uint64 = this.userCredits(Txn.sender).value
-    txn Sender
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    concat
-    // src/mbrManager.algo.ts:123
-    // const credit: uint64 = this.userCredits(Txn.sender).value
-    box_get
-    assert // Box must have value
-    btoi
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
-    // src/mbrManager.algo.ts:125
-    // this.userCredits(Txn.sender).delete()
-    txn Sender
-    // src/mbrManager.algo.ts:51
-    // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    concat
-    // src/mbrManager.algo.ts:125
-    // this.userCredits(Txn.sender).delete()
-    box_del
-    pop
-    // src/mbrManager.algo.ts:126
-    // const mbrAfter = Global.currentApplicationAddress.minBalance
-    global CurrentApplicationAddress
-    acct_params_get AcctMinBalance
-    assert // account funded
-    // src/mbrManager.algo.ts:127
-    // const finalCredit: uint64 = credit + (mbrBefore - mbrAfter)
-    uncover 2
-    swap
-    -
-    +
-    // src/mbrManager.algo.ts:129-134
-    // itxn
-    //   .payment({
-    //     receiver: Txn.sender,
-    //     amount: finalCredit,
-    //   })
-    //   .submit()
-    itxn_begin
-    // src/mbrManager.algo.ts:131
-    // receiver: Txn.sender,
-    txn Sender
-    itxn_field Receiver
-    itxn_field Amount
-    // src/mbrManager.algo.ts:129-133
-    // itxn
-    //   .payment({
-    //     receiver: Txn.sender,
-    //     amount: finalCredit,
-    //   })
-    intc_1 // 1
-    itxn_field TypeEnum
-    intc_0 // 0
-    itxn_field Fee
-    // src/mbrManager.algo.ts:129-134
-    // itxn
-    //   .payment({
-    //     receiver: Txn.sender,
-    //     amount: finalCredit,
-    //   })
-    //   .submit()
-    itxn_submit
-    // src/mbrManager.algo.ts:119
-    // public withdrawCredits() {
     intc_1 // 1
     return
 
@@ -2113,7 +2159,7 @@ settleMbrCredits_else_body@2:
     dup
     // src/mbrManager.algo.ts:51
     // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
+    bytec_2 // "c"
     frame_dig -2
     concat
     dup
@@ -2154,7 +2200,7 @@ settleMbrCredits_else_body@6:
     -
     // src/mbrManager.algo.ts:51
     // public userCredits = BoxMap<Account, uint64>({ keyPrefix: 'c' })
-    bytec_1 // "c"
+    bytec_2 // "c"
     frame_dig -2
     concat
     dup
@@ -2163,7 +2209,7 @@ settleMbrCredits_else_body@6:
     box_len
     bury 1
     bnz settleMbrCredits_after_assert@8
-    bytec 6 // "ERR:rcv"
+    bytec 7 // "ERR:rcv"
     log
     err // ERR:rcv
 

@@ -25,7 +25,7 @@ import {
 } from '../../src/rsa.algo'
 import { MbrManager } from '../../src/mbrManager.algo'
 import { errModulusShort } from '../../src/rsaErrors.algo'
-import { errNote, errNotInert, errSignature } from './errors.algo'
+import { errNote, errNotInert, errPendingVerification, errSignature } from './errors.algo'
 
 /**
  * Exercises the RSA subroutines the way a DNSSEC verifier would.
@@ -145,6 +145,19 @@ export class RsaSplitConsumer extends MbrManager {
     this.state(Txn.sender).delete()
     this.manageMbrCredits(mbrBefore)
     return valid
+  }
+
+  /** Cancel the sender's verification, refunding its state-box MBR to their credits. */
+  public cancel(): void {
+    const mbrBefore = Global.currentApplicationAddress.minBalance
+    this.state(Txn.sender).delete()
+    this.manageMbrCredits(mbrBefore)
+  }
+
+  /** Withdraw credits only after the sender has finished or cancelled their verification. */
+  public override withdrawCredits(): void {
+    assert(!this.state(Txn.sender).exists, errPendingVerification)
+    super.withdrawCredits()
   }
 
   /** Does nothing: an app call to pad a group with budget and inner transaction slots. */
