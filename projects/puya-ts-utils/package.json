@@ -118,6 +118,7 @@
   "scripts": {
     "build": "algokit compile ts smart_contracts --output-source-map --out-dir artifacts && algokit generate client smart_contracts/artifacts --output {app_spec_dir}/{contract_name}Client.ts && node scripts/generate-sdk.mjs",
     "build:sdk": "rm -rf dist && tsc -p tsconfig.build.json && tsc -p tsconfig.build.json --module esnext --moduleResolution bundler --outDir dist/esm && echo '{\"type\":\"module\"}' > dist/esm/package.json",
+    "prepublishOnly": "npm run build",
     "prepack": "npm run build:sdk",
     "deploy": "ts-node-dev --transpile-only --watch .env -r dotenv/config smart_contracts/index.ts",
     "deploy:ci": "ts-node --transpile-only -r dotenv/config smart_contracts/index.ts",
