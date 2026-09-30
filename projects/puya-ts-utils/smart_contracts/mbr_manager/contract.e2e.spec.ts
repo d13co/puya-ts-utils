@@ -92,14 +92,14 @@ describe('MbrManager', () => {
       expect(await credits(client, testAccount)).toBeUndefined()
     })
 
-    test('fails when the deposit cannot cover the credit box (CRD)', async () => {
+    test('fails when the deposit cannot cover the credit box (crd)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
 
-      await expect(deposit(client, testAccount, CREDIT_BOX_MBR - 1n)).rejects.toThrow(/CRD/)
+      await expect(deposit(client, testAccount, CREDIT_BOX_MBR - 1n)).rejects.toThrow(/crd/)
     })
 
-    test('fails with the wrong receiver (RCV)', async () => {
+    test('fails with the wrong receiver (rcv)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
       const txn = await localnet.algorand.createTransaction.payment({
@@ -110,14 +110,14 @@ describe('MbrManager', () => {
 
       await expect(
         client.send.depositCredits({ args: { creditor: testAccount.toString(), txn }, boxReferences: [creditBox(testAccount)] }),
-      ).rejects.toThrow(/RCV/)
+      ).rejects.toThrow(/rcv/)
     })
 
-    test('fails with a zero amount (AMT)', async () => {
+    test('fails with a zero amount (amt)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
 
-      await expect(deposit(client, testAccount, 0n)).rejects.toThrow(/AMT/)
+      await expect(deposit(client, testAccount, 0n)).rejects.toThrow(/amt/)
     })
   })
 
@@ -159,11 +159,11 @@ describe('MbrManager', () => {
       expect(await credits(client, testAccount)).toBe(100_000n - CREDIT_BOX_MBR - ENTRY_BOX_MBR - BYTE_MBR)
     })
 
-    test('fails when the sender has no credits (CRD)', async () => {
+    test('fails when the sender has no credits (crd)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
 
-      await expect(put(client, testAccount)).rejects.toThrow(/CRD/)
+      await expect(put(client, testAccount)).rejects.toThrow(/crd/)
     })
   })
 
@@ -204,13 +204,13 @@ describe('MbrManager', () => {
       expect(await credits(client, testAccount)).toBeUndefined()
     })
 
-    test('fails without a prior deposit (AMT)', async () => {
+    test('fails without a prior deposit (amt)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
 
       await expect(
         client.send.withdrawCredits({ args: {}, boxReferences: [creditBox(testAccount)], extraFee: AlgoAmount.MicroAlgo(1000) }),
-      ).rejects.toThrow(/AMT/)
+      ).rejects.toThrow(/amt/)
     })
   })
 
@@ -295,7 +295,7 @@ describe('MbrManager', () => {
       expect(unhandled).toEqual([])
     })
 
-    test('reverts a first deposit below the credit box MBR (CRD)', async () => {
+    test('reverts a first deposit below the credit box MBR (crd)', async () => {
       const { testAccount } = localnet.context
       const client = await deploy(testAccount)
       const app = { algorand: localnet.algorand, appId: client.appId }
@@ -306,7 +306,7 @@ describe('MbrManager', () => {
         amount: AlgoAmount.MicroAlgo(CREDIT_BOX_MBR_MICROALGOS - 1),
       })
 
-      await expect(group.send()).rejects.toThrow(/CRD/)
+      await expect(group.send()).rejects.toThrow(/crd/)
     })
   })
 })

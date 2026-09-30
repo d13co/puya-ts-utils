@@ -1,6 +1,6 @@
 {
   "name": "@d13co/puya-ts-utils",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Algorand TypeScript subroutines: creating escrow accounts, reading the transaction counter, RSA signature verification, MBR credit accounting, base32 encoding",
   "keywords": [
     "algorand",

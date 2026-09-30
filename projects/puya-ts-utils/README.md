@@ -653,7 +653,7 @@ account paid for, the deleter collects the refund. Use `settleMbrCredits` to
 refund the owner instead.
 
 **Entries can get stuck, including shared ones.** A refund needs a credit box to
-land in (`RCV`). So an account that has called `withdrawCredits` can't delete
+land in (`rcv`). So an account that has called `withdrawCredits` can't delete
 its remaining boxes until it deposits again, which costs another 18 900 µALGO
 for the credit box (it gets that back on its next withdrawal). The same goes
 for a box shared between accounts: whoever deletes it must have a credit box.
@@ -665,15 +665,15 @@ Clean up boxes before withdrawing.
 
 Credits `txn.amount` to `creditor`, who can be any account, not just the sender.
 The creditor's credit box costs 18 900 µALGO, and a first deposit pays for it out
-of the deposit itself. Fails with `RCV` if the payment does not go to the app,
-`AMT` if the amount is zero, and `CRD` if a first deposit is too small to pay
+of the deposit itself. Fails with `rcv` if the payment does not go to the app,
+`amt` if the amount is zero, and `crd` if a first deposit is too small to pay
 for the box.
 
 ### `withdrawCredits()` — ABI
 
 Pays the sender's credits back to them, plus the MBR freed by deleting their
 credit box. The inner payment has zero fee, so send `extraFee: 1000`. Fails with
-`AMT` if the sender has no credit box. Refunds for boxes deleted after this fail
+`amt` if the sender has no credit box. Refunds for boxes deleted after this fail
 until the sender deposits again: see the warning above.
 
 ### `logCredits(accounts: Account[])` — ABI, readonly
@@ -684,8 +684,8 @@ read many balances in one call.
 
 ### `manageMbrCredits(mbrBefore: uint64)` — protected
 
-Charges the MBR increase since `mbrBefore` to the sender's credits (`CRD` if they
-do not have enough), or refunds a decrease to them (`RCV` if they have no credit
+Charges the MBR increase since `mbrBefore` to the sender's credits (`crd` if they
+do not have enough), or refunds a decrease to them (`rcv` if they have no credit
 box). Call it last, after the state changes.
 
 ### `settleMbrCredits(account: Account, mbrBefore: uint64)` — protected
@@ -693,8 +693,8 @@ box). Call it last, after the state changes.
 The same as `manageMbrCredits`, but it charges or refunds `account` instead of
 the sender.
 
-Errors are raised with `loggedAssert`, so they show up as `ERR:CRD`, `ERR:RCV`
-and `ERR:AMT`.
+Errors are raised with `loggedAssert`, so they show up as `ERR:crd`, `ERR:rcv`
+and `ERR:amt`.
 
 ## Off chain: `mbrManagerSdk`
 
@@ -718,7 +718,7 @@ const [credits] = await getCredits(app, [sender]) // bigint, or undefined with n
   adds the payment and the `depositCredits` call to `composer`, with the
   creditor's credit box referenced. It is async, since building the payment
   fetches suggested params, so await it. A first deposit below
-  `CREDIT_BOX_MBR_MICROALGOS` (18 900) reverts with `ERR:CRD`.
+  `CREDIT_BOX_MBR_MICROALGOS` (18 900) reverts with `ERR:crd`.
 - `addWithdrawCredits(composer, { appId, sender, signer? })` adds the
   `withdrawCredits` call, with the sender's credit box referenced and 1000 µALGO
   extra fee for the inner refund.

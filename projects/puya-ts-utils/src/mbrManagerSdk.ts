@@ -47,7 +47,7 @@ export type MbrSender = { sender: string | Address; signer?: TransactionSigner }
  *
  * A first deposit opens the creditor's credit box and pays its
  * `CREDIT_BOX_MBR_MICROALGOS` out of itself, so one below that reverts with
- * `ERR:CRD`.
+ * `ERR:crd`.
  *
  * Async because the payment is built here, which fetches suggested params: a
  * payment promise handed to the composer unawaited would reject unobserved if

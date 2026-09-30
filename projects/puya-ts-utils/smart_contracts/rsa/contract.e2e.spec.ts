@@ -270,7 +270,7 @@ describe('RSA-4096 split over several groups', () => {
 
     await expect(
       sdk.run([{ start: { signature: hex(PL_DNSKEY.signature), publicKey: plKey, hint: plHint, budget: 40_000 } }]),
-    ).rejects.toThrow('Error CRD: Insufficient credits')
+    ).rejects.toThrow('Error crd: Insufficient credits')
   })
 
   test('refuses to finish with exponent bits left', async () => {
